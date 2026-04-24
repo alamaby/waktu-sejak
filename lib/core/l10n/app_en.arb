@@ -1,0 +1,158 @@
+{
+  "@@locale": "en",
+  "appTitle": "Waktu Sejak",
+  "dashboard": "Dashboard",
+  "create": "Create",
+  "settings": "Settings",
+  "cardView": "Card View",
+  "listView": "List View",
+  "sortByName": "Name (A–Z)",
+  "sortByTimeClosest": "Closest First",
+  "sortByTimeFarthest": "Farthest First",
+  "sortLabel": "Sort",
+  "eventName": "Event Name",
+  "eventNameHint": "e.g. My Birthday",
+  "eventNameRequired": "Please enter an event name",
+  "dateAndTime": "Date & Time",
+  "emojiLabel": "Emoji",
+  "colorLabel": "Color",
+  "save": "Save Event",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "deleteConfirmTitle": "Delete Event?",
+  "deleteConfirmBody": "This action cannot be undone.",
+  "language": "Language",
+  "english": "English",
+  "indonesian": "Bahasa Indonesia",
+  "about": "About",
+  "authorLabel": "Author",
+  "authorName": "Alam Aby Bashit",
+  "links": "Links",
+  "donate": "Support the App",
+  "noEvents": "No events yet. Tap Create to add one.",
+  "pastLabel": "Past",
+  "upcomingLabel": "Upcoming",
+  "comingSoon": "Coming soon!",
+  "linkedin": "LinkedIn",
+  "github": "GitHub",
+  "blog": "Blog",
+  "upwork": "Upwork",
+  "buyMeCoffee": "Buy Me a Coffee",
+  "saweria": "Saweria",
+  "patreon": "Patreon",
+  "justNow": "Just now",
+  "timeAgoY": "{years, plural, =1{1 year ago} other{{years} years ago}}",
+  "@timeAgoY": {
+    "placeholders": {
+      "years": { "type": "int" }
+    }
+  },
+  "timeAgoYM": "{years, plural, =1{1 year} other{{years} years}}, {months, plural, =1{1 month} other{{months} months}} ago",
+  "@timeAgoYM": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" }
+    }
+  },
+  "timeAgoYMD": "{years, plural, =1{1 year} other{{years} years}}, {months, plural, =1{1 month} other{{months} months}}, {days, plural, =1{1 day} other{{days} days}} ago",
+  "@timeAgoYMD": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoM": "{months, plural, =1{1 month ago} other{{months} months ago}}",
+  "@timeAgoM": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "timeAgoMD": "{months, plural, =1{1 month} other{{months} months}}, {days, plural, =1{1 day} other{{days} days}} ago",
+  "@timeAgoMD": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoD": "{days, plural, =1{1 day ago} other{{days} days ago}}",
+  "@timeAgoD": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoDHMS": "{days}d {hours}h {minutes}m {seconds}s ago",
+  "@timeAgoDHMS": {
+    "placeholders": {
+      "days": { "type": "int" },
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeAgoHMS": "{hours}h {minutes}m {seconds}s ago",
+  "@timeAgoHMS": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeUntilY": "in {years, plural, =1{1 year} other{{years} years}}",
+  "@timeUntilY": {
+    "placeholders": {
+      "years": { "type": "int" }
+    }
+  },
+  "timeUntilYM": "in {years, plural, =1{1 year} other{{years} years}}, {months, plural, =1{1 month} other{{months} months}}",
+  "@timeUntilYM": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" }
+    }
+  },
+  "timeUntilYMD": "in {years, plural, =1{1 year} other{{years} years}}, {months, plural, =1{1 month} other{{months} months}}, {days, plural, =1{1 day} other{{days} days}}",
+  "@timeUntilYMD": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilM": "in {months, plural, =1{1 month} other{{months} months}}",
+  "@timeUntilM": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "timeUntilMD": "in {months, plural, =1{1 month} other{{months} months}}, {days, plural, =1{1 day} other{{days} days}}",
+  "@timeUntilMD": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilD": "in {days, plural, =1{1 day} other{{days} days}}",
+  "@timeUntilD": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilDHMS": "in {days}d {hours}h {minutes}m {seconds}s",
+  "@timeUntilDHMS": {
+    "placeholders": {
+      "days": { "type": "int" },
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeUntilHMS": "in {hours}h {minutes}m {seconds}s",
+  "@timeUntilHMS": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  }
+}

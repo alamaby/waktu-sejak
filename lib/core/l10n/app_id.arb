@@ -1,0 +1,158 @@
+{
+  "@@locale": "id",
+  "appTitle": "Waktu Sejak",
+  "dashboard": "Dasbor",
+  "create": "Buat",
+  "settings": "Pengaturan",
+  "cardView": "Tampilan Kartu",
+  "listView": "Tampilan Daftar",
+  "sortByName": "Nama (A–Z)",
+  "sortByTimeClosest": "Terdekat Dulu",
+  "sortByTimeFarthest": "Terjauh Dulu",
+  "sortLabel": "Urutkan",
+  "eventName": "Nama Acara",
+  "eventNameHint": "cth. Ulang Tahun Saya",
+  "eventNameRequired": "Harap masukkan nama acara",
+  "dateAndTime": "Tanggal & Waktu",
+  "emojiLabel": "Emoji",
+  "colorLabel": "Warna",
+  "save": "Simpan Acara",
+  "cancel": "Batal",
+  "delete": "Hapus",
+  "deleteConfirmTitle": "Hapus Acara?",
+  "deleteConfirmBody": "Tindakan ini tidak dapat dibatalkan.",
+  "language": "Bahasa",
+  "english": "English",
+  "indonesian": "Bahasa Indonesia",
+  "about": "Tentang",
+  "authorLabel": "Pembuat",
+  "authorName": "Alam Aby Bashit",
+  "links": "Tautan",
+  "donate": "Dukung Aplikasi",
+  "noEvents": "Belum ada acara. Ketuk Buat untuk menambahkan.",
+  "pastLabel": "Lalu",
+  "upcomingLabel": "Mendatang",
+  "comingSoon": "Segera hadir!",
+  "linkedin": "LinkedIn",
+  "github": "GitHub",
+  "blog": "Blog",
+  "upwork": "Upwork",
+  "buyMeCoffee": "Traktir Kopi",
+  "saweria": "Saweria",
+  "patreon": "Patreon",
+  "justNow": "Baru saja",
+  "timeAgoY": "{years} tahun yang lalu",
+  "@timeAgoY": {
+    "placeholders": {
+      "years": { "type": "int" }
+    }
+  },
+  "timeAgoYM": "{years} tahun, {months} bulan yang lalu",
+  "@timeAgoYM": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" }
+    }
+  },
+  "timeAgoYMD": "{years} tahun, {months} bulan, {days} hari yang lalu",
+  "@timeAgoYMD": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoM": "{months} bulan yang lalu",
+  "@timeAgoM": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "timeAgoMD": "{months} bulan, {days} hari yang lalu",
+  "@timeAgoMD": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoD": "{days} hari yang lalu",
+  "@timeAgoD": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "timeAgoDHMS": "{days} hari {hours} jam {minutes} menit {seconds} detik yang lalu",
+  "@timeAgoDHMS": {
+    "placeholders": {
+      "days": { "type": "int" },
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeAgoHMS": "{hours} jam {minutes} menit {seconds} detik yang lalu",
+  "@timeAgoHMS": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeUntilY": "dalam {years} tahun",
+  "@timeUntilY": {
+    "placeholders": {
+      "years": { "type": "int" }
+    }
+  },
+  "timeUntilYM": "dalam {years} tahun, {months} bulan",
+  "@timeUntilYM": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" }
+    }
+  },
+  "timeUntilYMD": "dalam {years} tahun, {months} bulan, {days} hari",
+  "@timeUntilYMD": {
+    "placeholders": {
+      "years": { "type": "int" },
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilM": "dalam {months} bulan",
+  "@timeUntilM": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "timeUntilMD": "dalam {months} bulan, {days} hari",
+  "@timeUntilMD": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilD": "dalam {days} hari",
+  "@timeUntilD": {
+    "placeholders": {
+      "days": { "type": "int" }
+    }
+  },
+  "timeUntilDHMS": "dalam {days} hari {hours} jam {minutes} menit {seconds} detik",
+  "@timeUntilDHMS": {
+    "placeholders": {
+      "days": { "type": "int" },
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  },
+  "timeUntilHMS": "dalam {hours} jam {minutes} menit {seconds} detik",
+  "@timeUntilHMS": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" },
+      "seconds": { "type": "int" }
+    }
+  }
+}
