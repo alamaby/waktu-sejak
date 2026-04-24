@@ -200,6 +200,24 @@ abstract class AppLocalizations {
   /// **'Save Event'**
   String get save;
 
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @editEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Event'**
+  String get editEvent;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:

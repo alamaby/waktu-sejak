@@ -4,7 +4,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../../core/utils/time_calculator.dart';
 import '../../data/models/event_model.dart';
-import '../providers/events_provider.dart';
+import 'event_actions_sheet.dart';
 
 class EventCard extends ConsumerWidget {
   final EventModel event;
@@ -20,7 +20,7 @@ class EventCard extends ConsumerWidget {
     final isPast = diff.isPast;
 
     return GestureDetector(
-      onLongPress: () => _confirmDelete(context, ref, l10n),
+      onTap: () => showEventActionsSheet(context, ref, event),
       child: Stack(
         children: [
           Card(
@@ -82,35 +82,6 @@ class EventCard extends ConsumerWidget {
     );
   }
 
-  Future<void> _confirmDelete(
-    BuildContext context,
-    WidgetRef ref,
-    AppLocalizations l10n,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.deleteConfirmTitle),
-        content: Text(l10n.deleteConfirmBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(ctx).colorScheme.error,
-            ),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true) {
-      ref.read(eventsNotifierProvider.notifier).deleteEvent(event.id);
-    }
-  }
 }
 
 class _StatusBadge extends StatelessWidget {

@@ -5,7 +5,7 @@ import 'core/l10n/generated/app_localizations.dart';
 import 'presentation/providers/events_provider.dart';
 import 'presentation/providers/settings_provider.dart';
 import 'presentation/screens/dashboard_screen.dart';
-import 'presentation/screens/create_screen.dart';
+import 'presentation/screens/event_form_screen.dart';
 import 'presentation/screens/settings_screen.dart';
 
 void main() {
@@ -35,7 +35,7 @@ class MainScaffold extends ConsumerWidget {
 
   static const _screens = <Widget>[
     DashboardScreen(),
-    CreateScreen(),
+    EventFormScreen(),
     SettingsScreen(),
   ];
 

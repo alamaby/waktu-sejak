@@ -60,6 +60,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get save => 'Simpan Acara';
 
   @override
+  String get update => 'Perbarui';
+
+  @override
+  String get edit => 'Ubah';
+
+  @override
+  String get editEvent => 'Ubah Acara';
+
+  @override
   String get cancel => 'Batal';
 
   @override

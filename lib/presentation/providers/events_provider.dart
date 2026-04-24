@@ -25,6 +25,12 @@ class EventsNotifier extends _$EventsNotifier {
     state = state.where((e) => e.id != id).toList();
   }
 
+  void updateEvent(EventModel event) {
+    state = [
+      for (final e in state) if (e.id == event.id) event else e,
+    ];
+  }
+
   List<EventModel> _dummyEvents() {
     final now = DateTime.now();
     return [

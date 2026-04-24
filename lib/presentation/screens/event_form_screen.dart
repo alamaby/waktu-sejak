@@ -18,14 +18,16 @@ const _defaultEmojis = [
   '🌺', '⚽', '🎯', '🧘', '🏖️', '🦋', '🎪', '🧩',
 ];
 
-class CreateScreen extends ConsumerStatefulWidget {
-  const CreateScreen({super.key});
+class EventFormScreen extends ConsumerStatefulWidget {
+  final EventModel? editingEvent;
+
+  const EventFormScreen({super.key, this.editingEvent});
 
   @override
-  ConsumerState<CreateScreen> createState() => _CreateScreenState();
+  ConsumerState<EventFormScreen> createState() => _EventFormScreenState();
 }
 
-class _CreateScreenState extends ConsumerState<CreateScreen> {
+class _EventFormScreenState extends ConsumerState<EventFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
 
@@ -33,10 +35,20 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
   late String _selectedEmoji;
   late Color _selectedColor;
 
+  bool get _isEditing => widget.editingEvent != null;
+
   @override
   void initState() {
     super.initState();
-    _resetForm();
+    if (_isEditing) {
+      final e = widget.editingEvent!;
+      _nameController.text = e.name;
+      _selectedDateTime = e.targetDate;
+      _selectedEmoji = e.emoji;
+      _selectedColor = e.color;
+    } else {
+      _resetForm();
+    }
   }
 
   void _resetForm() {
@@ -92,6 +104,20 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
   void _save() {
     if (!_formKey.currentState!.validate()) return;
 
+    final notifier = ref.read(eventsNotifierProvider.notifier);
+
+    if (_isEditing) {
+      final updated = widget.editingEvent!.copyWith(
+        name: _nameController.text.trim(),
+        targetDate: _selectedDateTime,
+        emoji: _selectedEmoji,
+        color: _selectedColor,
+      );
+      notifier.updateEvent(updated);
+      Navigator.of(context).pop();
+      return;
+    }
+
     final event = EventModel(
       id: _uuid.v4(),
       name: _nameController.text.trim(),
@@ -101,7 +127,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
       createdAt: DateTime.now(),
     );
 
-    ref.read(eventsNotifierProvider.notifier).addEvent(event);
+    notifier.addEvent(event);
 
     // Reset form for next use, then navigate to Dashboard
     _resetForm();
@@ -115,7 +141,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
     final textColor = AppColors.textColorOn(_selectedColor);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.create)),
+      appBar: AppBar(title: Text(_isEditing ? l10n.editEvent : l10n.create)),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -216,13 +242,13 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
             ),
             const SizedBox(height: 32),
 
-            // Save button
+            // Save / Update button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _save,
                 icon: const Icon(Icons.check),
-                label: Text(l10n.save),
+                label: Text(_isEditing ? l10n.update : l10n.save),
               ),
             ),
           ],

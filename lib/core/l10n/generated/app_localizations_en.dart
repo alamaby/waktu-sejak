@@ -60,6 +60,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save Event';
 
   @override
+  String get update => 'Update';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get editEvent => 'Edit Event';
+
+  @override
   String get cancel => 'Cancel';
 
   @override

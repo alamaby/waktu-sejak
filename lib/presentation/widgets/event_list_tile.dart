@@ -4,6 +4,8 @@ import '../../core/l10n/generated/app_localizations.dart';
 import '../../core/utils/time_calculator.dart';
 import '../../data/models/event_model.dart';
 import '../providers/events_provider.dart';
+import 'confirm_delete_dialog.dart';
+import 'event_actions_sheet.dart';
 
 class EventListTile extends ConsumerWidget {
   final EventModel event;
@@ -21,13 +23,14 @@ class EventListTile extends ConsumerWidget {
       key: Key(event.id),
       direction: DismissDirection.endToStart,
       background: _DismissBackground(),
-      confirmDismiss: (_) => _confirmDelete(context, l10n),
+      confirmDismiss: (_) => confirmDeleteEvent(context),
       onDismissed: (_) {
         ref.read(eventsNotifierProvider.notifier).deleteEvent(event.id);
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: ListTile(
+          onTap: () => showEventActionsSheet(context, ref, event),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: Stack(
@@ -93,28 +96,6 @@ class EventListTile extends ConsumerWidget {
     );
   }
 
-  Future<bool?> _confirmDelete(BuildContext context, AppLocalizations l10n) {
-    return showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.deleteConfirmTitle),
-        content: Text(l10n.deleteConfirmBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(ctx).colorScheme.error,
-            ),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.delete),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _StatusChip extends StatelessWidget {
