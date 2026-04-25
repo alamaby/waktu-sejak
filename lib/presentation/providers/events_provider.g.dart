@@ -22,7 +22,7 @@ final sortedEventsProvider = AutoDisposeProvider<List<EventModel>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SortedEventsRef = AutoDisposeProviderRef<List<EventModel>>;
-String _$eventsNotifierHash() => r'5b27bed66e873c504c9e5a8d91b83c7924b7bc77';
+String _$eventsNotifierHash() => r'4a8f3ef97dcc2921d7da5e79feb626557cf8cf7f';
 
 /// See also [EventsNotifier].
 @ProviderFor(EventsNotifier)
@@ -38,7 +38,7 @@ final eventsNotifierProvider =
 );
 
 typedef _$EventsNotifier = AutoDisposeNotifier<List<EventModel>>;
-String _$sortTypeNotifierHash() => r'091f541a7ecc584b4099756c5e842ccd940e2f85';
+String _$sortTypeNotifierHash() => r'e3b9e3aabe3b808605dba8a2b0f370ee1ae220b5';
 
 /// See also [SortTypeNotifier].
 @ProviderFor(SortTypeNotifier)
@@ -54,7 +54,7 @@ final sortTypeNotifierProvider =
 );
 
 typedef _$SortTypeNotifier = AutoDisposeNotifier<SortType>;
-String _$viewTypeNotifierHash() => r'51891977ed95c43958a9195dead88eec195411c7';
+String _$viewTypeNotifierHash() => r'fd9b5ad46a467e9bf9a19550c8e40b664a78e80d';
 
 /// See also [ViewTypeNotifier].
 @ProviderFor(ViewTypeNotifier)

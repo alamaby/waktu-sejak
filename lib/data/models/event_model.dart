@@ -37,6 +37,24 @@ class EventModel {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'targetDate': targetDate.toIso8601String(),
+        'emoji': emoji,
+        'color': color.toARGB32(),
+        'createdAt': createdAt.toIso8601String(),
+      };
+
+  factory EventModel.fromJson(Map<String, dynamic> j) => EventModel(
+        id: j['id'] as String,
+        name: j['name'] as String,
+        targetDate: DateTime.parse(j['targetDate'] as String),
+        emoji: j['emoji'] as String,
+        color: Color(j['color'] as int),
+        createdAt: DateTime.parse(j['createdAt'] as String),
+      );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

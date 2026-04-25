@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/theme_constants.dart';
 import 'core/l10n/generated/app_localizations.dart';
+import 'data/local/preferences_provider.dart';
 import 'presentation/providers/events_provider.dart';
 import 'presentation/providers/settings_provider.dart';
 import 'presentation/screens/dashboard_screen.dart';
 import 'presentation/screens/event_form_screen.dart';
 import 'presentation/screens/settings_screen.dart';
 
-void main() {
-  runApp(const ProviderScope(child: WaktuSejak()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const WaktuSejak(),
+    ),
+  );
 }
 
 class WaktuSejak extends ConsumerWidget {
