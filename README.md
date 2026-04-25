@@ -167,9 +167,9 @@ The algorithm handles month-length variations, leap years, and time-component ca
 - [x] Local persistence (SharedPreferences — events + preferences survive restarts)
 - [x] Event editing and deletion
 - [x] Dark mode (System / Light / Dark toggle, persisted)
+- [x] URL launching for social links
+- [x] Home screen widget (Android)
 - [ ] Push notification reminders
-- [ ] Home screen widget
-- [ ] URL launching for social links
 
 ---
 

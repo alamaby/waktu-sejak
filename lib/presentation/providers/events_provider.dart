@@ -5,6 +5,7 @@ import '../../core/constants/app_colors.dart';
 import '../../data/local/preferences_provider.dart';
 import '../../data/models/event_model.dart';
 import '../../data/repositories/events_repository.dart';
+import '../../data/services/home_widget_service.dart';
 
 part 'events_provider.g.dart';
 
@@ -21,13 +22,18 @@ class EventsNotifier extends _$EventsNotifier {
   @override
   List<EventModel> build() {
     final repo = ref.watch(eventsRepositoryProvider);
+    final prefs = ref.read(sharedPreferencesProvider);
     if (!repo.hasSeeded) {
       final seed = _dummyEvents();
-      repo.save(seed);
-      repo.markSeeded();
+      repo.save(seed).then((_) {
+        repo.markSeeded();
+        HomeWidgetService.sync(prefs: prefs);
+      });
       return seed;
     }
-    return repo.load();
+    final loaded = repo.load();
+    HomeWidgetService.sync(prefs: prefs);
+    return loaded;
   }
 
   void addEvent(EventModel event) {
@@ -48,7 +54,10 @@ class EventsNotifier extends _$EventsNotifier {
   }
 
   void _persist() {
-    ref.read(eventsRepositoryProvider).save(state);
+    final prefs = ref.read(sharedPreferencesProvider);
+    ref.read(eventsRepositoryProvider).save(state).then((_) {
+      HomeWidgetService.sync(prefs: prefs);
+    });
   }
 
   List<EventModel> _dummyEvents() {

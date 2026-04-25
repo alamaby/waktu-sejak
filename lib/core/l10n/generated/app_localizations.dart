@@ -320,6 +320,18 @@ abstract class AppLocalizations {
   /// **'No events yet. Tap Create to add one.'**
   String get noEvents;
 
+  /// No description provided for @widgetEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet'**
+  String get widgetEmpty;
+
+  /// No description provided for @widgetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waktu Sejak'**
+  String get widgetTitle;
+
   /// No description provided for @pastLabel.
   ///
   /// In en, this message translates to:

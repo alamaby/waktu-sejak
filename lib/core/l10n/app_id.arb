@@ -37,6 +37,8 @@
   "links": "Tautan",
   "donate": "Dukung Aplikasi",
   "noEvents": "Belum ada acara. Ketuk Buat untuk menambahkan.",
+  "widgetEmpty": "Belum ada acara",
+  "widgetTitle": "Waktu Sejak",
   "pastLabel": "Lalu",
   "upcomingLabel": "Mendatang",
   "comingSoon": "Segera hadir!",

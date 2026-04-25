@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/local/preferences_provider.dart';
+import '../../data/services/home_widget_service.dart';
 
 part 'settings_provider.g.dart';
 
@@ -18,9 +19,10 @@ class LocaleNotifier extends _$LocaleNotifier {
 
   void setLocale(Locale locale) {
     state = locale;
-    ref
-        .read(sharedPreferencesProvider)
-        .setString(_kLocaleKey, locale.languageCode);
+    final prefs = ref.read(sharedPreferencesProvider);
+    prefs.setString(_kLocaleKey, locale.languageCode).then((_) {
+      HomeWidgetService.sync(prefs: prefs);
+    });
   }
 }
 

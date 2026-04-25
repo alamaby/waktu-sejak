@@ -37,6 +37,8 @@
   "links": "Links",
   "donate": "Support the App",
   "noEvents": "No events yet. Tap Create to add one.",
+  "widgetEmpty": "No events yet",
+  "widgetTitle": "Waktu Sejak",
   "pastLabel": "Past",
   "upcomingLabel": "Upcoming",
   "comingSoon": "Coming soon!",

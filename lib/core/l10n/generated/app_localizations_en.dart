@@ -120,6 +120,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noEvents => 'No events yet. Tap Create to add one.';
 
   @override
+  String get widgetEmpty => 'No events yet';
+
+  @override
+  String get widgetTitle => 'Waktu Sejak';
+
+  @override
   String get pastLabel => 'Past';
 
   @override

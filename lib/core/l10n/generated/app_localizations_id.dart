@@ -120,6 +120,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get noEvents => 'Belum ada acara. Ketuk Buat untuk menambahkan.';
 
   @override
+  String get widgetEmpty => 'Belum ada acara';
+
+  @override
+  String get widgetTitle => 'Waktu Sejak';
+
+  @override
   String get pastLabel => 'Lalu';
 
   @override

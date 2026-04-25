@@ -13,6 +13,7 @@ import 'presentation/screens/settings_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+
   runApp(
     ProviderScope(
       overrides: [

@@ -15,7 +15,10 @@ lib/
 │   ├── utils/              # TimeCalculator — pure business logic
 │   └── l10n/               # ARB files + generated delegates
 ├── data/
-│   └── models/             # EventModel (in-memory only, no persistence)
+│   ├── local/              # SharedPreferences provider
+│   ├── models/             # EventModel
+│   ├── repositories/       # EventsRepository — JSON persistence
+│   └── services/           # HomeWidgetService — Android home screen widget sync
 └── presentation/
     ├── providers/          # Riverpod Notifiers + computed providers
     ├── screens/            # Dashboard, Create, Settings
@@ -38,6 +41,10 @@ lib/
 | `lib/presentation/providers/events_provider.dart` | `EventsNotifier`, `SortTypeNotifier`, `ViewTypeNotifier`, `SelectedTab`, `sortedEvents` |
 | `lib/presentation/providers/settings_provider.dart` | `LocaleNotifier`, `ThemeModeNotifier` |
 | `lib/data/repositories/events_repository.dart` | JSON serialize/deserialize events to SharedPreferences; seed guard |
+| `lib/data/services/home_widget_service.dart` | `HomeWidgetService.sync()` — reads events + locale from prefs, computes time strings, pushes to `home_widget` SharedPreferences, triggers Android widget update |
+| `android/app/src/main/kotlin/.../WaktuSejakWidgetProvider.kt` | `HomeWidgetProvider` subclass — reads widget data, renders `RemoteViews` with 3-event list, handles tap deep-link |
+| `android/app/src/main/res/layout/waktu_sejak_widget.xml` | Widget layout — header + 3 inline rows (emoji, title, subtitle) |
+| `android/app/src/main/res/xml/waktu_sejak_widget_info.xml` | AppWidget metadata — size, preview, description |
 | `lib/presentation/screens/dashboard_screen.dart` | `ConsumerStatefulWidget`, `Timer.periodic(1s)`, `GridView`/`ListView` toggle |
 | `lib/presentation/screens/event_form_screen.dart` | Form with live preview card, `showDatePicker`+`showTimePicker`, random init; doubles as Create & Edit |
 | `lib/presentation/screens/settings_screen.dart` | `SegmentedButton<Locale>` (language), `SegmentedButton<ThemeMode>` (System/Light/Dark), About/Links/Donate |
@@ -156,7 +163,8 @@ _timer = Timer.periodic(const Duration(seconds: 1), (_) {
 |---|---|
 | No `freezed` | Model is simple; manual `copyWith` avoids extra codegen step |
 | No `go_router` | 3 tabs + `IndexedStack` + one int provider is sufficient |
-| No `url_launcher` | Links are placeholder phase; `SnackBar("Coming soon")` used |
+| `url_launcher` | Used for social/support links in Settings screen |
+| `home_widget` | Bridge between Flutter SharedPreferences and Android AppWidget `RemoteViews`; no `workmanager` (widget syncs on app start + event mutation + locale change) |
 | `SharedPreferences` for persistence | Simple key-value store sufficient for events (JSON) + settings (strings); avoids Hive/Isar codegen overhead |
 | `Notifier` not `StateNotifier` | `StateNotifier` is soft-deprecated in Riverpod 2.x |
 
@@ -194,6 +202,5 @@ Final `flutter analyze`: **0 issues**.
 
 ## What's NOT Implemented (Next Phase)
 
-- Real URL launching (`url_launcher`)
 - Push notifications / reminders
-- Home screen widget
+- iOS home screen widget (WidgetKit — skipped in current iteration)
