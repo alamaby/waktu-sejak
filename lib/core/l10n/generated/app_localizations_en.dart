@@ -129,6 +129,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comingSoon => 'Coming soon!';
 
   @override
+  String get couldNotOpenLink => 'Could not open link';
+
+  @override
   String get linkedin => 'LinkedIn';
 
   @override

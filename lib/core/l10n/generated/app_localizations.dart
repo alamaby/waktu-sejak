@@ -338,6 +338,12 @@ abstract class AppLocalizations {
   /// **'Coming soon!'**
   String get comingSoon;
 
+  /// No description provided for @couldNotOpenLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open link'**
+  String get couldNotOpenLink;
+
   /// No description provided for @linkedin.
   ///
   /// In en, this message translates to:

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../core/constants/social_links.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../providers/settings_provider.dart';
 
@@ -132,21 +134,25 @@ class SettingsScreen extends ConsumerWidget {
                 _LinkTile(
                   icon: Icons.work_outline,
                   label: l10n.linkedin,
+                  url: SocialLinks.linkedin,
                   context: context,
                 ),
                 _LinkTile(
                   icon: Icons.code,
                   label: l10n.github,
+                  url: SocialLinks.github,
                   context: context,
                 ),
                 _LinkTile(
                   icon: Icons.article_outlined,
                   label: l10n.blog,
+                  url: SocialLinks.blog,
                   context: context,
                 ),
                 _LinkTile(
                   icon: Icons.business_center_outlined,
                   label: l10n.upwork,
+                  url: SocialLinks.upwork,
                   context: context,
                 ),
               ],
@@ -163,16 +169,19 @@ class SettingsScreen extends ConsumerWidget {
                 _LinkTile(
                   icon: Icons.coffee_outlined,
                   label: l10n.buyMeCoffee,
+                  url: SocialLinks.buyMeCoffee,
                   context: context,
                 ),
                 _LinkTile(
                   icon: Icons.volunteer_activism_outlined,
                   label: l10n.saweria,
+                  url: SocialLinks.saweria,
                   context: context,
                 ),
                 _LinkTile(
                   icon: Icons.star_outline,
                   label: l10n.patreon,
+                  url: SocialLinks.patreon,
                   context: context,
                 ),
               ],
@@ -272,11 +281,13 @@ class _InfoRow extends StatelessWidget {
 class _LinkTile extends StatelessWidget {
   final IconData icon;
   final String label;
+  final String url;
   final BuildContext context;
 
   const _LinkTile({
     required this.icon,
     required this.label,
+    required this.url,
     required this.context,
   });
 
@@ -288,14 +299,20 @@ class _LinkTile extends StatelessWidget {
       leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
       title: Text(label),
       trailing: const Icon(Icons.open_in_new, size: 16),
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.comingSoon),
-            behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 2),
-          ),
-        );
+      onTap: () async {
+        final messenger = ScaffoldMessenger.of(context);
+        final uri = Uri.tryParse(url);
+        final ok = uri != null &&
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
+        if (!ok) {
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(l10n.couldNotOpenLink),
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
       },
     );
   }
