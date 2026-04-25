@@ -4,20 +4,26 @@ import 'app_colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static ThemeData get light {
+  static ThemeData get light => _build(Brightness.light);
+  static ThemeData get dark => _build(Brightness.dark);
+
+  static ThemeData _build(Brightness brightness) {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.primarySeed,
-      brightness: Brightness.light,
+      brightness: brightness,
     );
+    final isDark = brightness == Brightness.dark;
 
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
+      scaffoldBackgroundColor:
+          isDark ? colorScheme.surface : AppColors.scaffoldBackground,
       cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        color: AppColors.cardSurface,
+        color:
+            isDark ? colorScheme.surfaceContainerHigh : AppColors.cardSurface,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,

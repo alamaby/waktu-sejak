@@ -10,6 +10,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final locale = ref.watch(localeNotifierProvider);
+    final themeMode = ref.watch(themeModeNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
@@ -21,6 +22,8 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.language,
             icon: Icons.language,
             child: SegmentedButton<Locale>(
+              expandedInsets: EdgeInsets.zero,
+              showSelectedIcon: false,
               segments: [
                 ButtonSegment(
                   value: const Locale('en'),
@@ -42,6 +45,57 @@ class SettingsScreen extends ConsumerWidget {
               style: ButtonStyle(
                 shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                ),
+                textStyle: WidgetStateProperty.all(
+                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Theme Section
+          _SectionCard(
+            title: l10n.theme,
+            icon: Icons.palette_outlined,
+            child: SegmentedButton<ThemeMode>(
+              expandedInsets: EdgeInsets.zero,
+              showSelectedIcon: false,
+              segments: [
+                ButtonSegment(
+                  value: ThemeMode.system,
+                  label: Text(l10n.themeSystem),
+                  icon: const Icon(Icons.brightness_auto),
+                ),
+                ButtonSegment(
+                  value: ThemeMode.light,
+                  label: Text(l10n.themeLight),
+                  icon: const Icon(Icons.light_mode),
+                ),
+                ButtonSegment(
+                  value: ThemeMode.dark,
+                  label: Text(l10n.themeDark),
+                  icon: const Icon(Icons.dark_mode),
+                ),
+              ],
+              selected: {themeMode},
+              onSelectionChanged: (selected) {
+                ref
+                    .read(themeModeNotifierProvider.notifier)
+                    .setThemeMode(selected.first);
+              },
+              style: ButtonStyle(
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                ),
+                textStyle: WidgetStateProperty.all(
+                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                 ),
               ),
             ),

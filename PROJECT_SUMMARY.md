@@ -36,10 +36,11 @@ lib/
 | `lib/core/l10n/app_id.arb` | Bahasa Indonesia strings |
 | `lib/data/models/event_model.dart` | `EventModel` with `id, name, targetDate, emoji, color, createdAt`, `isPast` getter, `copyWith()` |
 | `lib/presentation/providers/events_provider.dart` | `EventsNotifier`, `SortTypeNotifier`, `ViewTypeNotifier`, `SelectedTab`, `sortedEvents` |
-| `lib/presentation/providers/settings_provider.dart` | `LocaleNotifier` |
+| `lib/presentation/providers/settings_provider.dart` | `LocaleNotifier`, `ThemeModeNotifier` |
+| `lib/data/repositories/events_repository.dart` | JSON serialize/deserialize events to SharedPreferences; seed guard |
 | `lib/presentation/screens/dashboard_screen.dart` | `ConsumerStatefulWidget`, `Timer.periodic(1s)`, `GridView`/`ListView` toggle |
-| `lib/presentation/screens/create_screen.dart` | Form with live preview card, `showDatePicker`+`showTimePicker`, random init |
-| `lib/presentation/screens/settings_screen.dart` | `SegmentedButton<Locale>`, About/Links/Donate sections |
+| `lib/presentation/screens/event_form_screen.dart` | Form with live preview card, `showDatePicker`+`showTimePicker`, random init; doubles as Create & Edit |
+| `lib/presentation/screens/settings_screen.dart` | `SegmentedButton<Locale>` (language), `SegmentedButton<ThemeMode>` (System/Light/Dark), About/Links/Donate |
 | `lib/presentation/widgets/event_card.dart` | Color card with luminance-based text, long-press delete dialog |
 | `lib/presentation/widgets/event_list_tile.dart` | `Dismissible` swipe-to-delete, status chip |
 | `lib/presentation/widgets/color_picker_widget.dart` | 7 Okabe-Ito swatches, checkmark on selected |
@@ -60,7 +61,8 @@ All state is managed with **Riverpod 2.x** (`@riverpod` annotations, code-genera
 | `viewTypeNotifierProvider` | `AutoDisposeNotifierProvider<ViewTypeNotifier, ViewType>` | Enum: `card / list` |
 | `selectedTabProvider` | `AutoDisposeNotifierProvider<SelectedTab, int>` | Bottom nav index 0–2 |
 | `sortedEventsProvider` | `AutoDisposeProvider<List<EventModel>>` | Computed: sorted events |
-| `localeNotifierProvider` | `AutoDisposeNotifierProvider<LocaleNotifier, Locale>` | Active locale (`en` / `id`) |
+| `localeNotifierProvider` | `AutoDisposeNotifierProvider<LocaleNotifier, Locale>` | Active locale (`en` / `id`); persisted |
+| `themeModeNotifierProvider` | `AutoDisposeNotifierProvider<ThemeModeNotifier, ThemeMode>` | Active theme (`system` / `light` / `dark`); persisted |
 
 ### Tab Navigation Pattern
 
@@ -155,7 +157,7 @@ _timer = Timer.periodic(const Duration(seconds: 1), (_) {
 | No `freezed` | Model is simple; manual `copyWith` avoids extra codegen step |
 | No `go_router` | 3 tabs + `IndexedStack` + one int provider is sufficient |
 | No `url_launcher` | Links are placeholder phase; `SnackBar("Coming soon")` used |
-| No `hive`/`isar` | In-memory only per project spec for mockup phase |
+| `SharedPreferences` for persistence | Simple key-value store sufficient for events (JSON) + settings (strings); avoids Hive/Isar codegen overhead |
 | `Notifier` not `StateNotifier` | `StateNotifier` is soft-deprecated in Riverpod 2.x |
 
 ---
@@ -192,9 +194,6 @@ Final `flutter analyze`: **0 issues**.
 
 ## What's NOT Implemented (Next Phase)
 
-- Local persistence (Isar or Hive)
 - Real URL launching (`url_launcher`)
-- Dark mode
 - Push notifications / reminders
-- Widget (home screen widget)
-- Event editing (currently add/delete only)
+- Home screen widget

@@ -29,6 +29,7 @@ class WaktuSejak extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeNotifierProvider);
+    final themeMode = ref.watch(themeModeNotifierProvider);
     return MaterialApp(
       title: 'Waktu Sejak',
       debugShowCheckedModeBanner: false,
@@ -36,6 +37,8 @@ class WaktuSejak extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
       home: const MainScaffold(),
     );
   }

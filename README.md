@@ -31,6 +31,7 @@
 
 ### ⚙️ Settings
 - **Language Toggle** — switch between 🇬🇧 English and 🇮🇩 Bahasa Indonesia; all text and time strings update instantly
+- **Theme Toggle** — switch between System / Light / Dark mode; preference persists across sessions
 - **About Panel** — author info and app version
 - **Links** — LinkedIn, GitHub, Blog, Upwork
 - **Support** — Buy Me a Coffee, Saweria, Patreon
@@ -160,13 +161,13 @@ The algorithm handles month-length variations, leap years, and time-component ca
 
 ## 🗺 Roadmap
 
-- [x] In-memory event tracking with real-time display
+- [x] Real-time event tracking (live countdown, past/upcoming badges)
 - [x] EN / ID localization
-- [x] Color-blind safe UI
-- [ ] Local persistence (Isar / Hive)
-- [ ] Event editing
+- [x] Color-blind safe UI (Okabe-Ito palette)
+- [x] Local persistence (SharedPreferences — events + preferences survive restarts)
+- [x] Event editing and deletion
+- [x] Dark mode (System / Light / Dark toggle, persisted)
 - [ ] Push notification reminders
-- [ ] Dark mode
 - [ ] Home screen widget
 - [ ] URL launching for social links
 
