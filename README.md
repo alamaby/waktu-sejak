@@ -151,11 +151,13 @@ The algorithm handles month-length variations, leap years, and time-component ca
 
 ## 📸 Screens
 
-| Dashboard (Card) | Dashboard (List) | Create | Settings |
-|:---:|:---:|:---:|:---:|
-| *(Card grid with 2 columns, live timer)* | *(Compact list with swipe-to-delete)* | *(Form with live preview card)* | *(Language toggle + links)* |
+| Dashboard (Light) | Dashboard (Dark) | List View |
+|:---:|:---:|:---:|
+| ![Dashboard grid light](.github/screenshots/screenshot_dashboard_grid_light.png) | ![Dashboard grid dark](.github/screenshots/screenshot_dashboard_grid_dark.png) | ![Dashboard list](.github/screenshots/screenshot_dashboard_list_light.png) |
 
-> Screenshots will be added once running on device.
+| Add Event | Bahasa Indonesia | Settings (Dark) |
+|:---:|:---:|:---:|
+| ![Add event](.github/screenshots/screenshot_add_event_filled.png) | ![Dashboard ID](.github/screenshots/screenshot_dashboard_id.png) | ![Settings dark](.github/screenshots/screenshot_settings_dark.png) |
 
 ---
 
