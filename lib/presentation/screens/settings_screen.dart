@@ -111,6 +111,17 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Image.asset(
+                      'assets/images/app_logo.png',
+                      width: 80,
+                      height: 80,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 _InfoRow(
                   label: l10n.authorLabel,
                   value: l10n.authorName,

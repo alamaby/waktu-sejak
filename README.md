@@ -177,9 +177,9 @@ The algorithm handles month-length variations, leap years, and time-component ca
 
 **Alam Aby Bashit**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin)](https://linkedin.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin)](https://www.linkedin.com/in/alamaby/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?logo=github)](https://github.com/alamaby)
-[![Upwork](https://img.shields.io/badge/Upwork-Hire_Me-6FDA44?logo=upwork)](https://upwork.com)
+[![Upwork](https://img.shields.io/badge/Upwork-Hire_Me-6FDA44?logo=upwork)](https://www.upwork.com/freelancers/~01c341d5c6f089ea32)
 
 ---
 
