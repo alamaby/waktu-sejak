@@ -19,6 +19,7 @@ lib/
 │   ├── models/             # EventModel
 │   ├── repositories/       # EventsRepository — JSON persistence
 │   └── services/           # HomeWidgetService — Android home screen widget sync
+│                           # DataPortabilityService — JSON export / import
 └── presentation/
     ├── providers/          # Riverpod Notifiers + computed providers
     ├── screens/            # Dashboard, Create, Settings
@@ -42,12 +43,13 @@ lib/
 | `lib/presentation/providers/settings_provider.dart` | `LocaleNotifier`, `ThemeModeNotifier` |
 | `lib/data/repositories/events_repository.dart` | JSON serialize/deserialize events to SharedPreferences; seed guard |
 | `lib/data/services/home_widget_service.dart` | `HomeWidgetService.sync()` — reads events + locale from prefs, computes time strings, pushes to `home_widget` SharedPreferences, triggers Android widget update |
+| `lib/data/services/data_portability_service.dart` | `DataPortabilityService.exportEvents()` writes JSON to temp dir + invokes `share_plus`; `importEvents()` picks `.json` via `file_picker`, validates schema (`app`, `version`, per-event field types), returns `List<EventModel>`. Typed exceptions: `ImportCancelled`, `ImportInvalidFormat`, `ImportIoError`, `ExportIoError` |
 | `android/app/src/main/kotlin/.../WaktuSejakWidgetProvider.kt` | `HomeWidgetProvider` subclass — reads widget data, renders `RemoteViews` with 3-event list, handles tap deep-link |
 | `android/app/src/main/res/layout/waktu_sejak_widget.xml` | Widget layout — header + 3 inline rows (emoji, title, subtitle) |
 | `android/app/src/main/res/xml/waktu_sejak_widget_info.xml` | AppWidget metadata — size, preview, description |
 | `lib/presentation/screens/dashboard_screen.dart` | `ConsumerStatefulWidget`, `Timer.periodic(1s)`, `GridView`/`ListView` toggle |
 | `lib/presentation/screens/event_form_screen.dart` | Form with live preview card, `showDatePicker`+`showTimePicker`, random init; doubles as Create & Edit |
-| `lib/presentation/screens/settings_screen.dart` | `SegmentedButton<Locale>` (language), `SegmentedButton<ThemeMode>` (System/Light/Dark), About/Links/Donate |
+| `lib/presentation/screens/settings_screen.dart` | `SegmentedButton<Locale>` (language), `SegmentedButton<ThemeMode>` (System/Light/Dark), About, Data (Export/Import via `DataPortabilityService`), Links, Donate |
 | `lib/presentation/widgets/event_card.dart` | Color card with luminance-based text, long-press delete dialog |
 | `lib/presentation/widgets/event_list_tile.dart` | `Dismissible` swipe-to-delete, status chip |
 | `lib/presentation/widgets/color_picker_widget.dart` | 7 Okabe-Ito swatches, checkmark on selected |
@@ -165,6 +167,8 @@ _timer = Timer.periodic(const Duration(seconds: 1), (_) {
 | No `go_router` | 3 tabs + `IndexedStack` + one int provider is sufficient |
 | `url_launcher` | Used for social/support links in Settings screen |
 | `home_widget` | Bridge between Flutter SharedPreferences and Android AppWidget `RemoteViews`; no `workmanager` (widget syncs on app start + event mutation + locale change) |
+| `share_plus` + `path_provider` | Export flow writes JSON to temp dir via `path_provider` then hands off to OS share sheet via `share_plus` — avoids needing storage permissions |
+| `file_picker` | Import flow uses the system file picker (`FileType.custom`, `allowedExtensions: ['json']`, `withData: true`) — works on Android and web without extra permissions |
 | `SharedPreferences` for persistence | Simple key-value store sufficient for events (JSON) + settings (strings); avoids Hive/Isar codegen overhead |
 | `Notifier` not `StateNotifier` | `StateNotifier` is soft-deprecated in Riverpod 2.x |
 
@@ -200,7 +204,28 @@ Final `flutter analyze`: **0 issues**.
 
 ---
 
+## Data Portability
+
+Located in `lib/data/services/data_portability_service.dart` + `EventsNotifier.importAppend()` in `lib/presentation/providers/events_provider.dart`.
+
+### Export
+- Builds payload `{ app: 'waktu_sejak', version: 1, exportedAt: <ISO8601>, events: [...] }`
+- Filename: `waktu_sejak_backup_yyyyMMddHHmmss.json`
+- Writes to `getTemporaryDirectory()` then invokes `Share.shareXFiles` with `mimeType: 'application/json'`
+- No storage permission needed (temp dir + share sheet)
+
+### Import
+- `FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['json'], withData: true)`
+- Validates: top-level is `Map`; `app == 'waktu_sejak'` (if present); `version <= 1`; `events` is `List`; each entry has required keys with correct types and parseable dates
+- Cancellation, invalid format, and I/O errors raise distinct typed exceptions so the UI can render the right SnackBar
+
+### Merge strategy
+- `EventsNotifier.importAppend(List<EventModel>)` — append-only, dedupe by `id`, single `_persist()` call, returns count actually added so the UI can report `added` and `skipped` counts via pluralized ARB keys (`importSuccessAdded`, `importSuccessSkipped`)
+
+---
+
 ## What's NOT Implemented (Next Phase)
 
 - Push notifications / reminders
 - iOS home screen widget (WidgetKit — skipped in current iteration)
+- Replace-all import strategy (only append-merge supported)

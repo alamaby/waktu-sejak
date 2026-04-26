@@ -33,6 +33,7 @@
 - **Language Toggle** — switch between 🇬🇧 English and 🇮🇩 Bahasa Indonesia; all text and time strings update instantly
 - **Theme Toggle** — switch between System / Light / Dark mode; preference persists across sessions
 - **About Panel** — author info and app version
+- **Data Portability** — export all events to a JSON backup file (shareable via the system share sheet) and import from a backup with append-merge (duplicate IDs are skipped)
 - **Links** — LinkedIn, GitHub, Blog, Upwork
 - **Support** — Buy Me a Coffee, Saweria, Patreon
 
@@ -89,7 +90,9 @@ lib/
 │       ├── app_id.arb                 # Indonesian strings
 │       └── generated/                 # Auto-generated delegates
 ├── data/
-│   └── models/event_model.dart        # EventModel data class
+│   ├── models/event_model.dart        # EventModel data class
+│   ├── repositories/                  # SharedPreferences-backed events repo
+│   └── services/                      # HomeWidget sync, Data export/import
 └── presentation/
     ├── providers/                     # Riverpod state providers
     ├── screens/                       # Dashboard · Create · Settings
@@ -171,6 +174,7 @@ The algorithm handles month-length variations, leap years, and time-component ca
 - [x] Dark mode (System / Light / Dark toggle, persisted)
 - [x] URL launching for social links
 - [x] Home screen widget (Android)
+- [x] Data export / import (JSON backup, append-merge with duplicate skip)
 - [ ] Push notification reminders
 
 ---
