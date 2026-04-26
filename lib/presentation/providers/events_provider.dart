@@ -53,6 +53,15 @@ class EventsNotifier extends _$EventsNotifier {
     _persist();
   }
 
+  int importAppend(List<EventModel> incoming) {
+    final existingIds = state.map((e) => e.id).toSet();
+    final toAdd = incoming.where((e) => !existingIds.contains(e.id)).toList();
+    if (toAdd.isEmpty) return 0;
+    state = [...state, ...toAdd];
+    _persist();
+    return toAdd.length;
+  }
+
   void _persist() {
     final prefs = ref.read(sharedPreferencesProvider);
     ref.read(eventsRepositoryProvider).save(state).then((_) {

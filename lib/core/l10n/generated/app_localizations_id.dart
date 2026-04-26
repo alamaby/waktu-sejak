@@ -240,4 +240,51 @@ class AppLocalizationsId extends AppLocalizations {
   String timeUntilHMS(int hours, int minutes, int seconds) {
     return 'dalam $hours jam $minutes menit $seconds detik';
   }
+
+  @override
+  String get data => 'Data';
+
+  @override
+  String get exportData => 'Ekspor Data';
+
+  @override
+  String get exportDataSubtitle => 'Simpan semua acara ke berkas cadangan';
+
+  @override
+  String get importData => 'Impor Data';
+
+  @override
+  String get importDataSubtitle => 'Pulihkan acara dari berkas cadangan';
+
+  @override
+  String get exportSuccess => 'Berkas cadangan siap dibagikan';
+
+  @override
+  String get exportEmpty => 'Tidak ada acara untuk diekspor';
+
+  @override
+  String get exportFailed => 'Gagal mengekspor data';
+
+  @override
+  String get importInvalidFormat =>
+      'Berkas yang dipilih bukan cadangan Waktu Sejak yang valid';
+
+  @override
+  String get importFailed => 'Gagal mengimpor data';
+
+  @override
+  String importSuccessAdded(int added) {
+    String _temp0 = intl.Intl.pluralLogic(
+      added,
+      locale: localeName,
+      other: '$added acara diimpor',
+      zero: 'Tidak ada acara baru yang diimpor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importSuccessSkipped(int skipped) {
+    return ' ($skipped duplikat dilewati)';
+  }
 }

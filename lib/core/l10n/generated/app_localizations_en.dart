@@ -360,4 +360,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String timeUntilHMS(int hours, int minutes, int seconds) {
     return 'in ${hours}h ${minutes}m ${seconds}s';
   }
+
+  @override
+  String get data => 'Data';
+
+  @override
+  String get exportData => 'Export Data';
+
+  @override
+  String get exportDataSubtitle => 'Save all events to a backup file';
+
+  @override
+  String get importData => 'Import Data';
+
+  @override
+  String get importDataSubtitle => 'Restore events from a backup file';
+
+  @override
+  String get exportSuccess => 'Backup file ready to share';
+
+  @override
+  String get exportEmpty => 'No events to export';
+
+  @override
+  String get exportFailed => 'Failed to export data';
+
+  @override
+  String get importInvalidFormat =>
+      'The selected file is not a valid Waktu Sejak backup';
+
+  @override
+  String get importFailed => 'Failed to import data';
+
+  @override
+  String importSuccessAdded(int added) {
+    String _temp0 = intl.Intl.pluralLogic(
+      added,
+      locale: localeName,
+      other: '$added events imported',
+      one: '1 event imported',
+      zero: 'No new events imported',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String importSuccessSkipped(int skipped) {
+    String _temp0 = intl.Intl.pluralLogic(
+      skipped,
+      locale: localeName,
+      other: '$skipped duplicates skipped',
+      one: '1 duplicate skipped',
+    );
+    return ' ($_temp0)';
+  }
 }

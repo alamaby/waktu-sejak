@@ -164,5 +164,27 @@
       "minutes": { "type": "int" },
       "seconds": { "type": "int" }
     }
+  },
+  "data": "Data",
+  "exportData": "Export Data",
+  "exportDataSubtitle": "Save all events to a backup file",
+  "importData": "Import Data",
+  "importDataSubtitle": "Restore events from a backup file",
+  "exportSuccess": "Backup file ready to share",
+  "exportEmpty": "No events to export",
+  "exportFailed": "Failed to export data",
+  "importInvalidFormat": "The selected file is not a valid Waktu Sejak backup",
+  "importFailed": "Failed to import data",
+  "importSuccessAdded": "{added, plural, =0{No new events imported} =1{1 event imported} other{{added} events imported}}",
+  "@importSuccessAdded": {
+    "placeholders": {
+      "added": { "type": "int" }
+    }
+  },
+  "importSuccessSkipped": " ({skipped, plural, =1{1 duplicate skipped} other{{skipped} duplicates skipped}})",
+  "@importSuccessSkipped": {
+    "placeholders": {
+      "skipped": { "type": "int" }
+    }
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/social_links.dart';
 import '../../core/l10n/generated/app_localizations.dart';
+import '../../data/services/data_portability_service.dart';
+import '../providers/events_provider.dart';
 import '../providers/settings_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -136,6 +138,39 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
 
+          // Data Section
+          _SectionCard(
+            title: l10n.data,
+            icon: Icons.folder_outlined,
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    Icons.upload_file_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  title: Text(l10n.exportData),
+                  subtitle: Text(l10n.exportDataSubtitle),
+                  trailing: const Icon(Icons.chevron_right, size: 20),
+                  onTap: () => _handleExport(context, ref),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    Icons.download_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  title: Text(l10n.importData),
+                  subtitle: Text(l10n.importDataSubtitle),
+                  trailing: const Icon(Icons.chevron_right, size: 20),
+                  onTap: () => _handleImport(context, ref),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
           // Links Section
           _SectionCard(
             title: l10n.links,
@@ -212,6 +247,49 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _handleExport(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final events = ref.read(eventsNotifierProvider);
+    if (events.isEmpty) {
+      messenger.showSnackBar(_buildSnack(l10n.exportEmpty));
+      return;
+    }
+    try {
+      await DataPortabilityService.exportEvents(events);
+      messenger.showSnackBar(_buildSnack(l10n.exportSuccess));
+    } catch (_) {
+      messenger.showSnackBar(_buildSnack(l10n.exportFailed));
+    }
+  }
+
+  Future<void> _handleImport(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final incoming = await DataPortabilityService.importEvents();
+      final added = ref
+          .read(eventsNotifierProvider.notifier)
+          .importAppend(incoming);
+      final skipped = incoming.length - added;
+      final msg = l10n.importSuccessAdded(added) +
+          (skipped > 0 ? l10n.importSuccessSkipped(skipped) : '');
+      messenger.showSnackBar(_buildSnack(msg));
+    } on ImportCancelled {
+      // user cancelled — no feedback needed
+    } on ImportInvalidFormat {
+      messenger.showSnackBar(_buildSnack(l10n.importInvalidFormat));
+    } catch (_) {
+      messenger.showSnackBar(_buildSnack(l10n.importFailed));
+    }
+  }
+
+  SnackBar _buildSnack(String text) => SnackBar(
+        content: Text(text),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      );
 }
 
 class _SectionCard extends StatelessWidget {

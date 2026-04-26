@@ -164,5 +164,27 @@
       "minutes": { "type": "int" },
       "seconds": { "type": "int" }
     }
+  },
+  "data": "Data",
+  "exportData": "Ekspor Data",
+  "exportDataSubtitle": "Simpan semua acara ke berkas cadangan",
+  "importData": "Impor Data",
+  "importDataSubtitle": "Pulihkan acara dari berkas cadangan",
+  "exportSuccess": "Berkas cadangan siap dibagikan",
+  "exportEmpty": "Tidak ada acara untuk diekspor",
+  "exportFailed": "Gagal mengekspor data",
+  "importInvalidFormat": "Berkas yang dipilih bukan cadangan Waktu Sejak yang valid",
+  "importFailed": "Gagal mengimpor data",
+  "importSuccessAdded": "{added, plural, =0{Tidak ada acara baru yang diimpor} other{{added} acara diimpor}}",
+  "@importSuccessAdded": {
+    "placeholders": {
+      "added": { "type": "int" }
+    }
+  },
+  "importSuccessSkipped": " ({skipped} duplikat dilewati)",
+  "@importSuccessSkipped": {
+    "placeholders": {
+      "skipped": { "type": "int" }
+    }
   }
 }

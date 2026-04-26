@@ -499,6 +499,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'in {hours}h {minutes}m {seconds}s'**
   String timeUntilHMS(int hours, int minutes, int seconds);
+
+  /// No description provided for @data.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get data;
+
+  /// No description provided for @exportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Data'**
+  String get exportData;
+
+  /// No description provided for @exportDataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all events to a backup file'**
+  String get exportDataSubtitle;
+
+  /// No description provided for @importData.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Data'**
+  String get importData;
+
+  /// No description provided for @importDataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore events from a backup file'**
+  String get importDataSubtitle;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup file ready to share'**
+  String get exportSuccess;
+
+  /// No description provided for @exportEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No events to export'**
+  String get exportEmpty;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export data'**
+  String get exportFailed;
+
+  /// No description provided for @importInvalidFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected file is not a valid Waktu Sejak backup'**
+  String get importInvalidFormat;
+
+  /// No description provided for @importFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to import data'**
+  String get importFailed;
+
+  /// No description provided for @importSuccessAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{added, plural, =0{No new events imported} =1{1 event imported} other{{added} events imported}}'**
+  String importSuccessAdded(int added);
+
+  /// No description provided for @importSuccessSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **' ({skipped, plural, =1{1 duplicate skipped} other{{skipped} duplicates skipped}})'**
+  String importSuccessSkipped(int skipped);
 }
 
 class _AppLocalizationsDelegate
