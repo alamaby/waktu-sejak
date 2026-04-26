@@ -5,6 +5,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystorePath: String? = System.getenv("KEYSTORE_PATH")
+val keystoreAlias: String? = System.getenv("KEY_ALIAS")
+val keystoreKeyPassword: String? = System.getenv("KEY_PASSWORD")
+val keystoreStorePassword: String? = System.getenv("STORE_PASSWORD")
+val hasReleaseSigning = !keystorePath.isNullOrBlank() && file(keystorePath!!).exists()
+
 android {
     namespace = "com.alamaby.waktu_sejak"
     compileSdk = flutter.compileSdkVersion
@@ -20,21 +26,32 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.alamaby.waktu_sejak"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(keystorePath!!)
+                storePassword = keystoreStorePassword
+                keyAlias = keystoreAlias
+                keyPassword = keystoreKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (hasReleaseSigning) {
+                signingConfigs.getByName("release")
+            } else {
+                // Fallback to debug keys so `flutter run --release` works locally.
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
