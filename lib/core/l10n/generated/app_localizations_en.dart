@@ -159,6 +159,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get patreon => 'Patreon';
 
   @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
   String get justNow => 'Just now';
 
   @override

@@ -50,6 +50,7 @@
   "buyMeCoffee": "Buy Me a Coffee",
   "saweria": "Saweria",
   "patreon": "Patreon",
+  "privacyPolicy": "Privacy Policy",
   "justNow": "Just now",
   "timeAgoY": "{years, plural, =1{1 year ago} other{{years} years ago}}",
   "@timeAgoY": {

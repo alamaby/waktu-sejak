@@ -159,6 +159,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get patreon => 'Patreon';
 
   @override
+  String get privacyPolicy => 'Kebijakan Privasi';
+
+  @override
   String get justNow => 'Baru saja';
 
   @override

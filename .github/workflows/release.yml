@@ -1,4 +1,4 @@
-name: Release Android APK
+name: Release Android APK + AAB
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    name: Build split-per-ABI APKs
+    name: Build split-per-ABI APKs and AAB
     runs-on: ubuntu-latest
 
     steps:
@@ -63,17 +63,30 @@ jobs:
             --build-name="${{ steps.version.outputs.build_name }}" \
             --build-number="${{ steps.version.outputs.build_number }}"
 
-      - name: Rename APKs
+      - name: Build release AAB (for Play Store)
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        run: |
+          flutter build appbundle \
+            --release \
+            --build-name="${{ steps.version.outputs.build_name }}" \
+            --build-number="${{ steps.version.outputs.build_number }}"
+
+      - name: Rename artifacts
         id: rename
         run: |
-          OUT_DIR="build/app/outputs/flutter-apk"
+          APK_DIR="build/app/outputs/flutter-apk"
+          AAB_DIR="build/app/outputs/bundle/release"
           TAG="${{ steps.version.outputs.tag }}"
           mkdir -p dist
           for abi in armeabi-v7a arm64-v8a x86_64; do
-            src="${OUT_DIR}/app-${abi}-release.apk"
+            src="${APK_DIR}/app-${abi}-release.apk"
             dst="dist/waktu-sejak-${TAG}-${abi}.apk"
             mv "$src" "$dst"
           done
+          mv "${AAB_DIR}/app-release.aab" "dist/waktu-sejak-${TAG}.aab"
           ls -la dist
 
       - name: Create GitHub Release
@@ -84,3 +97,4 @@ jobs:
             dist/waktu-sejak-${{ steps.version.outputs.tag }}-armeabi-v7a.apk
             dist/waktu-sejak-${{ steps.version.outputs.tag }}-arm64-v8a.apk
             dist/waktu-sejak-${{ steps.version.outputs.tag }}-x86_64.apk
+            dist/waktu-sejak-${{ steps.version.outputs.tag }}.aab

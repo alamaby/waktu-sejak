@@ -9,4 +9,6 @@ class SocialLinks {
   static const buyMeCoffee = 'https://buymeacoffee.com/alamaby';
   static const saweria = 'https://saweria.co/alamaby';
   static const patreon = 'https://www.patreon.com/alamaby';
+
+  static const privacyPolicy = 'https://waktu-sejak.vercel.app/privacy-policy';
 }

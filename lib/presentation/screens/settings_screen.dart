@@ -133,6 +133,13 @@ class SettingsScreen extends ConsumerWidget {
                   label: 'App Version',
                   value: '1.0.0',
                 ),
+                const SizedBox(height: 4),
+                _LinkTile(
+                  icon: Icons.privacy_tip_outlined,
+                  label: l10n.privacyPolicy,
+                  url: SocialLinks.privacyPolicy,
+                  context: context,
+                ),
               ],
             ),
           ),
