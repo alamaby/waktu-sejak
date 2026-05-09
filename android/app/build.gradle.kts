@@ -13,7 +13,7 @@ val hasReleaseSigning = !keystorePath.isNullOrBlank() && file(keystorePath!!).ex
 
 android {
     namespace = "com.alamaby.waktu_sejak"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId = "com.alamaby.waktu_sejak"
         minSdk = flutter.minSdkVersion
-        targetSdk = 35
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
