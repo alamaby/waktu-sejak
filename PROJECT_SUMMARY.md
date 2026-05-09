@@ -169,6 +169,7 @@ _timer = Timer.periodic(const Duration(seconds: 1), (_) {
 | `home_widget` | Bridge between Flutter SharedPreferences and Android AppWidget `RemoteViews`; no `workmanager` (widget syncs on app start + event mutation + locale change) |
 | `share_plus` + `path_provider` | Export flow writes JSON to temp dir via `path_provider` then hands off to OS share sheet via `share_plus` — avoids needing storage permissions |
 | `file_picker` | Import flow uses the system file picker (`FileType.custom`, `allowedExtensions: ['json']`, `withData: true`) — works on Android and web without extra permissions |
+| `package_info_plus` | Reads `versionName` / `versionCode` from the installed APK at runtime so Settings → About always reflects the actual build (set by `--build-name` / `--build-number`), not a hardcoded literal |
 | `SharedPreferences` for persistence | Simple key-value store sufficient for events (JSON) + settings (strings); avoids Hive/Isar codegen overhead |
 | `Notifier` not `StateNotifier` | `StateNotifier` is soft-deprecated in Riverpod 2.x |
 
@@ -221,6 +222,75 @@ Located in `lib/data/services/data_portability_service.dart` + `EventsNotifier.i
 
 ### Merge strategy
 - `EventsNotifier.importAppend(List<EventModel>)` — append-only, dedupe by `id`, single `_persist()` call, returns count actually added so the UI can report `added` and `skipped` counts via pluralized ARB keys (`importSuccessAdded`, `importSuccessSkipped`)
+
+---
+
+## Release Process
+
+The Android APK + AAB are built by GitHub Actions on every Git tag matching `v*.*.*`.
+Workflow file: `.github/workflows/release.yml`.
+
+### Version source of truth
+
+| Layer | Where it comes from |
+|---|---|
+| `versionName` (Android) / `PackageInfo.version` | `--build-name=<tag without v>` (e.g. tag `v1.0.3` → `1.0.3`) |
+| `versionCode` (Android) / `PackageInfo.buildNumber` | `--build-number=$GITHUB_RUN_NUMBER` — strictly increasing across all CI runs |
+| `pubspec.yaml` `version:` | Rewritten in the runner by `sed` before `flutter pub get`, so any code path that reads pubspec stays consistent within the build. The change is **not committed**. |
+| Settings → About | `PackageInfo.fromPlatform()` in `lib/presentation/screens/settings_screen.dart` — displays `${version}+${buildNumber}`. No literal in the source. |
+
+The `pubspec.yaml` checked into `main` only matters for **local dev runs** (`flutter run`). For releases, the tag wins.
+
+### Cutting a release
+
+1. Make sure `main` (or release branch) is green.
+2. Pick a SemVer version, e.g. `1.0.3`.
+3. (Optional but recommended) Bump `version:` in `pubspec.yaml` so local dev builds also show the new number, and commit.
+4. Tag and push:
+   ```bash
+   git tag v1.0.3
+   git push origin v1.0.3
+   ```
+5. Watch Actions → "Release Android APK + AAB". Workflow will:
+   - Resolve `build_name=1.0.3`, `build_number=$GITHUB_RUN_NUMBER`
+   - `sed` `pubspec.yaml` to `version: 1.0.3+<run#>`
+   - Run `flutter pub get` + `dart run build_runner build`
+   - Build split-per-ABI APKs (`armeabi-v7a`, `arm64-v8a`, `x86_64`) and an AAB, signed with the upload keystore
+   - Rename to `waktu-sejak-v1.0.3-<abi>.apk` / `waktu-sejak-v1.0.3.aab`
+   - Create a GitHub Release with auto-generated notes and attach all four artifacts
+
+### Required repository secrets
+
+| Secret | Purpose |
+|---|---|
+| `KEYSTORE_BASE64` | Upload keystore (`.jks`) base64-encoded; decoded into `$RUNNER_TEMP/upload-keystore.jks` |
+| `KEY_ALIAS` | Key alias inside the keystore |
+| `KEY_PASSWORD` | Key password |
+| `STORE_PASSWORD` | Keystore password |
+
+`android/app/build.gradle` reads these via env vars at build time. Do **not** commit `key.properties` or the keystore.
+
+### Tag conventions
+
+- `v1.0.3` — production release.
+- `v1.0.3-rc.1`, `v1.0.3-beta.1` — pre-release. `versionName` accepts the suffix; `versionCode` stays numeric (`GITHUB_RUN_NUMBER`), so install/upgrade ordering on Android stays correct.
+- Re-tagging the same name is **not** supported by the Play Store (`versionCode` must always increase) — always cut a fresh tag.
+
+### Verifying after release
+
+1. Download the matching `arm64-v8a` APK from the GitHub Release.
+2. `adb install -r waktu-sejak-v1.0.3-arm64-v8a.apk`.
+3. Open the app → Settings → About — should show `1.0.3+<run#>` matching the workflow run number.
+4. `adb shell dumpsys package com.example.waktu_sejak | grep version` — `versionName` and `versionCode` should match.
+
+### Local release build (for smoke testing without tagging)
+
+```bash
+flutter build apk --release \
+  --build-name=1.0.3 \
+  --build-number=999
+```
+Install and check that Settings → About shows `1.0.3+999`. This is the same code path CI uses, just without the tag/keystore plumbing.
 
 ---
 

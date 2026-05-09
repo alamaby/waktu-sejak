@@ -144,114 +144,127 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
       appBar: AppBar(title: Text(_isEditing ? l10n.editEvent : l10n.create)),
       body: Form(
         key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            // Preview card
-            _PreviewCard(
-              emoji: _selectedEmoji,
-              color: _selectedColor,
-              textColor: textColor,
-              name: _nameController.text.isEmpty
-                  ? l10n.eventNameHint
-                  : _nameController.text,
-              dateTime: _selectedDateTime,
-            ),
-            const SizedBox(height: 24),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Preview card
+                      _PreviewCard(
+                        emoji: _selectedEmoji,
+                        color: _selectedColor,
+                        textColor: textColor,
+                        name: _nameController.text.isEmpty
+                            ? l10n.eventNameHint
+                            : _nameController.text,
+                        dateTime: _selectedDateTime,
+                      ),
+                      const SizedBox(height: 16),
 
-            // Event name
-            Text(
-              l10n.eventName,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(hintText: l10n.eventNameHint),
-              onChanged: (_) => setState(() {}),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return l10n.eventNameRequired;
-                }
-                return null;
-              },
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 20),
+                      // Event name
+                      Text(
+                        l10n.eventName,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(hintText: l10n.eventNameHint),
+                        onChanged: (_) => setState(() {}),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return l10n.eventNameRequired;
+                          }
+                          return null;
+                        },
+                        textCapitalization: TextCapitalization.sentences,
+                      ),
+                      const SizedBox(height: 14),
 
-            // Date & time picker
-            Text(
-              l10n.dateAndTime,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            _DateTimeButton(
-              dateTime: _selectedDateTime,
-              onTap: _pickDateTime,
-            ),
-            const SizedBox(height: 20),
+                      // Date & time picker
+                      Text(
+                        l10n.dateAndTime,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      _DateTimeButton(
+                        dateTime: _selectedDateTime,
+                        onTap: _pickDateTime,
+                      ),
+                      const SizedBox(height: 14),
 
-            // Emoji picker
-            Text(
-              l10n.emojiLabel,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: _pickEmoji,
-              child: Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest
-                      .withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    _selectedEmoji,
-                    style: const TextStyle(fontSize: 32),
+                      // Emoji picker
+                      Text(
+                        l10n.emojiLabel,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: _pickEmoji,
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withValues(alpha: 0.5),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _selectedEmoji,
+                              style: const TextStyle(fontSize: 32),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+
+                      // Color picker
+                      Text(
+                        l10n.colorLabel,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 12),
+                      ColorPickerWidget(
+                        selectedColor: _selectedColor,
+                        onColorSelected: (color) => setState(() => _selectedColor = color),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
 
-            // Color picker
-            Text(
-              l10n.colorLabel,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
+              // Sticky Save / Update button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: _save,
+                    icon: const Icon(Icons.check),
+                    label: Text(_isEditing ? l10n.update : l10n.save),
                   ),
-            ),
-            const SizedBox(height: 12),
-            ColorPickerWidget(
-              selectedColor: _selectedColor,
-              onColorSelected: (color) => setState(() => _selectedColor = color),
-            ),
-            const SizedBox(height: 32),
-
-            // Save / Update button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _save,
-                icon: const Icon(Icons.check),
-                label: Text(_isEditing ? l10n.update : l10n.save),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -277,23 +290,23 @@ class _PreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: 120,
+      height: 88,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.4),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 40)),
-          const SizedBox(width: 16),
+          Text(emoji, style: const TextStyle(fontSize: 32)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,18 +316,18 @@ class _PreviewCard extends StatelessWidget {
                   name,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   _formatDateTime(dateTime),
                   style: TextStyle(
                     color: textColor.withValues(alpha: 0.8),
-                    fontSize: 13,
+                    fontSize: 12,
                   ),
                 ),
               ],

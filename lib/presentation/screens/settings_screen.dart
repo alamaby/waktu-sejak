@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/social_links.dart';
 import '../../core/l10n/generated/app_localizations.dart';
@@ -129,9 +130,14 @@ class SettingsScreen extends ConsumerWidget {
                   value: l10n.authorName,
                 ),
                 const SizedBox(height: 4),
-                const _InfoRow(
-                  label: 'App Version',
-                  value: '1.0.0',
+                FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    final value = snapshot.hasData
+                        ? '${snapshot.data!.version}+${snapshot.data!.buildNumber}'
+                        : '…';
+                    return _InfoRow(label: 'App Version', value: value);
+                  },
                 ),
                 const SizedBox(height: 4),
                 _LinkTile(

@@ -45,6 +45,11 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > "${RUNNER_TEMP}/upload-keystore.jks"
           echo "KEYSTORE_PATH=${RUNNER_TEMP}/upload-keystore.jks" >> "$GITHUB_ENV"
 
+      - name: Sync pubspec version with tag
+        run: |
+          sed -i "s/^version:.*/version: ${{ steps.version.outputs.build_name }}+${{ steps.version.outputs.build_number }}/" pubspec.yaml
+          grep "^version:" pubspec.yaml
+
       - name: Flutter pub get
         run: flutter pub get
 

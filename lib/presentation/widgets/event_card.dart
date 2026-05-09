@@ -1,3 +1,5 @@
+import 'dart:ui' show FontFeature;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
@@ -61,17 +63,8 @@ class EventCard extends ConsumerWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    timeStr,
-                    style: TextStyle(
-                      color: textColor.withValues(alpha: 0.85),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  const SizedBox(height: 8),
+                  _DurationChip(text: timeStr, textColor: textColor),
                 ],
               ),
             ),
@@ -82,6 +75,62 @@ class EventCard extends ConsumerWidget {
     );
   }
 
+}
+
+class _DurationChip extends StatelessWidget {
+  final String text;
+  final Color textColor;
+
+  const _DurationChip({required this.text, required this.textColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: textColor.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: textColor.withValues(alpha: 0.28),
+            width: 1,
+          ),
+        ),
+        child: Text.rich(
+          _buildSpans(text, textColor),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  TextSpan _buildSpans(String input, Color color) {
+    final base = TextStyle(
+      color: color,
+      fontSize: 13,
+      fontWeight: FontWeight.w500,
+      height: 1.2,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    final emphasized = base.copyWith(fontWeight: FontWeight.w800);
+
+    final regex = RegExp(r'\d+');
+    final spans = <TextSpan>[];
+    var index = 0;
+    for (final match in regex.allMatches(input)) {
+      if (match.start > index) {
+        spans.add(TextSpan(text: input.substring(index, match.start)));
+      }
+      spans.add(TextSpan(text: match.group(0), style: emphasized));
+      index = match.end;
+    }
+    if (index < input.length) {
+      spans.add(TextSpan(text: input.substring(index)));
+    }
+    return TextSpan(style: base, children: spans);
+  }
 }
 
 class _StatusBadge extends StatelessWidget {

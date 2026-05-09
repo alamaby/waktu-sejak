@@ -21,6 +21,7 @@ dependencies:
   share_plus: ^10.1.2
   file_picker: ^8.1.4
   path_provider: ^2.1.5
+  package_info_plus: ^8.1.2
 
 dev_dependencies:
   flutter_test:
