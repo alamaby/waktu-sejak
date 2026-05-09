@@ -189,6 +189,12 @@ The algorithm handles month-length variations, leap years, and time-component ca
 
 ---
 
+## 🔒 Privacy
+
+See the [Privacy Policy](https://waktu-sejak.vercel.app/privacy-policy) for details on how data is handled. In short: all data stays on your device — no tracking, no analytics, no cloud sync.
+
+---
+
 ## 📄 License
 
 This project is licensed under the terms of the [LICENSE](LICENSE) file included in this repository.
