@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,10 +8,22 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val keystorePath: String? = System.getenv("KEYSTORE_PATH")
-val keystoreAlias: String? = System.getenv("KEY_ALIAS")
-val keystoreKeyPassword: String? = System.getenv("KEY_PASSWORD")
-val keystoreStorePassword: String? = System.getenv("STORE_PASSWORD")
+// Load key.properties if present (local dev). Fall back to environment
+// variables (CI/CD, e.g. GitHub Actions). Properties file takes precedence.
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+val keystorePath: String? =
+    (keystoreProperties["storeFile"] as String?) ?: System.getenv("KEYSTORE_PATH")
+val keystoreAlias: String? =
+    (keystoreProperties["keyAlias"] as String?) ?: System.getenv("KEY_ALIAS")
+val keystoreKeyPassword: String? =
+    (keystoreProperties["keyPassword"] as String?) ?: System.getenv("KEY_PASSWORD")
+val keystoreStorePassword: String? =
+    (keystoreProperties["storePassword"] as String?) ?: System.getenv("STORE_PASSWORD")
 val hasReleaseSigning = !keystorePath.isNullOrBlank() && file(keystorePath!!).exists()
 
 android {

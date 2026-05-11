@@ -38,6 +38,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/adi-registration.properties
 
 flutter_launcher_icons:
   android: true
