@@ -39,6 +39,28 @@ class AppLocalizationsId extends AppLocalizations {
   String get sortLabel => 'Urutkan';
 
   @override
+  String get searchEvents => 'Cari acara';
+
+  @override
+  String get filterAll => 'Semua';
+
+  @override
+  String get filterPast => 'Lalu';
+
+  @override
+  String get filterUpcoming => 'Mendatang';
+
+  @override
+  String get filterByEmoji => 'Filter berdasarkan emoji';
+
+  @override
+  String get clearFilters => 'Hapus filter';
+
+  @override
+  String get noMatchingEvents =>
+      'Tidak ada acara yang cocok. Coba hapus filter.';
+
+  @override
   String get eventName => 'Nama Acara';
 
   @override

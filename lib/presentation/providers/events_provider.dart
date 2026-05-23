@@ -13,6 +13,8 @@ enum SortType { byName, byTimeClosest, byTimeFarthest }
 
 enum ViewType { card, list }
 
+enum EventStatusFilter { all, past, upcoming }
+
 const _uuid = Uuid();
 const _kSortTypeKey = 'sort_type';
 const _kViewTypeKey = 'view_type';
@@ -48,7 +50,8 @@ class EventsNotifier extends _$EventsNotifier {
 
   void updateEvent(EventModel event) {
     state = [
-      for (final e in state) if (e.id == event.id) event else e,
+      for (final e in state)
+        if (e.id == event.id) event else e,
     ];
     _persist();
   }
@@ -146,6 +149,32 @@ class ViewTypeNotifier extends _$ViewTypeNotifier {
 }
 
 @riverpod
+class EventSearchQuery extends _$EventSearchQuery {
+  @override
+  String build() => '';
+
+  void set(String query) => state = query;
+
+  void clear() => state = '';
+}
+
+@riverpod
+class EventStatusFilterNotifier extends _$EventStatusFilterNotifier {
+  @override
+  EventStatusFilter build() => EventStatusFilter.all;
+
+  void set(EventStatusFilter filter) => state = filter;
+}
+
+@riverpod
+class EventEmojiFilter extends _$EventEmojiFilter {
+  @override
+  String? build() => null;
+
+  void set(String? emoji) => state = emoji;
+}
+
+@riverpod
 class SelectedTab extends _$SelectedTab {
   @override
   int build() => 0;
@@ -154,25 +183,57 @@ class SelectedTab extends _$SelectedTab {
 }
 
 @riverpod
-List<EventModel> sortedEvents(Ref ref) {
+List<String> availableEventEmojis(Ref ref) {
   final events = ref.watch(eventsNotifierProvider);
+  final emojis = <String>{};
+  for (final event in events) {
+    emojis.add(event.emoji);
+  }
+  return emojis.toList()..sort();
+}
+
+@riverpod
+bool hasActiveEventFilters(Ref ref) {
+  final query = ref.watch(eventSearchQueryProvider).trim();
+  final status = ref.watch(eventStatusFilterNotifierProvider);
+  final emoji = ref.watch(eventEmojiFilterProvider);
+  return query.isNotEmpty || status != EventStatusFilter.all || emoji != null;
+}
+
+@riverpod
+List<EventModel> visibleEvents(Ref ref) {
+  final events = ref.watch(eventsNotifierProvider);
+  final query = ref.watch(eventSearchQueryProvider).trim().toLowerCase();
+  final statusFilter = ref.watch(eventStatusFilterNotifierProvider);
+  final emojiFilter = ref.watch(eventEmojiFilterProvider);
   final sortType = ref.watch(sortTypeNotifierProvider);
   final now = DateTime.now();
 
-  final sorted = [...events];
+  final visible = events.where((event) {
+    final matchesQuery =
+        query.isEmpty || event.name.toLowerCase().contains(query);
+    final isPast = event.targetDate.isBefore(now);
+    final matchesStatus = switch (statusFilter) {
+      EventStatusFilter.all => true,
+      EventStatusFilter.past => isPast,
+      EventStatusFilter.upcoming => !isPast,
+    };
+    final matchesEmoji = emojiFilter == null || event.emoji == emojiFilter;
+    return matchesQuery && matchesStatus && matchesEmoji;
+  }).toList();
 
   switch (sortType) {
     case SortType.byName:
-      sorted.sort((a, b) => a.name.compareTo(b.name));
+      visible.sort((a, b) => a.name.compareTo(b.name));
     case SortType.byTimeClosest:
-      sorted.sort(
+      visible.sort(
         (a, b) => a.targetDate
             .difference(now)
             .abs()
             .compareTo(b.targetDate.difference(now).abs()),
       );
     case SortType.byTimeFarthest:
-      sorted.sort(
+      visible.sort(
         (a, b) => b.targetDate
             .difference(now)
             .abs()
@@ -180,5 +241,5 @@ List<EventModel> sortedEvents(Ref ref) {
       );
   }
 
-  return sorted;
+  return visible;
 }

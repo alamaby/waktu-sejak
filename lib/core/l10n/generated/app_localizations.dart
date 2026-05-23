@@ -158,6 +158,48 @@ abstract class AppLocalizations {
   /// **'Sort'**
   String get sortLabel;
 
+  /// No description provided for @searchEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Search events'**
+  String get searchEvents;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get filterPast;
+
+  /// No description provided for @filterUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get filterUpcoming;
+
+  /// No description provided for @filterByEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by emoji'**
+  String get filterByEmoji;
+
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get clearFilters;
+
+  /// No description provided for @noMatchingEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching events. Try clearing your filters.'**
+  String get noMatchingEvents;
+
   /// No description provided for @eventName.
   ///
   /// In en, this message translates to:

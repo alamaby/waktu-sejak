@@ -1,5 +1,3 @@
-import 'dart:ui' show FontFeature;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
@@ -74,7 +72,6 @@ class EventCard extends ConsumerWidget {
       ),
     );
   }
-
 }
 
 class _DurationChip extends StatelessWidget {

@@ -39,6 +39,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sortLabel => 'Sort';
 
   @override
+  String get searchEvents => 'Search events';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterPast => 'Past';
+
+  @override
+  String get filterUpcoming => 'Upcoming';
+
+  @override
+  String get filterByEmoji => 'Filter by emoji';
+
+  @override
+  String get clearFilters => 'Clear filters';
+
+  @override
+  String get noMatchingEvents =>
+      'No matching events. Try clearing your filters.';
+
+  @override
   String get eventName => 'Event Name';
 
   @override
