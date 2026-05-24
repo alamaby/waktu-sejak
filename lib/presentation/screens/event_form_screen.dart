@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/event_emojis.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../../data/models/event_model.dart';
 import '../providers/events_provider.dart';
@@ -10,13 +11,6 @@ import '../widgets/color_picker_widget.dart';
 import '../widgets/emoji_picker_dialog.dart';
 
 const _uuid = Uuid();
-
-const _defaultEmojis = [
-  '🎂', '🎓', '💍', '✈️', '🏠', '🚀', '🎉', '🏆',
-  '💪', '❤️', '🌟', '🎵', '📅', '💼', '🐶', '🌏',
-  '🔥', '🏋️', '🎮', '📚', '☕', '🌈', '🎸', '🍕',
-  '🌺', '⚽', '🎯', '🧘', '🏖️', '🦋', '🎪', '🧩',
-];
 
 class EventFormScreen extends ConsumerStatefulWidget {
   final EventModel? editingEvent;
@@ -54,7 +48,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
   void _resetForm() {
     final rand = Random();
     _selectedDateTime = DateTime.now();
-    _selectedEmoji = _defaultEmojis[rand.nextInt(_defaultEmojis.length)];
+    _selectedEmoji = eventEmojis[rand.nextInt(eventEmojis.length)];
     _selectedColor = AppColors.okabeIto[rand.nextInt(AppColors.paletteColorCount)];
     _nameController.clear();
   }
