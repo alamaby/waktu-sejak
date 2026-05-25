@@ -166,6 +166,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authorName => 'Alam Aby Bashit';
 
   @override
+  String get appVersionLabel => 'App Version';
+
+  @override
+  String get copyrightText => '© 2025 Alam Aby Bashit';
+
+  @override
   String get links => 'Links';
 
   @override
@@ -429,6 +435,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportDataSubtitle => 'Save all events to a backup file';
 
   @override
+  String get exportShareSubject => 'Waktu Sejak backup';
+
+  @override
   String get importData => 'Import Data';
 
   @override
@@ -472,4 +481,16 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return ' ($_temp0)';
   }
+
+  @override
+  String get sampleStartedUniversity => 'Started University';
+
+  @override
+  String get sampleNextVacation => 'Next Vacation';
+
+  @override
+  String get sampleWeddingAnniversary => 'Wedding Anniversary';
+
+  @override
+  String get sampleProjectDeadline => 'Project Deadline';
 }

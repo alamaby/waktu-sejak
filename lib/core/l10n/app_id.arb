@@ -52,6 +52,8 @@
   "about": "Tentang",
   "authorLabel": "Pembuat",
   "authorName": "Alam Aby Bashit",
+  "appVersionLabel": "Versi Aplikasi",
+  "copyrightText": "© 2025 Alam Aby Bashit",
   "links": "Tautan",
   "donate": "Dukung Aplikasi",
   "noEvents": "Belum ada acara. Ketuk Buat untuk menambahkan.",
@@ -187,6 +189,7 @@
   "data": "Data",
   "exportData": "Ekspor Data",
   "exportDataSubtitle": "Simpan semua acara ke berkas cadangan",
+  "exportShareSubject": "Cadangan Waktu Sejak",
   "importData": "Impor Data",
   "importDataSubtitle": "Pulihkan acara dari berkas cadangan",
   "exportSuccess": "Berkas cadangan siap dibagikan",
@@ -205,5 +208,9 @@
     "placeholders": {
       "skipped": { "type": "int" }
     }
-  }
+  },
+  "sampleStartedUniversity": "Mulai Kuliah",
+  "sampleNextVacation": "Liburan Berikutnya",
+  "sampleWeddingAnniversary": "Ulang Tahun Pernikahan",
+  "sampleProjectDeadline": "Tenggat Proyek"
 }

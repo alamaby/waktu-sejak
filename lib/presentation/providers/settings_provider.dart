@@ -13,7 +13,7 @@ class LocaleNotifier extends _$LocaleNotifier {
   @override
   Locale build() {
     final prefs = ref.watch(sharedPreferencesProvider);
-    final code = prefs.getString(_kLocaleKey) ?? 'en';
+    final code = prefs.getString(_kLocaleKey) ?? _defaultLocaleCode();
     return Locale(code);
   }
 
@@ -24,6 +24,12 @@ class LocaleNotifier extends _$LocaleNotifier {
       HomeWidgetService.sync(prefs: prefs);
     });
   }
+}
+
+String _defaultLocaleCode() {
+  final platformCode =
+      WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+  return platformCode == 'id' ? 'id' : 'en';
 }
 
 @riverpod

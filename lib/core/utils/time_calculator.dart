@@ -102,7 +102,8 @@ class TimeCalculator {
       }
       if (diff.days > 0) {
         if (diff.hours > 0 || diff.minutes > 0 || diff.seconds > 0) {
-          return l10n.timeAgoDHMS(diff.days, diff.hours, diff.minutes, diff.seconds);
+          return l10n.timeAgoDHMS(
+              diff.days, diff.hours, diff.minutes, diff.seconds);
         }
         return l10n.timeAgoD(diff.days);
       }
@@ -125,7 +126,8 @@ class TimeCalculator {
       }
       if (diff.days > 0) {
         if (diff.hours > 0 || diff.minutes > 0 || diff.seconds > 0) {
-          return l10n.timeUntilDHMS(diff.days, diff.hours, diff.minutes, diff.seconds);
+          return l10n.timeUntilDHMS(
+              diff.days, diff.hours, diff.minutes, diff.seconds);
         }
         return l10n.timeUntilD(diff.days);
       }

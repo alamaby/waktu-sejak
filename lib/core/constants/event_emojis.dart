@@ -434,4 +434,3 @@ const eventEmojiOptions = [
 final eventEmojis = [
   for (final option in eventEmojiOptions) option.emoji,
 ];
-

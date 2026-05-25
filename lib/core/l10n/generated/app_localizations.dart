@@ -410,6 +410,18 @@ abstract class AppLocalizations {
   /// **'Alam Aby Bashit'**
   String get authorName;
 
+  /// No description provided for @appVersionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'App Version'**
+  String get appVersionLabel;
+
+  /// No description provided for @copyrightText.
+  ///
+  /// In en, this message translates to:
+  /// **'© 2025 Alam Aby Bashit'**
+  String get copyrightText;
+
   /// No description provided for @links.
   ///
   /// In en, this message translates to:
@@ -632,6 +644,12 @@ abstract class AppLocalizations {
   /// **'Save all events to a backup file'**
   String get exportDataSubtitle;
 
+  /// No description provided for @exportShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Waktu Sejak backup'**
+  String get exportShareSubject;
+
   /// No description provided for @importData.
   ///
   /// In en, this message translates to:
@@ -685,6 +703,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **' ({skipped, plural, =1{1 duplicate skipped} other{{skipped} duplicates skipped}})'**
   String importSuccessSkipped(int skipped);
+
+  /// No description provided for @sampleStartedUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'Started University'**
+  String get sampleStartedUniversity;
+
+  /// No description provided for @sampleNextVacation.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Vacation'**
+  String get sampleNextVacation;
+
+  /// No description provided for @sampleWeddingAnniversary.
+  ///
+  /// In en, this message translates to:
+  /// **'Wedding Anniversary'**
+  String get sampleWeddingAnniversary;
+
+  /// No description provided for @sampleProjectDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Deadline'**
+  String get sampleProjectDeadline;
 }
 
 class _AppLocalizationsDelegate

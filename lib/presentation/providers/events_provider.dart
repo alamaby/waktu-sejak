@@ -1,7 +1,9 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/l10n/generated/app_localizations.dart';
 import '../../data/local/preferences_provider.dart';
 import '../../data/models/event_model.dart';
 import '../../data/repositories/events_repository.dart';
@@ -16,6 +18,7 @@ enum ViewType { card, list }
 enum EventStatusFilter { all, past, upcoming }
 
 const _uuid = Uuid();
+const _kLocaleKey = 'locale';
 const _kSortTypeKey = 'sort_type';
 const _kViewTypeKey = 'view_type';
 
@@ -26,7 +29,7 @@ class EventsNotifier extends _$EventsNotifier {
     final repo = ref.watch(eventsRepositoryProvider);
     final prefs = ref.read(sharedPreferencesProvider);
     if (!repo.hasSeeded) {
-      final seed = _dummyEvents();
+      final seed = _dummyEvents(prefs.getString(_kLocaleKey));
       repo.save(seed).then((_) {
         repo.markSeeded();
         HomeWidgetService.sync(prefs: prefs);
@@ -72,12 +75,13 @@ class EventsNotifier extends _$EventsNotifier {
     });
   }
 
-  List<EventModel> _dummyEvents() {
+  List<EventModel> _dummyEvents(String? localeCode) {
     final now = DateTime.now();
+    final l10n = _seedLocalizations(localeCode);
     return [
       EventModel(
         id: _uuid.v4(),
-        name: 'Started University',
+        name: l10n.sampleStartedUniversity,
         targetDate: DateTime(2019, 9, 2, 8, 0),
         emoji: '🎓',
         color: AppColors.skyBlue,
@@ -85,7 +89,7 @@ class EventsNotifier extends _$EventsNotifier {
       ),
       EventModel(
         id: _uuid.v4(),
-        name: 'Next Vacation',
+        name: l10n.sampleNextVacation,
         targetDate: now.add(const Duration(days: 45)),
         emoji: '✈️',
         color: AppColors.bluishGreen,
@@ -93,7 +97,7 @@ class EventsNotifier extends _$EventsNotifier {
       ),
       EventModel(
         id: _uuid.v4(),
-        name: 'Wedding Anniversary',
+        name: l10n.sampleWeddingAnniversary,
         targetDate: DateTime(2022, 6, 15, 10, 0),
         emoji: '💍',
         color: AppColors.vermillion,
@@ -101,13 +105,20 @@ class EventsNotifier extends _$EventsNotifier {
       ),
       EventModel(
         id: _uuid.v4(),
-        name: 'Project Deadline',
+        name: l10n.sampleProjectDeadline,
         targetDate: now.add(const Duration(days: 7)),
         emoji: '📅',
         color: AppColors.orange,
         createdAt: now,
       ),
     ];
+  }
+
+  AppLocalizations _seedLocalizations(String? localeCode) {
+    final platformCode =
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    final languageCode = (localeCode ?? platformCode) == 'id' ? 'id' : 'en';
+    return lookupAppLocalizations(Locale(languageCode));
   }
 }
 

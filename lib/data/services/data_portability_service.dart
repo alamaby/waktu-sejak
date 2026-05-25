@@ -28,7 +28,10 @@ class DataPortabilityService {
   static const _appTag = 'waktu_sejak';
   static const _schemaVersion = 1;
 
-  static Future<void> exportEvents(List<EventModel> events) async {
+  static Future<void> exportEvents(
+    List<EventModel> events, {
+    required String shareSubject,
+  }) async {
     try {
       final payload = <String, dynamic>{
         'app': _appTag,
@@ -44,7 +47,7 @@ class DataPortabilityService {
       await file.writeAsString(jsonStr, flush: true);
       await Share.shareXFiles(
         [XFile(file.path, mimeType: 'application/json', name: filename)],
-        subject: 'Waktu Sejak backup',
+        subject: shareSubject,
       );
     } catch (_) {
       throw const ExportIoError();

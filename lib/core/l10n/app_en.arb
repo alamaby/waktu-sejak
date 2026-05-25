@@ -52,6 +52,8 @@
   "about": "About",
   "authorLabel": "Author",
   "authorName": "Alam Aby Bashit",
+  "appVersionLabel": "App Version",
+  "copyrightText": "© 2025 Alam Aby Bashit",
   "links": "Links",
   "donate": "Support the App",
   "noEvents": "No events yet. Tap Create to add one.",
@@ -187,6 +189,7 @@
   "data": "Data",
   "exportData": "Export Data",
   "exportDataSubtitle": "Save all events to a backup file",
+  "exportShareSubject": "Waktu Sejak backup",
   "importData": "Import Data",
   "importDataSubtitle": "Restore events from a backup file",
   "exportSuccess": "Backup file ready to share",
@@ -205,5 +208,9 @@
     "placeholders": {
       "skipped": { "type": "int" }
     }
-  }
+  },
+  "sampleStartedUniversity": "Started University",
+  "sampleNextVacation": "Next Vacation",
+  "sampleWeddingAnniversary": "Wedding Anniversary",
+  "sampleProjectDeadline": "Project Deadline"
 }

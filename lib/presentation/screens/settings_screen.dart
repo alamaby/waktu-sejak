@@ -168,7 +168,7 @@ class SettingsScreen extends ConsumerWidget {
                     final value = snapshot.hasData
                         ? '${snapshot.data!.version}+${snapshot.data!.buildNumber}'
                         : '…';
-                    return _InfoRow(label: 'App Version', value: value);
+                    return _InfoRow(label: l10n.appVersionLabel, value: value);
                   },
                 ),
                 const SizedBox(height: 4),
@@ -292,7 +292,7 @@ class SettingsScreen extends ConsumerWidget {
 
           Center(
             child: Text(
-              '© 2025 Alam Aby Bashit',
+              l10n.copyrightText,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -312,7 +312,10 @@ class SettingsScreen extends ConsumerWidget {
       return;
     }
     try {
-      await DataPortabilityService.exportEvents(events);
+      await DataPortabilityService.exportEvents(
+        events,
+        shareSubject: l10n.exportShareSubject,
+      );
       messenger.showSnackBar(_buildSnack(l10n.exportSuccess));
     } catch (_) {
       messenger.showSnackBar(_buildSnack(l10n.exportFailed));

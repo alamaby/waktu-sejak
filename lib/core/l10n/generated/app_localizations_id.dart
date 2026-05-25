@@ -166,6 +166,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get authorName => 'Alam Aby Bashit';
 
   @override
+  String get appVersionLabel => 'Versi Aplikasi';
+
+  @override
+  String get copyrightText => '© 2025 Alam Aby Bashit';
+
+  @override
   String get links => 'Tautan';
 
   @override
@@ -309,6 +315,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get exportDataSubtitle => 'Simpan semua acara ke berkas cadangan';
 
   @override
+  String get exportShareSubject => 'Cadangan Waktu Sejak';
+
+  @override
   String get importData => 'Impor Data';
 
   @override
@@ -345,4 +354,16 @@ class AppLocalizationsId extends AppLocalizations {
   String importSuccessSkipped(int skipped) {
     return ' ($skipped duplikat dilewati)';
   }
+
+  @override
+  String get sampleStartedUniversity => 'Mulai Kuliah';
+
+  @override
+  String get sampleNextVacation => 'Liburan Berikutnya';
+
+  @override
+  String get sampleWeddingAnniversary => 'Ulang Tahun Pernikahan';
+
+  @override
+  String get sampleProjectDeadline => 'Tenggat Proyek';
 }

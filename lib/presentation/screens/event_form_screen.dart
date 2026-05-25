@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/event_emojis.dart';
@@ -321,6 +322,8 @@ class _PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeName = AppLocalizations.of(context).localeName;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: 88,
@@ -357,7 +360,7 @@ class _PreviewCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  _formatDateTime(dateTime),
+                  _formatDateTime(dateTime, localeName),
                   style: TextStyle(
                     color: textColor.withValues(alpha: 0.8),
                     fontSize: 12,
@@ -371,25 +374,8 @@ class _PreviewCard extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(DateTime dt) {
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-    return '${months[dt.month - 1]} ${dt.day}, ${dt.year}  $h:$m';
-  }
+  String _formatDateTime(DateTime dt, String localeName) =>
+      DateFormat.yMMMd(localeName).add_Hm().format(dt);
 }
 
 class _DateTimeButton extends StatelessWidget {
@@ -400,6 +386,8 @@ class _DateTimeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeName = AppLocalizations.of(context).localeName;
+
     return Semantics(
       identifier: 'event_datetime_picker_button',
       button: true,
@@ -426,7 +414,7 @@ class _DateTimeButton extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  _formatDateTime(dateTime),
+                  _formatDateTime(dateTime, localeName),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
@@ -441,23 +429,6 @@ class _DateTimeButton extends StatelessWidget {
     );
   }
 
-  String _formatDateTime(DateTime dt) {
-    final months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-    return '${months[dt.month - 1]} ${dt.day}, ${dt.year}  at $h:$m';
-  }
+  String _formatDateTime(DateTime dt, String localeName) =>
+      DateFormat.yMMMMd(localeName).add_Hm().format(dt);
 }
