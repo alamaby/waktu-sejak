@@ -71,20 +71,38 @@ class MainScaffold extends ConsumerWidget {
         destinations: [
           NavigationDestination(
             key: const Key('nav_dashboard'),
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
+            icon: Semantics(
+              identifier: 'nav_dashboard',
+              child: const Icon(Icons.home_outlined),
+            ),
+            selectedIcon: Semantics(
+              identifier: 'nav_dashboard',
+              child: const Icon(Icons.home),
+            ),
             label: l10n.dashboard,
           ),
           NavigationDestination(
             key: const Key('nav_create'),
-            icon: const Icon(Icons.add_circle_outline),
-            selectedIcon: const Icon(Icons.add_circle),
+            icon: Semantics(
+              identifier: 'nav_create',
+              child: const Icon(Icons.add_circle_outline),
+            ),
+            selectedIcon: Semantics(
+              identifier: 'nav_create',
+              child: const Icon(Icons.add_circle),
+            ),
             label: l10n.create,
           ),
           NavigationDestination(
             key: const Key('nav_settings'),
-            icon: const Icon(Icons.settings_outlined),
-            selectedIcon: const Icon(Icons.settings),
+            icon: Semantics(
+              identifier: 'nav_settings',
+              child: const Icon(Icons.settings_outlined),
+            ),
+            selectedIcon: Semantics(
+              identifier: 'nav_settings',
+              child: const Icon(Icons.settings),
+            ),
             label: l10n.settings,
           ),
         ],

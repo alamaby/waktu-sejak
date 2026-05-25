@@ -69,17 +69,26 @@ class _EventActionsSheet extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            key: const Key('event_action_edit_button'),
-            leading: const Icon(Icons.edit_outlined),
-            title: Text(l10n.edit),
-            onTap: () => Navigator.of(context).pop(_EventAction.edit),
+          Semantics(
+            identifier: 'event_action_edit_button',
+            button: true,
+            child: ListTile(
+              key: const Key('event_action_edit_button'),
+              leading: const Icon(Icons.edit_outlined),
+              title: Text(l10n.edit),
+              onTap: () => Navigator.of(context).pop(_EventAction.edit),
+            ),
           ),
-          ListTile(
-            key: const Key('event_action_delete_button'),
-            leading: Icon(Icons.delete_outline, color: colorScheme.error),
-            title: Text(l10n.delete, style: TextStyle(color: colorScheme.error)),
-            onTap: () => Navigator.of(context).pop(_EventAction.delete),
+          Semantics(
+            identifier: 'event_action_delete_button',
+            button: true,
+            child: ListTile(
+              key: const Key('event_action_delete_button'),
+              leading: Icon(Icons.delete_outline, color: colorScheme.error),
+              title:
+                  Text(l10n.delete, style: TextStyle(color: colorScheme.error)),
+              onTap: () => Navigator.of(context).pop(_EventAction.delete),
+            ),
           ),
           const SizedBox(height: 8),
         ],

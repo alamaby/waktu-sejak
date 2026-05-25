@@ -56,20 +56,28 @@ class _EmojiPickerDialogState extends State<EmojiPickerDialog> {
                   ),
             ),
             const SizedBox(height: 16),
-            TextField(
-              key: const Key('emoji_search_field'),
-              controller: _searchController,
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: l10n.searchEmoji,
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: query.isEmpty
-                    ? null
-                    : IconButton(
-                        key: const Key('emoji_search_clear_button'),
-                        onPressed: _searchController.clear,
-                        icon: const Icon(Icons.close),
-                      ),
+            Semantics(
+              identifier: 'emoji_search_field',
+              textField: true,
+              child: TextField(
+                key: const Key('emoji_search_field'),
+                controller: _searchController,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: l10n.searchEmoji,
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: query.isEmpty
+                      ? null
+                      : Semantics(
+                          identifier: 'emoji_search_clear_button',
+                          button: true,
+                          child: IconButton(
+                            key: const Key('emoji_search_clear_button'),
+                            onPressed: _searchController.clear,
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -110,10 +118,14 @@ class _EmojiPickerDialogState extends State<EmojiPickerDialog> {
                     ),
             ),
             const SizedBox(height: 12),
-            TextButton(
-              key: const Key('emoji_picker_cancel_button'),
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(l10n.cancel),
+            Semantics(
+              identifier: 'emoji_picker_cancel_button',
+              button: true,
+              child: TextButton(
+                key: const Key('emoji_picker_cancel_button'),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(l10n.cancel),
+              ),
             ),
           ],
         ),
@@ -170,11 +182,16 @@ class _CategorySelector extends StatelessWidget {
       child: Row(
         children: [
           for (final category in categories) ...[
-            ChoiceChip(
-              key: Key('emoji_category_${category?.name ?? 'recent'}'),
-              label: Text(_categoryLabel(context, category)),
+            Semantics(
+              identifier: 'emoji_category_${category?.name ?? 'recent'}',
+              button: true,
               selected: selectedCategory == category,
-              onSelected: (_) => onSelected(category),
+              child: ChoiceChip(
+                key: Key('emoji_category_${category?.name ?? 'recent'}'),
+                label: Text(_categoryLabel(context, category)),
+                selected: selectedCategory == category,
+                onSelected: (_) => onSelected(category),
+              ),
             ),
             const SizedBox(width: 8),
           ],
@@ -212,28 +229,33 @@ class _EmojiTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      key: Key('emoji_tile_$emoji'),
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 120),
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
-          border: isSelected
-              ? Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 2,
-                )
-              : null,
-        ),
-        child: Center(
-          child: Text(emoji, style: const TextStyle(fontSize: 24)),
+    return Semantics(
+      identifier: 'emoji_tile_$emoji',
+      button: true,
+      selected: isSelected,
+      child: InkWell(
+        key: Key('emoji_tile_$emoji'),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: isSelected
+                ? Theme.of(context).colorScheme.primaryContainer
+                : Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(12),
+            border: isSelected
+                ? Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  )
+                : null,
+          ),
+          child: Center(
+            child: Text(emoji, style: const TextStyle(fontSize: 24)),
+          ),
         ),
       ),
     );

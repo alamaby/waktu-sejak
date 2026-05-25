@@ -9,18 +9,26 @@ Future<bool> confirmDeleteEvent(BuildContext context) async {
       title: Text(l10n.deleteConfirmTitle),
       content: Text(l10n.deleteConfirmBody),
       actions: [
-        TextButton(
-          key: const Key('confirm_delete_cancel_button'),
-          onPressed: () => Navigator.of(ctx).pop(false),
-          child: Text(l10n.cancel),
-        ),
-        FilledButton(
-          key: const Key('confirm_delete_confirm_button'),
-          style: FilledButton.styleFrom(
-            backgroundColor: Theme.of(ctx).colorScheme.error,
+        Semantics(
+          identifier: 'confirm_delete_cancel_button',
+          button: true,
+          child: TextButton(
+            key: const Key('confirm_delete_cancel_button'),
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l10n.cancel),
           ),
-          onPressed: () => Navigator.of(ctx).pop(true),
-          child: Text(l10n.delete),
+        ),
+        Semantics(
+          identifier: 'confirm_delete_confirm_button',
+          button: true,
+          child: FilledButton(
+            key: const Key('confirm_delete_confirm_button'),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l10n.delete),
+          ),
         ),
       ],
     ),

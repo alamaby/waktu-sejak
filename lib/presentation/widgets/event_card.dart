@@ -19,57 +19,62 @@ class EventCard extends ConsumerWidget {
     final textColor = AppColors.textColorOn(event.color);
     final isPast = diff.isPast;
 
-    return GestureDetector(
-      key: Key('event_card_${event.id}'),
-      onTap: () => showEventActionsSheet(context, ref, event),
-      child: Stack(
-        children: [
-          Card(
-            color: event.color,
-            elevation: isPast ? 1 : 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Container(
-              decoration: isPast
-                  ? BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Colors.black.withValues(alpha: 0.15),
-                    )
-                  : null,
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        event.emoji,
-                        style: const TextStyle(fontSize: 28),
-                      ),
-                      _StatusBadge(isPast: isPast, textColor: textColor),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text(
-                    event.name,
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
+    return Semantics(
+      identifier: 'event_card_${event.id}',
+      label: event.name,
+      button: true,
+      child: GestureDetector(
+        key: Key('event_card_${event.id}'),
+        onTap: () => showEventActionsSheet(context, ref, event),
+        child: Stack(
+          children: [
+            Card(
+              color: event.color,
+              elevation: isPast ? 1 : 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Container(
+                decoration: isPast
+                    ? BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.black.withValues(alpha: 0.15),
+                      )
+                    : null,
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          event.emoji,
+                          style: const TextStyle(fontSize: 28),
+                        ),
+                        _StatusBadge(isPast: isPast, textColor: textColor),
+                      ],
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  _DurationChip(text: timeStr, textColor: textColor),
-                ],
+                    const Spacer(),
+                    Text(
+                      event.name,
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    _DurationChip(text: timeStr, textColor: textColor),
+                  ],
+                ),
               ),
             ),
-          ),
-          // Long-press hint overlay (invisible, just enables context)
-        ],
+            // Long-press hint overlay (invisible, just enables context)
+          ],
+        ),
       ),
     );
   }

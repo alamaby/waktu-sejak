@@ -19,39 +19,44 @@ class ColorPickerWidget extends StatelessWidget {
       children: List.generate(AppColors.paletteColorCount, (index) {
         final color = AppColors.okabeIto[index];
         final isSelected = color.toARGB32() == selectedColor.toARGB32();
-        return GestureDetector(
-          key: Key('color_option_$index'),
-          onTap: () => onColorSelected(color),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected
-                    ? Theme.of(context).colorScheme.onSurface
-                    : Colors.transparent,
-                width: 3,
+        return Semantics(
+          identifier: 'color_option_$index',
+          button: true,
+          selected: isSelected,
+          child: GestureDetector(
+            key: Key('color_option_$index'),
+            onTap: () => onColorSelected(color),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onSurface
+                      : Colors.transparent,
+                  width: 3,
+                ),
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.5),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        )
+                      ]
+                    : null,
               ),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: color.withValues(alpha: 0.5),
-                        blurRadius: 8,
-                        spreadRadius: 2,
-                      )
-                    ]
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      color: AppColors.textColorOn(color),
+                      size: 20,
+                    )
                   : null,
             ),
-            child: isSelected
-                ? Icon(
-                    Icons.check,
-                    color: AppColors.textColorOn(color),
-                    size: 20,
-                  )
-                : null,
           ),
         );
       }),

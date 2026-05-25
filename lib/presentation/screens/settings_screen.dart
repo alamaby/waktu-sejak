@@ -26,37 +26,50 @@ class SettingsScreen extends ConsumerWidget {
           _SectionCard(
             title: l10n.language,
             icon: Icons.language,
-            child: SegmentedButton<Locale>(
-              key: const Key('settings_language_segmented_button'),
-              expandedInsets: EdgeInsets.zero,
-              showSelectedIcon: false,
-              segments: [
-                ButtonSegment(
-                  value: const Locale('en'),
-                  label: Text(l10n.english),
-                  icon: const Text('🇬🇧'),
-                ),
-                ButtonSegment(
-                  value: const Locale('id'),
-                  label: Text(l10n.indonesian),
-                  icon: const Text('🇮🇩'),
-                ),
-              ],
-              selected: {locale},
-              onSelectionChanged: (selected) {
-                ref
-                    .read(localeNotifierProvider.notifier)
-                    .setLocale(selected.first);
-              },
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                ),
-                textStyle: WidgetStateProperty.all(
-                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            child: Semantics(
+              identifier: 'settings_language_segmented_button',
+              child: SegmentedButton<Locale>(
+                key: const Key('settings_language_segmented_button'),
+                expandedInsets: EdgeInsets.zero,
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(
+                    value: const Locale('en'),
+                    label: Semantics(
+                      identifier: 'settings_language_en_option',
+                      button: true,
+                      child: Text(l10n.english),
+                    ),
+                    icon: const Text('🇬🇧'),
+                  ),
+                  ButtonSegment(
+                    value: const Locale('id'),
+                    label: Semantics(
+                      identifier: 'settings_language_id_option',
+                      button: true,
+                      child: Text(l10n.indonesian),
+                    ),
+                    icon: const Text('🇮🇩'),
+                  ),
+                ],
+                selected: {locale},
+                onSelectionChanged: (selected) {
+                  ref
+                      .read(localeNotifierProvider.notifier)
+                      .setLocale(selected.first);
+                },
+                style: ButtonStyle(
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  ),
+                  textStyle: WidgetStateProperty.all(
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
@@ -67,42 +80,59 @@ class SettingsScreen extends ConsumerWidget {
           _SectionCard(
             title: l10n.theme,
             icon: Icons.palette_outlined,
-            child: SegmentedButton<ThemeMode>(
-              key: const Key('settings_theme_segmented_button'),
-              expandedInsets: EdgeInsets.zero,
-              showSelectedIcon: false,
-              segments: [
-                ButtonSegment(
-                  value: ThemeMode.system,
-                  label: Text(l10n.themeSystem),
-                  icon: const Icon(Icons.brightness_auto),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.light,
-                  label: Text(l10n.themeLight),
-                  icon: const Icon(Icons.light_mode),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.dark,
-                  label: Text(l10n.themeDark),
-                  icon: const Icon(Icons.dark_mode),
-                ),
-              ],
-              selected: {themeMode},
-              onSelectionChanged: (selected) {
-                ref
-                    .read(themeModeNotifierProvider.notifier)
-                    .setThemeMode(selected.first);
-              },
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                ),
-                textStyle: WidgetStateProperty.all(
-                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            child: Semantics(
+              identifier: 'settings_theme_segmented_button',
+              child: SegmentedButton<ThemeMode>(
+                key: const Key('settings_theme_segmented_button'),
+                expandedInsets: EdgeInsets.zero,
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(
+                    value: ThemeMode.system,
+                    label: Semantics(
+                      identifier: 'settings_theme_system_option',
+                      button: true,
+                      child: Text(l10n.themeSystem),
+                    ),
+                    icon: const Icon(Icons.brightness_auto),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.light,
+                    label: Semantics(
+                      identifier: 'settings_theme_light_option',
+                      button: true,
+                      child: Text(l10n.themeLight),
+                    ),
+                    icon: const Icon(Icons.light_mode),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    label: Semantics(
+                      identifier: 'settings_theme_dark_option',
+                      button: true,
+                      child: Text(l10n.themeDark),
+                    ),
+                    icon: const Icon(Icons.dark_mode),
+                  ),
+                ],
+                selected: {themeMode},
+                onSelectionChanged: (selected) {
+                  ref
+                      .read(themeModeNotifierProvider.notifier)
+                      .setThemeMode(selected.first);
+                },
+                style: ButtonStyle(
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  ),
+                  textStyle: WidgetStateProperty.all(
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
@@ -159,29 +189,37 @@ class SettingsScreen extends ConsumerWidget {
             icon: Icons.folder_outlined,
             child: Column(
               children: [
-                ListTile(
-                  key: const Key('settings_export_data_button'),
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(
-                    Icons.upload_file_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                Semantics(
+                  identifier: 'settings_export_data_button',
+                  button: true,
+                  child: ListTile(
+                    key: const Key('settings_export_data_button'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(
+                      Icons.upload_file_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(l10n.exportData),
+                    subtitle: Text(l10n.exportDataSubtitle),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
+                    onTap: () => _handleExport(context, ref),
                   ),
-                  title: Text(l10n.exportData),
-                  subtitle: Text(l10n.exportDataSubtitle),
-                  trailing: const Icon(Icons.chevron_right, size: 20),
-                  onTap: () => _handleExport(context, ref),
                 ),
-                ListTile(
-                  key: const Key('settings_import_data_button'),
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(
-                    Icons.download_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                Semantics(
+                  identifier: 'settings_import_data_button',
+                  button: true,
+                  child: ListTile(
+                    key: const Key('settings_import_data_button'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(
+                      Icons.download_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(l10n.importData),
+                    subtitle: Text(l10n.importDataSubtitle),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
+                    onTap: () => _handleImport(context, ref),
                   ),
-                  title: Text(l10n.importData),
-                  subtitle: Text(l10n.importDataSubtitle),
-                  trailing: const Icon(Icons.chevron_right, size: 20),
-                  onTap: () => _handleImport(context, ref),
                 ),
               ],
             ),
@@ -286,9 +324,8 @@ class SettingsScreen extends ConsumerWidget {
     final messenger = ScaffoldMessenger.of(context);
     try {
       final incoming = await DataPortabilityService.importEvents();
-      final added = ref
-          .read(eventsNotifierProvider.notifier)
-          .importAppend(incoming);
+      final added =
+          ref.read(eventsNotifierProvider.notifier).importAppend(incoming);
       final skipped = incoming.length - added;
       final msg = l10n.importSuccessAdded(added) +
           (skipped > 0 ? l10n.importSuccessSkipped(skipped) : '');

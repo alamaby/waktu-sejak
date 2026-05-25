@@ -46,78 +46,99 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         title: Text(l10n.appTitle),
         actions: [
           // View toggle button
-          IconButton(
-            key: const Key('dashboard_view_toggle_button'),
-            tooltip: viewType == ViewType.card ? l10n.listView : l10n.cardView,
-            icon: Icon(
-              viewType == ViewType.card
-                  ? Icons.view_list_rounded
-                  : Icons.grid_view_rounded,
+          Semantics(
+            identifier: 'dashboard_view_toggle_button',
+            button: true,
+            child: IconButton(
+              key: const Key('dashboard_view_toggle_button'),
+              tooltip:
+                  viewType == ViewType.card ? l10n.listView : l10n.cardView,
+              icon: Icon(
+                viewType == ViewType.card
+                    ? Icons.view_list_rounded
+                    : Icons.grid_view_rounded,
+              ),
+              onPressed: () =>
+                  ref.read(viewTypeNotifierProvider.notifier).toggle(),
             ),
-            onPressed: () =>
-                ref.read(viewTypeNotifierProvider.notifier).toggle(),
           ),
           // Sort popup menu
-          PopupMenuButton<SortType>(
-            key: const Key('dashboard_sort_button'),
-            tooltip: l10n.sortLabel,
-            icon: const Icon(Icons.sort),
-            initialValue: sortType,
-            onSelected: (type) =>
-                ref.read(sortTypeNotifierProvider.notifier).set(type),
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                key: const Key('sort_by_name_option'),
-                value: SortType.byName,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.sort_by_alpha,
-                      size: 18,
-                      color: sortType == SortType.byName
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+          Semantics(
+            identifier: 'dashboard_sort_button',
+            button: true,
+            child: PopupMenuButton<SortType>(
+              key: const Key('dashboard_sort_button'),
+              tooltip: l10n.sortLabel,
+              icon: const Icon(Icons.sort),
+              initialValue: sortType,
+              onSelected: (type) =>
+                  ref.read(sortTypeNotifierProvider.notifier).set(type),
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  key: const Key('sort_by_name_option'),
+                  value: SortType.byName,
+                  child: Semantics(
+                    identifier: 'sort_by_name_option',
+                    button: true,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.sort_by_alpha,
+                          size: 18,
+                          color: sortType == SortType.byName
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(l10n.sortByName),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(l10n.sortByName),
-                  ],
+                  ),
                 ),
-              ),
-              PopupMenuItem(
-                key: const Key('sort_by_time_closest_option'),
-                value: SortType.byTimeClosest,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_upward,
-                      size: 18,
-                      color: sortType == SortType.byTimeClosest
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                PopupMenuItem(
+                  key: const Key('sort_by_time_closest_option'),
+                  value: SortType.byTimeClosest,
+                  child: Semantics(
+                    identifier: 'sort_by_time_closest_option',
+                    button: true,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_upward,
+                          size: 18,
+                          color: sortType == SortType.byTimeClosest
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(l10n.sortByTimeClosest),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(l10n.sortByTimeClosest),
-                  ],
+                  ),
                 ),
-              ),
-              PopupMenuItem(
-                key: const Key('sort_by_time_farthest_option'),
-                value: SortType.byTimeFarthest,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_downward,
-                      size: 18,
-                      color: sortType == SortType.byTimeFarthest
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                PopupMenuItem(
+                  key: const Key('sort_by_time_farthest_option'),
+                  value: SortType.byTimeFarthest,
+                  child: Semantics(
+                    identifier: 'sort_by_time_farthest_option',
+                    button: true,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_downward,
+                          size: 18,
+                          color: sortType == SortType.byTimeFarthest
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(l10n.sortByTimeFarthest),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(l10n.sortByTimeFarthest),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -189,26 +210,35 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              key: const Key('dashboard_search_field'),
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.searchEvents,
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: query.isEmpty
-                    ? null
-                    : IconButton(
-                        key: const Key('dashboard_search_clear_button'),
-                        tooltip: l10n.clearFilters,
-                        icon: const Icon(Icons.close),
-                        onPressed: () =>
-                            ref.read(eventSearchQueryProvider.notifier).clear(),
-                      ),
-                isDense: true,
+            Semantics(
+              identifier: 'dashboard_search_field',
+              textField: true,
+              child: TextField(
+                key: const Key('dashboard_search_field'),
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: l10n.searchEvents,
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: query.isEmpty
+                      ? null
+                      : Semantics(
+                          identifier: 'dashboard_search_clear_button',
+                          button: true,
+                          child: IconButton(
+                            key: const Key('dashboard_search_clear_button'),
+                            tooltip: l10n.clearFilters,
+                            icon: const Icon(Icons.close),
+                            onPressed: () => ref
+                                .read(eventSearchQueryProvider.notifier)
+                                .clear(),
+                          ),
+                        ),
+                  isDense: true,
+                ),
+                textInputAction: TextInputAction.search,
+                onChanged: (value) =>
+                    ref.read(eventSearchQueryProvider.notifier).set(value),
               ),
-              textInputAction: TextInputAction.search,
-              onChanged: (value) =>
-                  ref.read(eventSearchQueryProvider.notifier).set(value),
             ),
             const SizedBox(height: 10),
             Row(
@@ -240,17 +270,21 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
                   ),
                 ),
                 if (hasActiveFilters)
-                  IconButton(
-                    key: const Key('dashboard_clear_filters_button'),
-                    tooltip: l10n.clearFilters,
-                    icon: const Icon(Icons.filter_alt_off_outlined),
-                    onPressed: () {
-                      ref.read(eventSearchQueryProvider.notifier).clear();
-                      ref
-                          .read(eventStatusFilterNotifierProvider.notifier)
-                          .set(EventStatusFilter.all);
-                      ref.read(eventEmojiFilterProvider.notifier).set(null);
-                    },
+                  Semantics(
+                    identifier: 'dashboard_clear_filters_button',
+                    button: true,
+                    child: IconButton(
+                      key: const Key('dashboard_clear_filters_button'),
+                      tooltip: l10n.clearFilters,
+                      icon: const Icon(Icons.filter_alt_off_outlined),
+                      onPressed: () {
+                        ref.read(eventSearchQueryProvider.notifier).clear();
+                        ref
+                            .read(eventStatusFilterNotifierProvider.notifier)
+                            .set(EventStatusFilter.all);
+                        ref.read(eventEmojiFilterProvider.notifier).set(null);
+                      },
+                    ),
                   ),
               ],
             ),
@@ -263,19 +297,24 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
                   child: Row(
                     children: [
                       for (final emoji in emojis) ...[
-                        ChoiceChip(
-                          key: Key('dashboard_emoji_filter_$emoji'),
-                          label: Text(
-                            emoji,
-                            style: const TextStyle(fontSize: 18),
-                          ),
+                        Semantics(
+                          identifier: 'dashboard_emoji_filter_$emoji',
+                          button: true,
                           selected: emojiFilter == emoji,
-                          tooltip: l10n.filterByEmoji,
-                          onSelected: (selected) {
-                            ref
-                                .read(eventEmojiFilterProvider.notifier)
-                                .set(selected ? emoji : null);
-                          },
+                          child: ChoiceChip(
+                            key: Key('dashboard_emoji_filter_$emoji'),
+                            label: Text(
+                              emoji,
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                            selected: emojiFilter == emoji,
+                            tooltip: l10n.filterByEmoji,
+                            onSelected: (selected) {
+                              ref
+                                  .read(eventEmojiFilterProvider.notifier)
+                                  .set(selected ? emoji : null);
+                            },
+                          ),
                         ),
                         const SizedBox(width: 8),
                       ],
@@ -304,13 +343,18 @@ class _StatusFilterChip extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FilterChip(
-      key: Key('dashboard_status_filter_${filter.name}'),
-      label: Text(label),
+    return Semantics(
+      identifier: 'dashboard_status_filter_${filter.name}',
+      button: true,
       selected: selected,
-      showCheckmark: false,
-      onSelected: (_) =>
-          ref.read(eventStatusFilterNotifierProvider.notifier).set(filter),
+      child: FilterChip(
+        key: Key('dashboard_status_filter_${filter.name}'),
+        label: Text(label),
+        selected: selected,
+        showCheckmark: false,
+        onSelected: (_) =>
+            ref.read(eventStatusFilterNotifierProvider.notifier).set(filter),
+      ),
     );
   }
 }
@@ -388,17 +432,21 @@ class _EmptyState extends ConsumerWidget {
             ),
             if (showClearFilters) ...[
               const SizedBox(height: 16),
-              TextButton.icon(
-                key: const Key('empty_state_clear_filters_button'),
-                onPressed: () {
-                  ref.read(eventSearchQueryProvider.notifier).clear();
-                  ref
-                      .read(eventStatusFilterNotifierProvider.notifier)
-                      .set(EventStatusFilter.all);
-                  ref.read(eventEmojiFilterProvider.notifier).set(null);
-                },
-                icon: const Icon(Icons.filter_alt_off_outlined),
-                label: Text(l10n.clearFilters),
+              Semantics(
+                identifier: 'empty_state_clear_filters_button',
+                button: true,
+                child: TextButton.icon(
+                  key: const Key('empty_state_clear_filters_button'),
+                  onPressed: () {
+                    ref.read(eventSearchQueryProvider.notifier).clear();
+                    ref
+                        .read(eventStatusFilterNotifierProvider.notifier)
+                        .set(EventStatusFilter.all);
+                    ref.read(eventEmojiFilterProvider.notifier).set(null);
+                  },
+                  icon: const Icon(Icons.filter_alt_off_outlined),
+                  label: Text(l10n.clearFilters),
+                ),
               ),
             ],
           ],

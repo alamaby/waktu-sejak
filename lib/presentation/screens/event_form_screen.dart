@@ -49,7 +49,8 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
     final rand = Random();
     _selectedDateTime = DateTime.now();
     _selectedEmoji = eventEmojis[rand.nextInt(eventEmojis.length)];
-    _selectedColor = AppColors.okabeIto[rand.nextInt(AppColors.paletteColorCount)];
+    _selectedColor =
+        AppColors.okabeIto[rand.nextInt(AppColors.paletteColorCount)];
     _nameController.clear();
   }
 
@@ -181,18 +182,23 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                             ),
                       ),
                       const SizedBox(height: 8),
-                      TextFormField(
-                        key: const Key('event_name_field'),
-                        controller: _nameController,
-                        decoration: InputDecoration(hintText: l10n.eventNameHint),
-                        onChanged: (_) => setState(() {}),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.eventNameRequired;
-                          }
-                          return null;
-                        },
-                        textCapitalization: TextCapitalization.sentences,
+                      Semantics(
+                        identifier: 'event_name_field',
+                        textField: true,
+                        child: TextFormField(
+                          key: const Key('event_name_field'),
+                          controller: _nameController,
+                          decoration:
+                              InputDecoration(hintText: l10n.eventNameHint),
+                          onChanged: (_) => setState(() {}),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return l10n.eventNameRequired;
+                            }
+                            return null;
+                          },
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
                       ),
                       const SizedBox(height: 14),
 
@@ -218,26 +224,33 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                             ),
                       ),
                       const SizedBox(height: 8),
-                      GestureDetector(
-                        key: const Key('event_emoji_picker_button'),
-                        onTap: _pickEmoji,
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest
-                                .withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                      Semantics(
+                        identifier: 'event_emoji_picker_button',
+                        button: true,
+                        child: GestureDetector(
+                          key: const Key('event_emoji_picker_button'),
+                          onTap: _pickEmoji,
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest
+                                  .withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .outline
+                                    .withValues(alpha: 0.3),
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              _selectedEmoji,
-                              style: const TextStyle(fontSize: 32),
+                            child: Center(
+                              child: Text(
+                                _selectedEmoji,
+                                style: const TextStyle(fontSize: 32),
+                              ),
                             ),
                           ),
                         ),
@@ -252,10 +265,14 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                             ),
                       ),
                       const SizedBox(height: 12),
-                      ColorPickerWidget(
-                        key: const Key('event_color_picker'),
-                        selectedColor: _selectedColor,
-                        onColorSelected: (color) => setState(() => _selectedColor = color),
+                      Semantics(
+                        identifier: 'event_color_picker',
+                        child: ColorPickerWidget(
+                          key: const Key('event_color_picker'),
+                          selectedColor: _selectedColor,
+                          onColorSelected: (color) =>
+                              setState(() => _selectedColor = color),
+                        ),
                       ),
                     ],
                   ),
@@ -267,11 +284,15 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
                 child: SizedBox(
                   width: double.infinity,
-                  child: FilledButton.icon(
-                    key: const Key('save_event_button'),
-                    onPressed: _save,
-                    icon: const Icon(Icons.check),
-                    label: Text(_isEditing ? l10n.update : l10n.save),
+                  child: Semantics(
+                    identifier: 'save_event_button',
+                    button: true,
+                    child: FilledButton.icon(
+                      key: const Key('save_event_button'),
+                      onPressed: _save,
+                      icon: const Icon(Icons.check),
+                      label: Text(_isEditing ? l10n.update : l10n.save),
+                    ),
                   ),
                 ),
               ),
@@ -352,8 +373,18 @@ class _PreviewCard extends StatelessWidget {
 
   String _formatDateTime(DateTime dt) {
     final months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
     final h = dt.hour.toString().padLeft(2, '0');
     final m = dt.minute.toString().padLeft(2, '0');
@@ -369,38 +400,42 @@ class _DateTimeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      key: const Key('event_datetime_picker_button'),
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: Theme.of(context)
-              .colorScheme
-              .surfaceContainerHighest
-              .withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 20,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                _formatDateTime(dateTime),
-                style: Theme.of(context).textTheme.bodyLarge,
+    return Semantics(
+      identifier: 'event_datetime_picker_button',
+      button: true,
+      child: InkWell(
+        key: const Key('event_datetime_picker_button'),
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.calendar_today_outlined,
+                size: 20,
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ),
-            Icon(
-              Icons.chevron_right,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  _formatDateTime(dateTime),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -408,8 +443,18 @@ class _DateTimeButton extends StatelessWidget {
 
   String _formatDateTime(DateTime dt) {
     final months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     final h = dt.hour.toString().padLeft(2, '0');
     final m = dt.minute.toString().padLeft(2, '0');

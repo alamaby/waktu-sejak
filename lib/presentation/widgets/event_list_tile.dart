@@ -19,84 +19,91 @@ class EventListTile extends ConsumerWidget {
     final timeStr = TimeCalculator.localize(diff, l10n);
     final isPast = diff.isPast;
 
-    return Dismissible(
-      key: Key('event_list_tile_${event.id}'),
-      direction: DismissDirection.endToStart,
-      background: _DismissBackground(),
-      confirmDismiss: (_) => confirmDeleteEvent(context),
-      onDismissed: (_) {
-        ref.read(eventsNotifierProvider.notifier).deleteEvent(event.id);
-      },
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: ListTile(
-          key: Key('event_list_tile_tap_${event.id}'),
-          onTap: () => showEventActionsSheet(context, ref, event),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          leading: Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: event.color,
-                  borderRadius: BorderRadius.circular(12),
-                  // Overlay for past events
-                  border: isPast
-                      ? Border.all(
-                          color: Colors.black26,
-                          width: 2,
-                        )
-                      : null,
-                ),
-                child: Center(
-                  child: Text(
-                    event.emoji,
-                    style: const TextStyle(fontSize: 24),
+    return Semantics(
+      identifier: 'event_list_tile_${event.id}',
+      label: event.name,
+      button: true,
+      child: Dismissible(
+        key: Key('event_list_tile_${event.id}'),
+        direction: DismissDirection.endToStart,
+        background: _DismissBackground(),
+        confirmDismiss: (_) => confirmDeleteEvent(context),
+        onDismissed: (_) {
+          ref.read(eventsNotifierProvider.notifier).deleteEvent(event.id);
+        },
+        child: Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: ListTile(
+            key: Key('event_list_tile_tap_${event.id}'),
+            onTap: () => showEventActionsSheet(context, ref, event),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            leading: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: event.color,
+                    borderRadius: BorderRadius.circular(12),
+                    // Overlay for past events
+                    border: isPast
+                        ? Border.all(
+                            color: Colors.black26,
+                            width: 2,
+                          )
+                        : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      event.emoji,
+                      style: const TextStyle(fontSize: 24),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          title: Text(
-            event.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)
-                  : Theme.of(context).colorScheme.onSurface,
+              ],
             ),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 2),
-              Text(
-                timeStr,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+            title: Text(
+              event.name,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: isPast
+                    ? Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7)
+                    : Theme.of(context).colorScheme.onSurface,
               ),
-              const SizedBox(height: 4),
-              _StatusChip(isPast: isPast),
-            ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 2),
+                Text(
+                  timeStr,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                _StatusChip(isPast: isPast),
+              ],
+            ),
+            trailing: Icon(
+              isPast ? Icons.history : Icons.arrow_forward,
+              color: isPast
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : Theme.of(context).colorScheme.primary,
+              size: 20,
+            ),
+            isThreeLine: true,
           ),
-          trailing: Icon(
-            isPast ? Icons.history : Icons.arrow_forward,
-            color: isPast
-                ? Theme.of(context).colorScheme.onSurfaceVariant
-                : Theme.of(context).colorScheme.primary,
-            size: 20,
-          ),
-          isThreeLine: true,
         ),
       ),
     );
   }
-
 }
 
 class _StatusChip extends StatelessWidget {
@@ -120,7 +127,9 @@ class _StatusChip extends StatelessWidget {
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w600,
-          color: isPast ? colorScheme.onSurfaceVariant : colorScheme.onPrimaryContainer,
+          color: isPast
+              ? colorScheme.onSurfaceVariant
+              : colorScheme.onPrimaryContainer,
           letterSpacing: 0.3,
         ),
       ),
