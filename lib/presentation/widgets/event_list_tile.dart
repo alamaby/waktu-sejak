@@ -20,7 +20,7 @@ class EventListTile extends ConsumerWidget {
     final isPast = diff.isPast;
 
     return Dismissible(
-      key: Key(event.id),
+      key: Key('event_list_tile_${event.id}'),
       direction: DismissDirection.endToStart,
       background: _DismissBackground(),
       confirmDismiss: (_) => confirmDeleteEvent(context),
@@ -30,6 +30,7 @@ class EventListTile extends ConsumerWidget {
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: ListTile(
+          key: Key('event_list_tile_tap_${event.id}'),
           onTap: () => showEventActionsSheet(context, ref, event),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

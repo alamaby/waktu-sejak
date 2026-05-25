@@ -20,6 +20,7 @@ class ColorPickerWidget extends StatelessWidget {
         final color = AppColors.okabeIto[index];
         final isSelected = color.toARGB32() == selectedColor.toARGB32();
         return GestureDetector(
+          key: Key('color_option_$index'),
           onTap: () => onColorSelected(color),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),

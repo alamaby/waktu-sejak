@@ -27,6 +27,7 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.language,
             icon: Icons.language,
             child: SegmentedButton<Locale>(
+              key: const Key('settings_language_segmented_button'),
               expandedInsets: EdgeInsets.zero,
               showSelectedIcon: false,
               segments: [
@@ -67,6 +68,7 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.theme,
             icon: Icons.palette_outlined,
             child: SegmentedButton<ThemeMode>(
+              key: const Key('settings_theme_segmented_button'),
               expandedInsets: EdgeInsets.zero,
               showSelectedIcon: false,
               segments: [
@@ -158,6 +160,7 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               children: [
                 ListTile(
+                  key: const Key('settings_export_data_button'),
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
                     Icons.upload_file_outlined,
@@ -169,6 +172,7 @@ class SettingsScreen extends ConsumerWidget {
                   onTap: () => _handleExport(context, ref),
                 ),
                 ListTile(
+                  key: const Key('settings_import_data_button'),
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
                     Icons.download_outlined,

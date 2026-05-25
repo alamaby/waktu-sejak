@@ -10,10 +10,12 @@ Future<bool> confirmDeleteEvent(BuildContext context) async {
       content: Text(l10n.deleteConfirmBody),
       actions: [
         TextButton(
+          key: const Key('confirm_delete_cancel_button'),
           onPressed: () => Navigator.of(ctx).pop(false),
           child: Text(l10n.cancel),
         ),
         FilledButton(
+          key: const Key('confirm_delete_confirm_button'),
           style: FilledButton.styleFrom(
             backgroundColor: Theme.of(ctx).colorScheme.error,
           ),

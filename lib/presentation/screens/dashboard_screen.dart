@@ -47,6 +47,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         actions: [
           // View toggle button
           IconButton(
+            key: const Key('dashboard_view_toggle_button'),
             tooltip: viewType == ViewType.card ? l10n.listView : l10n.cardView,
             icon: Icon(
               viewType == ViewType.card
@@ -58,6 +59,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
           // Sort popup menu
           PopupMenuButton<SortType>(
+            key: const Key('dashboard_sort_button'),
             tooltip: l10n.sortLabel,
             icon: const Icon(Icons.sort),
             initialValue: sortType,
@@ -65,6 +67,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ref.read(sortTypeNotifierProvider.notifier).set(type),
             itemBuilder: (_) => [
               PopupMenuItem(
+                key: const Key('sort_by_name_option'),
                 value: SortType.byName,
                 child: Row(
                   children: [
@@ -81,6 +84,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
               ),
               PopupMenuItem(
+                key: const Key('sort_by_time_closest_option'),
                 value: SortType.byTimeClosest,
                 child: Row(
                   children: [
@@ -97,6 +101,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
               ),
               PopupMenuItem(
+                key: const Key('sort_by_time_farthest_option'),
                 value: SortType.byTimeFarthest,
                 child: Row(
                   children: [
@@ -185,6 +190,7 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              key: const Key('dashboard_search_field'),
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: l10n.searchEvents,
@@ -192,6 +198,7 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
                 suffixIcon: query.isEmpty
                     ? null
                     : IconButton(
+                        key: const Key('dashboard_search_clear_button'),
                         tooltip: l10n.clearFilters,
                         icon: const Icon(Icons.close),
                         onPressed: () =>
@@ -234,6 +241,7 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
                 ),
                 if (hasActiveFilters)
                   IconButton(
+                    key: const Key('dashboard_clear_filters_button'),
                     tooltip: l10n.clearFilters,
                     icon: const Icon(Icons.filter_alt_off_outlined),
                     onPressed: () {
@@ -256,6 +264,7 @@ class _DashboardFiltersState extends ConsumerState<_DashboardFilters> {
                     children: [
                       for (final emoji in emojis) ...[
                         ChoiceChip(
+                          key: Key('dashboard_emoji_filter_$emoji'),
                           label: Text(
                             emoji,
                             style: const TextStyle(fontSize: 18),
@@ -296,6 +305,7 @@ class _StatusFilterChip extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FilterChip(
+      key: Key('dashboard_status_filter_${filter.name}'),
       label: Text(label),
       selected: selected,
       showCheckmark: false,
@@ -379,6 +389,7 @@ class _EmptyState extends ConsumerWidget {
             if (showClearFilters) ...[
               const SizedBox(height: 16),
               TextButton.icon(
+                key: const Key('empty_state_clear_filters_button'),
                 onPressed: () {
                   ref.read(eventSearchQueryProvider.notifier).clear();
                   ref

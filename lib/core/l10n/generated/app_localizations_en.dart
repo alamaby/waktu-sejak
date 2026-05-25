@@ -76,6 +76,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emojiLabel => 'Emoji';
 
   @override
+  String get searchEmoji => 'Search emoji';
+
+  @override
+  String get noEmojiResults => 'No matching emoji';
+
+  @override
+  String get emojiCategoryRecent => 'Recent';
+
+  @override
+  String get emojiCategoryPopular => 'Popular';
+
+  @override
+  String get emojiCategoryPersonal => 'Personal';
+
+  @override
+  String get emojiCategoryTravel => 'Travel';
+
+  @override
+  String get emojiCategoryVehicle => 'Vehicle';
+
+  @override
+  String get emojiCategoryWork => 'Work';
+
+  @override
+  String get emojiCategoryHealth => 'Health';
+
+  @override
+  String get emojiCategoryHome => 'Home';
+
+  @override
+  String get emojiCategoryFaith => 'Faith';
+
+  @override
   String get colorLabel => 'Color';
 
   @override

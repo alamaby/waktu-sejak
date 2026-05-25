@@ -76,6 +76,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get emojiLabel => 'Emoji';
 
   @override
+  String get searchEmoji => 'Cari emoji';
+
+  @override
+  String get noEmojiResults => 'Emoji tidak ditemukan';
+
+  @override
+  String get emojiCategoryRecent => 'Terbaru';
+
+  @override
+  String get emojiCategoryPopular => 'Populer';
+
+  @override
+  String get emojiCategoryPersonal => 'Personal';
+
+  @override
+  String get emojiCategoryTravel => 'Perjalanan';
+
+  @override
+  String get emojiCategoryVehicle => 'Kendaraan';
+
+  @override
+  String get emojiCategoryWork => 'Kerja';
+
+  @override
+  String get emojiCategoryHealth => 'Kesehatan';
+
+  @override
+  String get emojiCategoryHome => 'Rumah';
+
+  @override
+  String get emojiCategoryFaith => 'Ibadah';
+
+  @override
   String get colorLabel => 'Warna';
 
   @override

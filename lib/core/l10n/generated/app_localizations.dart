@@ -230,6 +230,72 @@ abstract class AppLocalizations {
   /// **'Emoji'**
   String get emojiLabel;
 
+  /// No description provided for @searchEmoji.
+  ///
+  /// In en, this message translates to:
+  /// **'Search emoji'**
+  String get searchEmoji;
+
+  /// No description provided for @noEmojiResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching emoji'**
+  String get noEmojiResults;
+
+  /// No description provided for @emojiCategoryRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get emojiCategoryRecent;
+
+  /// No description provided for @emojiCategoryPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular'**
+  String get emojiCategoryPopular;
+
+  /// No description provided for @emojiCategoryPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get emojiCategoryPersonal;
+
+  /// No description provided for @emojiCategoryTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get emojiCategoryTravel;
+
+  /// No description provided for @emojiCategoryVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get emojiCategoryVehicle;
+
+  /// No description provided for @emojiCategoryWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get emojiCategoryWork;
+
+  /// No description provided for @emojiCategoryHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get emojiCategoryHealth;
+
+  /// No description provided for @emojiCategoryHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get emojiCategoryHome;
+
+  /// No description provided for @emojiCategoryFaith.
+  ///
+  /// In en, this message translates to:
+  /// **'Faith'**
+  String get emojiCategoryFaith;
+
   /// No description provided for @colorLabel.
   ///
   /// In en, this message translates to:

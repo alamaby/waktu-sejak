@@ -89,10 +89,24 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
     final picked = await showEmojiPicker(
       context,
       currentEmoji: _selectedEmoji,
+      recentEmojis: _recentEmojis(),
     );
     if (picked != null) {
       setState(() => _selectedEmoji = picked);
     }
+  }
+
+  List<String> _recentEmojis() {
+    final events = [...ref.read(eventsNotifierProvider)]
+      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final recent = <String>[];
+    for (final event in events) {
+      if (!recent.contains(event.emoji)) {
+        recent.add(event.emoji);
+      }
+      if (recent.length == 12) break;
+    }
+    return recent;
   }
 
   void _save() {
@@ -168,6 +182,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
+                        key: const Key('event_name_field'),
                         controller: _nameController,
                         decoration: InputDecoration(hintText: l10n.eventNameHint),
                         onChanged: (_) => setState(() {}),
@@ -204,6 +219,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                       ),
                       const SizedBox(height: 8),
                       GestureDetector(
+                        key: const Key('event_emoji_picker_button'),
                         onTap: _pickEmoji,
                         child: Container(
                           width: 64,
@@ -237,6 +253,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                       ),
                       const SizedBox(height: 12),
                       ColorPickerWidget(
+                        key: const Key('event_color_picker'),
                         selectedColor: _selectedColor,
                         onColorSelected: (color) => setState(() => _selectedColor = color),
                       ),
@@ -251,6 +268,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                 child: SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
+                    key: const Key('save_event_button'),
                     onPressed: _save,
                     icon: const Icon(Icons.check),
                     label: Text(_isEditing ? l10n.update : l10n.save),
@@ -352,6 +370,7 @@ class _DateTimeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: const Key('event_datetime_picker_button'),
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(

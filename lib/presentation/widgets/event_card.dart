@@ -20,6 +20,7 @@ class EventCard extends ConsumerWidget {
     final isPast = diff.isPast;
 
     return GestureDetector(
+      key: Key('event_card_${event.id}'),
       onTap: () => showEventActionsSheet(context, ref, event),
       child: Stack(
         children: [
