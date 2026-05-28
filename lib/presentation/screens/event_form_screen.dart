@@ -263,63 +263,82 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                       ),
                       const SizedBox(height: 14),
 
-                      // Emoji picker
-                      Text(
-                        l10n.emojiLabel,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      Semantics(
-                        identifier: 'event_emoji_picker_button',
-                        button: true,
-                        child: GestureDetector(
-                          key: const Key('event_emoji_picker_button'),
-                          onTap: _pickEmoji,
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest
-                                  .withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .outline
-                                    .withValues(alpha: 0.3),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                _selectedEmoji,
-                                style: const TextStyle(fontSize: 32),
-                              ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 80,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.emojiLabel,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(height: 8),
+                                Semantics(
+                                  identifier: 'event_emoji_picker_button',
+                                  button: true,
+                                  child: GestureDetector(
+                                    key: const Key('event_emoji_picker_button'),
+                                    onTap: _pickEmoji,
+                                    child: Container(
+                                      width: 64,
+                                      height: 64,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surfaceContainerHighest
+                                            .withValues(alpha: 0.5),
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .outline
+                                              .withValues(alpha: 0.3),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          _selectedEmoji,
+                                          style: const TextStyle(fontSize: 32),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-
-                      // Color picker
-                      Text(
-                        l10n.colorLabel,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.colorLabel,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(height: 12),
+                                Semantics(
+                                  identifier: 'event_color_picker',
+                                  child: ColorPickerWidget(
+                                    key: const Key('event_color_picker'),
+                                    selectedColor: _selectedColor,
+                                    onColorSelected: (color) =>
+                                        setState(() => _selectedColor = color),
+                                  ),
+                                ),
+                              ],
                             ),
-                      ),
-                      const SizedBox(height: 12),
-                      Semantics(
-                        identifier: 'event_color_picker',
-                        child: ColorPickerWidget(
-                          key: const Key('event_color_picker'),
-                          selectedColor: _selectedColor,
-                          onColorSelected: (color) =>
-                              setState(() => _selectedColor = color),
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
