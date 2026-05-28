@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/l10n/generated/app_localizations.dart';
+import '../../core/utils/recurrence_calculator.dart';
 import '../../core/utils/time_calculator.dart';
 import '../models/event_model.dart';
 
@@ -24,10 +25,14 @@ class HomeWidgetService {
 
     final events = _loadEvents(p);
     final now = DateTime.now();
-    events.sort((a, b) => a.targetDate
+    events.sort((a, b) => RecurrenceCalculator.effectiveTargetDate(a, now: now)
         .difference(now)
         .abs()
-        .compareTo(b.targetDate.difference(now).abs()));
+        .compareTo(
+          RecurrenceCalculator.effectiveTargetDate(b, now: now)
+              .difference(now)
+              .abs(),
+        ));
     final top = events.take(_maxItems).toList();
 
     final langCode = p.getString(_localeKey) ?? 'en';
@@ -40,7 +45,8 @@ class HomeWidgetService {
     for (var i = 0; i < _maxItems; i++) {
       if (i < top.length) {
         final e = top[i];
-        final diff = TimeCalculator.calculate(e.targetDate);
+        final targetDate = RecurrenceCalculator.effectiveTargetDate(e);
+        final diff = TimeCalculator.calculate(targetDate);
         await HomeWidget.saveWidgetData<String>('event_${i}_id', e.id);
         await HomeWidget.saveWidgetData<String>('event_${i}_emoji', e.emoji);
         await HomeWidget.saveWidgetData<String>('event_${i}_title', e.name);

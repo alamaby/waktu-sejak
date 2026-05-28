@@ -224,6 +224,30 @@ abstract class AppLocalizations {
   /// **'Date & Time'**
   String get dateAndTime;
 
+  /// No description provided for @recurrenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get recurrenceLabel;
+
+  /// No description provided for @recurrenceNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get recurrenceNone;
+
+  /// No description provided for @recurrenceYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get recurrenceYearly;
+
+  /// No description provided for @recurrenceMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get recurrenceMonthly;
+
   /// No description provided for @emojiLabel.
   ///
   /// In en, this message translates to:

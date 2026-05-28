@@ -26,7 +26,7 @@ class ExportIoError implements Exception {
 
 class DataPortabilityService {
   static const _appTag = 'waktu_sejak';
-  static const _schemaVersion = 1;
+  static const _schemaVersion = 2;
 
   static Future<void> exportEvents(
     List<EventModel> events, {
@@ -133,10 +133,17 @@ class DataPortabilityService {
     final emoji = m['emoji'];
     final color = m['color'];
     final createdAt = m['createdAt'];
+    final recurrenceType = m['recurrenceType'];
     if (id is! String || id.isEmpty) return false;
     if (name is! String) return false;
     if (emoji is! String || emoji.isEmpty) return false;
     if (color is! int) return false;
+    if (recurrenceType != null &&
+        (recurrenceType is! String ||
+            !RecurrenceType.values
+                .any((type) => type.name == recurrenceType))) {
+      return false;
+    }
     if (targetDate is! String || DateTime.tryParse(targetDate) == null) {
       return false;
     }

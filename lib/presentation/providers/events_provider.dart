@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/l10n/generated/app_localizations.dart';
+import '../../core/utils/recurrence_calculator.dart';
 import '../../data/local/preferences_provider.dart';
 import '../../data/models/event_model.dart';
 import '../../data/repositories/events_repository.dart';
@@ -223,7 +224,7 @@ List<EventModel> visibleEvents(Ref ref) {
   final visible = events.where((event) {
     final matchesQuery =
         query.isEmpty || event.name.toLowerCase().contains(query);
-    final isPast = event.targetDate.isBefore(now);
+    final isPast = RecurrenceCalculator.isPast(event, now: now);
     final matchesStatus = switch (statusFilter) {
       EventStatusFilter.all => true,
       EventStatusFilter.past => isPast,
@@ -238,17 +239,25 @@ List<EventModel> visibleEvents(Ref ref) {
       visible.sort((a, b) => a.name.compareTo(b.name));
     case SortType.byTimeClosest:
       visible.sort(
-        (a, b) => a.targetDate
+        (a, b) => RecurrenceCalculator.effectiveTargetDate(a, now: now)
             .difference(now)
             .abs()
-            .compareTo(b.targetDate.difference(now).abs()),
+            .compareTo(
+              RecurrenceCalculator.effectiveTargetDate(b, now: now)
+                  .difference(now)
+                  .abs(),
+            ),
       );
     case SortType.byTimeFarthest:
       visible.sort(
-        (a, b) => b.targetDate
+        (a, b) => RecurrenceCalculator.effectiveTargetDate(b, now: now)
             .difference(now)
             .abs()
-            .compareTo(a.targetDate.difference(now).abs()),
+            .compareTo(
+              RecurrenceCalculator.effectiveTargetDate(a, now: now)
+                  .difference(now)
+                  .abs(),
+            ),
       );
   }
 

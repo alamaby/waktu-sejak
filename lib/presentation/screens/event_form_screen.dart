@@ -29,6 +29,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
   late DateTime _selectedDateTime;
   late String _selectedEmoji;
   late Color _selectedColor;
+  late RecurrenceType _recurrenceType;
 
   bool get _isEditing => widget.editingEvent != null;
 
@@ -41,6 +42,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
       _selectedDateTime = e.targetDate;
       _selectedEmoji = e.emoji;
       _selectedColor = e.color;
+      _recurrenceType = e.recurrenceType;
     } else {
       _resetForm();
     }
@@ -52,6 +54,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
     _selectedEmoji = eventEmojis[rand.nextInt(eventEmojis.length)];
     _selectedColor =
         AppColors.okabeIto[rand.nextInt(AppColors.paletteColorCount)];
+    _recurrenceType = RecurrenceType.none;
     _nameController.clear();
   }
 
@@ -122,6 +125,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
         targetDate: _selectedDateTime,
         emoji: _selectedEmoji,
         color: _selectedColor,
+        recurrenceType: _recurrenceType,
       );
       notifier.updateEvent(updated);
       Navigator.of(context).pop();
@@ -135,6 +139,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
       emoji: _selectedEmoji,
       color: _selectedColor,
       createdAt: DateTime.now(),
+      recurrenceType: _recurrenceType,
     );
 
     notifier.addEvent(event);
@@ -214,6 +219,47 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                       _DateTimeButton(
                         dateTime: _selectedDateTime,
                         onTap: _pickDateTime,
+                      ),
+                      const SizedBox(height: 14),
+
+                      Text(
+                        l10n.recurrenceLabel,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Semantics(
+                        identifier: 'event_recurrence_segmented_button',
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SegmentedButton<RecurrenceType>(
+                            key: const Key(
+                              'event_recurrence_segmented_button',
+                            ),
+                            segments: [
+                              ButtonSegment(
+                                value: RecurrenceType.none,
+                                icon: const Icon(Icons.event_outlined),
+                                label: Text(l10n.recurrenceNone),
+                              ),
+                              ButtonSegment(
+                                value: RecurrenceType.yearly,
+                                icon: const Icon(Icons.cake_outlined),
+                                label: Text(l10n.recurrenceYearly),
+                              ),
+                              ButtonSegment(
+                                value: RecurrenceType.monthly,
+                                icon: const Icon(Icons.calendar_month_outlined),
+                                label: Text(l10n.recurrenceMonthly),
+                              ),
+                            ],
+                            selected: {_recurrenceType},
+                            onSelectionChanged: (value) {
+                              setState(() => _recurrenceType = value.first);
+                            },
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 14),
 

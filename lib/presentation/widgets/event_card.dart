@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/l10n/generated/app_localizations.dart';
+import '../../core/utils/recurrence_calculator.dart';
 import '../../core/utils/time_calculator.dart';
 import '../../data/models/event_model.dart';
 import 'event_actions_sheet.dart';
@@ -14,7 +15,8 @@ class EventCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final diff = TimeCalculator.calculate(event.targetDate);
+    final targetDate = RecurrenceCalculator.effectiveTargetDate(event);
+    final diff = TimeCalculator.calculate(targetDate);
     final timeStr = TimeCalculator.localize(diff, l10n);
     final textColor = AppColors.textColorOn(event.color);
     final isPast = diff.isPast;

@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 
+enum RecurrenceType {
+  none,
+  yearly,
+  monthly;
+
+  static RecurrenceType fromJson(Object? value) {
+    if (value is! String) return RecurrenceType.none;
+    for (final type in RecurrenceType.values) {
+      if (type.name == value) return type;
+    }
+    return RecurrenceType.none;
+  }
+}
+
 class EventModel {
   final String id;
   final String name;
@@ -7,6 +21,7 @@ class EventModel {
   final String emoji;
   final Color color;
   final DateTime createdAt;
+  final RecurrenceType recurrenceType;
 
   const EventModel({
     required this.id,
@@ -15,9 +30,12 @@ class EventModel {
     required this.emoji,
     required this.color,
     required this.createdAt,
+    this.recurrenceType = RecurrenceType.none,
   });
 
-  bool get isPast => targetDate.isBefore(DateTime.now());
+  bool get isPast =>
+      recurrenceType == RecurrenceType.none &&
+      targetDate.isBefore(DateTime.now());
 
   EventModel copyWith({
     String? id,
@@ -26,6 +44,7 @@ class EventModel {
     String? emoji,
     Color? color,
     DateTime? createdAt,
+    RecurrenceType? recurrenceType,
   }) {
     return EventModel(
       id: id ?? this.id,
@@ -34,6 +53,7 @@ class EventModel {
       emoji: emoji ?? this.emoji,
       color: color ?? this.color,
       createdAt: createdAt ?? this.createdAt,
+      recurrenceType: recurrenceType ?? this.recurrenceType,
     );
   }
 
@@ -44,6 +64,7 @@ class EventModel {
         'emoji': emoji,
         'color': color.toARGB32(),
         'createdAt': createdAt.toIso8601String(),
+        'recurrenceType': recurrenceType.name,
       };
 
   factory EventModel.fromJson(Map<String, dynamic> j) => EventModel(
@@ -53,6 +74,7 @@ class EventModel {
         emoji: j['emoji'] as String,
         color: Color(j['color'] as int),
         createdAt: DateTime.parse(j['createdAt'] as String),
+        recurrenceType: RecurrenceType.fromJson(j['recurrenceType']),
       );
 
   @override

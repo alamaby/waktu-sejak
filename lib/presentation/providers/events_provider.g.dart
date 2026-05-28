@@ -42,7 +42,7 @@ final hasActiveEventFiltersProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef HasActiveEventFiltersRef = AutoDisposeProviderRef<bool>;
-String _$visibleEventsHash() => r'093f1f3d33c0690ba584a87d1125c3ec363f1a06';
+String _$visibleEventsHash() => r'1f24d8b584d3a26dbadff8e4deecdcb8f6094ea6';
 
 /// See also [visibleEvents].
 @ProviderFor(visibleEvents)
@@ -59,7 +59,7 @@ final visibleEventsProvider = AutoDisposeProvider<List<EventModel>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef VisibleEventsRef = AutoDisposeProviderRef<List<EventModel>>;
-String _$eventsNotifierHash() => r'd327af74c5739c9437cec8e8c11dd398c572a244';
+String _$eventsNotifierHash() => r'9a8f0820f3c663ac0a77b836bb5b299a0007e8c1';
 
 /// See also [EventsNotifier].
 @ProviderFor(EventsNotifier)

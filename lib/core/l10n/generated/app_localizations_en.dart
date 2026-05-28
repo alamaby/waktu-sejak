@@ -73,6 +73,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dateAndTime => 'Date & Time';
 
   @override
+  String get recurrenceLabel => 'Repeat';
+
+  @override
+  String get recurrenceNone => 'None';
+
+  @override
+  String get recurrenceYearly => 'Yearly';
+
+  @override
+  String get recurrenceMonthly => 'Monthly';
+
+  @override
   String get emojiLabel => 'Emoji';
 
   @override

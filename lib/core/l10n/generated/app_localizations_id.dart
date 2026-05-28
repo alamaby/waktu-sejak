@@ -73,6 +73,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get dateAndTime => 'Tanggal & Waktu';
 
   @override
+  String get recurrenceLabel => 'Ulangi';
+
+  @override
+  String get recurrenceNone => 'Tidak';
+
+  @override
+  String get recurrenceYearly => 'Tahunan';
+
+  @override
+  String get recurrenceMonthly => 'Bulanan';
+
+  @override
   String get emojiLabel => 'Emoji';
 
   @override
