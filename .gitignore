@@ -57,7 +57,13 @@ unlinked_spec.ds
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
+key.properties
+**/key.properties
 *.jks
+
+# Release artifacts
+*.aab
+*.apk
 
 # iOS/XCode related
 **/ios/**/*.mode1v3

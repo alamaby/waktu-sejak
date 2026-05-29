@@ -7,7 +7,13 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)
 ![Riverpod](https://img.shields.io/badge/Riverpod-2.x-00BFFF)
+![Version](https://img.shields.io/github/v/release/alamaby/waktu-sejak?include_prereleases)
+![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)
+![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20ID-blue)
+![Privacy](https://img.shields.io/badge/Privacy-Local%20First-success)
 ![License](https://img.shields.io/github/license/alamaby/waktu-sejak)
+
+[![Get it on Google Play](https://img.shields.io/badge/Get%20it%20on-Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.alamaby.waktu_sejak)
 
 *"Waktu Sejak" means "Time Since" in Bahasa Indonesia.*
 

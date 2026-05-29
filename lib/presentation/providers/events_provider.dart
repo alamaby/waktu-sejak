@@ -194,6 +194,13 @@ class SelectedTab extends _$SelectedTab {
   void select(int index) => state = index;
 }
 
+final dashboardClockProvider = StreamProvider.autoDispose<DateTime>((ref) {
+  return Stream.periodic(
+    const Duration(seconds: 1),
+    (_) => DateTime.now(),
+  );
+});
+
 @riverpod
 List<String> availableEventEmojis(Ref ref) {
   final events = ref.watch(eventsNotifierProvider);
@@ -219,7 +226,7 @@ List<EventModel> visibleEvents(Ref ref) {
   final statusFilter = ref.watch(eventStatusFilterNotifierProvider);
   final emojiFilter = ref.watch(eventEmojiFilterProvider);
   final sortType = ref.watch(sortTypeNotifierProvider);
-  final now = DateTime.now();
+  final now = ref.watch(dashboardClockProvider).valueOrNull ?? DateTime.now();
 
   final visible = events.where((event) {
     final matchesQuery =

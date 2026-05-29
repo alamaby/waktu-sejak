@@ -32,11 +32,11 @@ class TimeDiff {
 class TimeCalculator {
   TimeCalculator._();
 
-  static TimeDiff calculate(DateTime target) {
-    final now = DateTime.now();
-    final isPast = target.isBefore(now);
-    final from = isPast ? target : now;
-    final to = isPast ? now : target;
+  static TimeDiff calculate(DateTime target, {DateTime? now}) {
+    final reference = now ?? DateTime.now();
+    final isPast = target.isBefore(reference);
+    final from = isPast ? target : reference;
+    final to = isPast ? reference : target;
 
     int years = to.year - from.year;
     int months = to.month - from.month;
