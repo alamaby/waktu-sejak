@@ -14,6 +14,19 @@ enum RecurrenceType {
   }
 }
 
+enum EventKind {
+  normal,
+  supporter;
+
+  static EventKind fromJson(Object? value) {
+    if (value is! String) return EventKind.normal;
+    for (final kind in EventKind.values) {
+      if (kind.name == value) return kind;
+    }
+    return EventKind.normal;
+  }
+}
+
 class EventModel {
   final String id;
   final String name;
@@ -22,6 +35,8 @@ class EventModel {
   final Color color;
   final DateTime createdAt;
   final RecurrenceType recurrenceType;
+  final EventKind kind;
+  final int supportCount;
 
   const EventModel({
     required this.id,
@@ -31,7 +46,11 @@ class EventModel {
     required this.color,
     required this.createdAt,
     this.recurrenceType = RecurrenceType.none,
+    this.kind = EventKind.normal,
+    this.supportCount = 0,
   });
+
+  bool get isSupporterReward => kind == EventKind.supporter;
 
   bool get isPast =>
       recurrenceType == RecurrenceType.none &&
@@ -45,6 +64,8 @@ class EventModel {
     Color? color,
     DateTime? createdAt,
     RecurrenceType? recurrenceType,
+    EventKind? kind,
+    int? supportCount,
   }) {
     return EventModel(
       id: id ?? this.id,
@@ -54,6 +75,8 @@ class EventModel {
       color: color ?? this.color,
       createdAt: createdAt ?? this.createdAt,
       recurrenceType: recurrenceType ?? this.recurrenceType,
+      kind: kind ?? this.kind,
+      supportCount: supportCount ?? this.supportCount,
     );
   }
 
@@ -65,6 +88,8 @@ class EventModel {
         'color': color.toARGB32(),
         'createdAt': createdAt.toIso8601String(),
         'recurrenceType': recurrenceType.name,
+        'kind': kind.name,
+        'supportCount': supportCount,
       };
 
   factory EventModel.fromJson(Map<String, dynamic> j) => EventModel(
@@ -75,7 +100,15 @@ class EventModel {
         color: Color(j['color'] as int),
         createdAt: DateTime.parse(j['createdAt'] as String),
         recurrenceType: RecurrenceType.fromJson(j['recurrenceType']),
+        kind: EventKind.fromJson(j['kind']),
+        supportCount: _intFromJson(j['supportCount']),
       );
+
+  static int _intFromJson(Object? value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return 0;
+  }
 
   @override
   bool operator ==(Object other) =>

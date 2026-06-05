@@ -7,6 +7,7 @@ import '../../data/models/event_model.dart';
 import '../providers/events_provider.dart';
 import 'confirm_delete_dialog.dart';
 import 'event_actions_sheet.dart';
+import 'supporter_reward_dialog.dart';
 
 class EventListTile extends ConsumerWidget {
   final EventModel event;
@@ -20,6 +21,8 @@ class EventListTile extends ConsumerWidget {
     final diff = TimeCalculator.calculate(targetDate);
     final timeStr = TimeCalculator.localize(diff, l10n);
     final isPast = diff.isPast;
+    final isSupporterReward = event.isSupporterReward;
+    final shouldDim = isPast && !isSupporterReward;
 
     return Semantics(
       identifier: 'event_list_tile_${event.id}',
@@ -35,9 +38,22 @@ class EventListTile extends ConsumerWidget {
         },
         child: Card(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          color: isSupporterReward
+              ? const Color(0xFFFFC857).withValues(alpha: 0.18)
+              : null,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: isSupporterReward
+                ? BorderSide(
+                    color: const Color(0xFFFFC857).withValues(alpha: 0.8),
+                  )
+                : BorderSide.none,
+          ),
           child: ListTile(
             key: Key('event_list_tile_tap_${event.id}'),
-            onTap: () => showEventActionsSheet(context, ref, event),
+            onTap: () => isSupporterReward
+                ? showSupporterRewardDialog(context, ref, event)
+                : showEventActionsSheet(context, ref, event),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             leading: Stack(
@@ -50,7 +66,7 @@ class EventListTile extends ConsumerWidget {
                     color: event.color,
                     borderRadius: BorderRadius.circular(12),
                     // Overlay for past events
-                    border: isPast
+                    border: shouldDim
                         ? Border.all(
                             color: Colors.black26,
                             width: 2,
@@ -70,7 +86,7 @@ class EventListTile extends ConsumerWidget {
               event.name,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: isPast
+                color: shouldDim
                     ? Theme.of(context)
                         .colorScheme
                         .onSurface
@@ -90,14 +106,22 @@ class EventListTile extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                _StatusChip(isPast: isPast),
+                isSupporterReward
+                    ? _SupporterChip(count: event.supportCount)
+                    : _StatusChip(isPast: isPast),
               ],
             ),
             trailing: Icon(
-              isPast ? Icons.history : Icons.arrow_forward,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              isSupporterReward
+                  ? Icons.auto_awesome
+                  : isPast
+                      ? Icons.history
+                      : Icons.arrow_forward,
+              color: isSupporterReward
+                  ? const Color(0xFFF2A541)
+                  : isPast
+                      ? Theme.of(context).colorScheme.onSurfaceVariant
+                      : Theme.of(context).colorScheme.primary,
               size: 20,
             ),
             isThreeLine: true,
@@ -132,6 +156,33 @@ class _StatusChip extends StatelessWidget {
           color: isPast
               ? colorScheme.onSurfaceVariant
               : colorScheme.onPrimaryContainer,
+          letterSpacing: 0.3,
+        ),
+      ),
+    );
+  }
+}
+
+class _SupporterChip extends StatelessWidget {
+  final int count;
+
+  const _SupporterChip({required this.count});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFC857).withValues(alpha: 0.25),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        l10n.supporterRewardBadge(count),
+        style: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+          color: Color(0xFF7A4F00),
           letterSpacing: 0.3,
         ),
       ),

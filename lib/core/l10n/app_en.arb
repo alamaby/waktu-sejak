@@ -80,6 +80,16 @@
   "supportDeveloperPending": "Waiting for Google Play…",
   "supportDeveloperThanks": "Thank you for supporting future updates.",
   "supportDeveloperFailed": "Support purchase could not be completed.",
+  "supporterRewardTitle": "Support for Waktu Sejak",
+  "supporterRewardBadge": "{count, plural, =1{Supporter} other{Supporter x{count}}}",
+  "@supporterRewardBadge": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "supporterRewardDialogTitle": "Thank you for the support",
+  "supporterRewardDialogBody": "Your support helps Waktu Sejak keep growing with new features.",
+  "close": "Close",
   "privacyPolicy": "Privacy Policy",
   "justNow": "Just now",
   "timeAgoY": "{years, plural, =1{1 year ago} other{{years} years ago}}",

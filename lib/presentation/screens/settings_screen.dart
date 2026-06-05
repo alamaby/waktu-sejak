@@ -18,6 +18,20 @@ class SettingsScreen extends ConsumerWidget {
     final locale = ref.watch(localeNotifierProvider);
     final themeMode = ref.watch(themeModeNotifierProvider);
 
+    ref.listen<SupportBillingState>(supportBillingControllerProvider,
+        (previous, next) {
+      final completedProductId = next.completedProductId;
+      if (completedProductId == null ||
+          completedProductId == previous?.completedProductId) {
+        return;
+      }
+
+      ref.read(eventsNotifierProvider.notifier).upsertSupporterReward(
+            name: AppLocalizations.of(context).supporterRewardTitle,
+            supportCount: next.completedSupportCount,
+          );
+    });
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
       body: ListView(

@@ -578,6 +578,36 @@ abstract class AppLocalizations {
   /// **'Support purchase could not be completed.'**
   String get supportDeveloperFailed;
 
+  /// No description provided for @supporterRewardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support for Waktu Sejak'**
+  String get supporterRewardTitle;
+
+  /// No description provided for @supporterRewardBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Supporter} other{Supporter x{count}}}'**
+  String supporterRewardBadge(int count);
+
+  /// No description provided for @supporterRewardDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for the support'**
+  String get supporterRewardDialogTitle;
+
+  /// No description provided for @supporterRewardDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your support helps Waktu Sejak keep growing with new features.'**
+  String get supporterRewardDialogBody;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @privacyPolicy.
   ///
   /// In en, this message translates to:

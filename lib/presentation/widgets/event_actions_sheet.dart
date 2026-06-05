@@ -69,16 +69,17 @@ class _EventActionsSheet extends StatelessWidget {
               ],
             ),
           ),
-          Semantics(
-            identifier: 'event_action_edit_button',
-            button: true,
-            child: ListTile(
-              key: const Key('event_action_edit_button'),
-              leading: const Icon(Icons.edit_outlined),
-              title: Text(l10n.edit),
-              onTap: () => Navigator.of(context).pop(_EventAction.edit),
+          if (!event.isSupporterReward)
+            Semantics(
+              identifier: 'event_action_edit_button',
+              button: true,
+              child: ListTile(
+                key: const Key('event_action_edit_button'),
+                leading: const Icon(Icons.edit_outlined),
+                title: Text(l10n.edit),
+                onTap: () => Navigator.of(context).pop(_EventAction.edit),
+              ),
             ),
-          ),
           Semantics(
             identifier: 'event_action_delete_button',
             button: true,

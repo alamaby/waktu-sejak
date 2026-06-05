@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../local/preferences_provider.dart';
+
+const _kSupportDeveloperCountKey = 'support_developer_count';
 
 const supportProductTiers = <SupportProductTier>[
   SupportProductTier(productId: 'support_developer_1', fallbackPrice: r'$1'),
@@ -12,7 +16,10 @@ const supportProductTiers = <SupportProductTier>[
 
 final supportBillingControllerProvider =
     StateNotifierProvider<SupportBillingController, SupportBillingState>((ref) {
-  final controller = SupportBillingController(InAppPurchase.instance);
+  final controller = SupportBillingController(
+    InAppPurchase.instance,
+    ref.read(sharedPreferencesProvider),
+  );
   ref.onDispose(controller.dispose);
   unawaited(controller.initialize());
   return controller;
@@ -34,6 +41,7 @@ class SupportBillingState {
   final Map<String, ProductDetails> productsById;
   final String? activeProductId;
   final String? completedProductId;
+  final int completedSupportCount;
   final SupportBillingError? error;
 
   const SupportBillingState({
@@ -42,6 +50,7 @@ class SupportBillingState {
     this.productsById = const {},
     this.activeProductId,
     this.completedProductId,
+    this.completedSupportCount = 0,
     this.error,
   });
 
@@ -57,6 +66,7 @@ class SupportBillingState {
     bool clearActiveProductId = false,
     String? completedProductId,
     bool clearCompletedProductId = false,
+    int? completedSupportCount,
     SupportBillingError? error,
     bool clearError = false,
   }) {
@@ -69,6 +79,8 @@ class SupportBillingState {
       completedProductId: clearCompletedProductId
           ? null
           : completedProductId ?? this.completedProductId,
+      completedSupportCount:
+          completedSupportCount ?? this.completedSupportCount,
       error: clearError ? null : error ?? this.error,
     );
   }
@@ -82,9 +94,11 @@ enum SupportBillingError {
 
 class SupportBillingController extends StateNotifier<SupportBillingState> {
   final InAppPurchase _iap;
+  final SharedPreferences _prefs;
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
 
-  SupportBillingController(this._iap) : super(const SupportBillingState());
+  SupportBillingController(this._iap, this._prefs)
+      : super(const SupportBillingState());
 
   Future<void> initialize() async {
     _purchaseSubscription = _iap.purchaseStream.listen(
@@ -194,9 +208,11 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
       if (purchase.pendingCompletePurchase) {
         await _iap.completePurchase(purchase);
       }
+      final supportCount = _incrementSupportCount();
       state = state.copyWith(
         clearActiveProductId: true,
         completedProductId: purchase.productID,
+        completedSupportCount: supportCount,
         clearError: true,
       );
     } catch (_) {
@@ -215,4 +231,10 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
   static final _productIds =
       supportProductTiers.map((tier) => tier.productId).toSet();
+
+  int _incrementSupportCount() {
+    final next = (_prefs.getInt(_kSupportDeveloperCountKey) ?? 0) + 1;
+    unawaited(_prefs.setInt(_kSupportDeveloperCountKey, next));
+    return next;
+  }
 }

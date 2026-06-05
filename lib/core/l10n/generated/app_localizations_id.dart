@@ -255,6 +255,30 @@ class AppLocalizationsId extends AppLocalizations {
       'Pembelian dukungan tidak dapat diselesaikan.';
 
   @override
+  String get supporterRewardTitle => 'Dukungan untuk Waktu Sejak';
+
+  @override
+  String supporterRewardBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Supporter x$count',
+      one: 'Supporter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get supporterRewardDialogTitle => 'Terima kasih atas dukungannya';
+
+  @override
+  String get supporterRewardDialogBody =>
+      'Dukunganmu membantu Waktu Sejak terus berkembang dengan fitur baru.';
+
+  @override
+  String get close => 'Tutup';
+
+  @override
   String get privacyPolicy => 'Kebijakan Privasi';
 
   @override

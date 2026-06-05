@@ -255,6 +255,30 @@ class AppLocalizationsEn extends AppLocalizations {
       'Support purchase could not be completed.';
 
   @override
+  String get supporterRewardTitle => 'Support for Waktu Sejak';
+
+  @override
+  String supporterRewardBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Supporter x$count',
+      one: 'Supporter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get supporterRewardDialogTitle => 'Thank you for the support';
+
+  @override
+  String get supporterRewardDialogBody =>
+      'Your support helps Waktu Sejak keep growing with new features.';
+
+  @override
+  String get close => 'Close';
+
+  @override
   String get privacyPolicy => 'Privacy Policy';
 
   @override

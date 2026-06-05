@@ -6,6 +6,7 @@ import '../../core/utils/recurrence_calculator.dart';
 import '../../core/utils/time_calculator.dart';
 import '../../data/models/event_model.dart';
 import 'event_actions_sheet.dart';
+import 'supporter_reward_dialog.dart';
 
 class EventCard extends ConsumerWidget {
   final EventModel event;
@@ -20,6 +21,7 @@ class EventCard extends ConsumerWidget {
     final timeStr = TimeCalculator.localize(diff, l10n);
     final textColor = AppColors.textColorOn(event.color);
     final isPast = diff.isPast;
+    final isSupporterReward = event.isSupporterReward;
 
     return Semantics(
       identifier: 'event_card_${event.id}',
@@ -27,22 +29,43 @@ class EventCard extends ConsumerWidget {
       button: true,
       child: GestureDetector(
         key: Key('event_card_${event.id}'),
-        onTap: () => showEventActionsSheet(context, ref, event),
+        onTap: () => isSupporterReward
+            ? showSupporterRewardDialog(context, ref, event)
+            : showEventActionsSheet(context, ref, event),
         child: Stack(
           children: [
             Card(
               color: event.color,
-              elevation: isPast ? 1 : 3,
+              elevation: isSupporterReward ? 6 : (isPast ? 1 : 3),
               shape: RoundedRectangleBorder(
+                side: isSupporterReward
+                    ? BorderSide(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        width: 1.5,
+                      )
+                    : BorderSide.none,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Container(
-                decoration: isPast
+                decoration: isSupporterReward
                     ? BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.black.withValues(alpha: 0.15),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFFFE7A3),
+                            Color(0xFFFFC857),
+                            Color(0xFFF2A541),
+                          ],
+                        ),
                       )
-                    : null,
+                    : isPast
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.black.withValues(alpha: 0.15),
+                          )
+                        : null,
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +77,13 @@ class EventCard extends ConsumerWidget {
                           event.emoji,
                           style: const TextStyle(fontSize: 28),
                         ),
-                        _StatusBadge(isPast: isPast, textColor: textColor),
+                        isSupporterReward
+                            ? _SupporterBadge(
+                                count: event.supportCount,
+                                textColor: textColor,
+                              )
+                            : _StatusBadge(
+                                isPast: isPast, textColor: textColor),
                       ],
                     ),
                     const Spacer(),
@@ -161,6 +190,39 @@ class _StatusBadge extends StatelessWidget {
           fontSize: 10,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
+        ),
+      ),
+    );
+  }
+}
+
+class _SupporterBadge extends StatelessWidget {
+  final int count;
+  final Color textColor;
+
+  const _SupporterBadge({
+    required this.count,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: textColor.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: textColor.withValues(alpha: 0.35), width: 1),
+      ),
+      child: Text(
+        l10n.supporterRewardBadge(count),
+        style: TextStyle(
+          color: textColor,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.4,
         ),
       ),
     );

@@ -21,6 +21,7 @@ enum ViewType { card, list }
 enum EventStatusFilter { all, past, upcoming }
 
 const _uuid = Uuid();
+const supporterRewardEventId = 'support_developer_reward';
 const _kLocaleKey = 'locale';
 const _kSortTypeKey = 'sort_type';
 const _kViewTypeKey = 'view_type';
@@ -69,6 +70,36 @@ class EventsNotifier extends _$EventsNotifier {
     state = [...state, ...toAdd];
     _persist();
     return toAdd.length;
+  }
+
+  void upsertSupporterReward({
+    required String name,
+    required int supportCount,
+  }) {
+    final now = DateTime.now();
+    final reward = EventModel(
+      id: supporterRewardEventId,
+      name: name,
+      targetDate: now,
+      emoji: '💛',
+      color: const Color(0xFFFFC857),
+      createdAt: now,
+      kind: EventKind.supporter,
+      supportCount: supportCount,
+    );
+
+    final existingIndex =
+        state.indexWhere((event) => event.id == supporterRewardEventId);
+    state = existingIndex == -1
+        ? [reward, ...state]
+        : [
+            for (final event in state)
+              if (event.id == supporterRewardEventId)
+                reward.copyWith(createdAt: event.createdAt)
+              else
+                event,
+          ];
+    _persist();
   }
 
   void _persist() {
