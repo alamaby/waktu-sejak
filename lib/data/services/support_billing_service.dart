@@ -40,6 +40,7 @@ class SupportBillingState {
   final bool isStoreAvailable;
   final Map<String, ProductDetails> productsById;
   final String? activeProductId;
+  final bool isStorePending;
   final String? completedProductId;
   final int completedSupportCount;
   final SupportBillingError? error;
@@ -49,6 +50,7 @@ class SupportBillingState {
     this.isStoreAvailable = false,
     this.productsById = const {},
     this.activeProductId,
+    this.isStorePending = false,
     this.completedProductId,
     this.completedSupportCount = 0,
     this.error,
@@ -64,6 +66,7 @@ class SupportBillingState {
     Map<String, ProductDetails>? productsById,
     String? activeProductId,
     bool clearActiveProductId = false,
+    bool? isStorePending,
     String? completedProductId,
     bool clearCompletedProductId = false,
     int? completedSupportCount,
@@ -76,6 +79,8 @@ class SupportBillingState {
       productsById: productsById ?? this.productsById,
       activeProductId:
           clearActiveProductId ? null : activeProductId ?? this.activeProductId,
+      isStorePending:
+          clearActiveProductId ? false : isStorePending ?? this.isStorePending,
       completedProductId: clearCompletedProductId
           ? null
           : completedProductId ?? this.completedProductId,
@@ -90,12 +95,15 @@ enum SupportBillingError {
   storeUnavailable,
   productsUnavailable,
   purchaseFailed,
+  purchaseCancelled,
 }
 
 class SupportBillingController extends StateNotifier<SupportBillingState> {
   final InAppPurchase _iap;
   final SharedPreferences _prefs;
   StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
+  Timer? _billingSheetRecoveryTimer;
+  Timer? _purchaseLaunchTimeout;
 
   SupportBillingController(this._iap, this._prefs)
       : super(const SupportBillingState());
@@ -155,9 +163,11 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
     state = state.copyWith(
       activeProductId: productId,
+      isStorePending: false,
       clearCompletedProductId: true,
       clearError: true,
     );
+    _startPurchaseLaunchTimeout(productId);
 
     try {
       final started = await _iap.buyConsumable(
@@ -168,13 +178,32 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
           clearActiveProductId: true,
           error: SupportBillingError.purchaseFailed,
         );
+        _clearPurchaseTimers();
       }
     } catch (_) {
       state = state.copyWith(
         clearActiveProductId: true,
         error: SupportBillingError.purchaseFailed,
       );
+      _clearPurchaseTimers();
     }
+  }
+
+  void recoverFromClosedBillingSheet() {
+    final activeProductId = state.activeProductId;
+    if (activeProductId == null || state.isStorePending) return;
+
+    _billingSheetRecoveryTimer?.cancel();
+    _billingSheetRecoveryTimer = Timer(const Duration(seconds: 2), () {
+      if (state.activeProductId != activeProductId || state.isStorePending) {
+        return;
+      }
+      state = state.copyWith(
+        clearActiveProductId: true,
+        error: SupportBillingError.purchaseCancelled,
+      );
+      _clearPurchaseTimers();
+    });
   }
 
   Future<void> _handlePurchases(List<PurchaseDetails> purchases) async {
@@ -183,8 +212,10 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
       switch (purchase.status) {
         case PurchaseStatus.pending:
+          _billingSheetRecoveryTimer?.cancel();
           state = state.copyWith(
             activeProductId: purchase.productID,
+            isStorePending: true,
             clearError: true,
           );
           break;
@@ -192,8 +223,11 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
         case PurchaseStatus.canceled:
           state = state.copyWith(
             clearActiveProductId: true,
-            error: SupportBillingError.purchaseFailed,
+            error: purchase.status == PurchaseStatus.canceled
+                ? SupportBillingError.purchaseCancelled
+                : SupportBillingError.purchaseFailed,
           );
+          _clearPurchaseTimers();
           break;
         case PurchaseStatus.purchased:
         case PurchaseStatus.restored:
@@ -205,6 +239,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
   Future<void> _completePurchase(PurchaseDetails purchase) async {
     try {
+      _clearPurchaseTimers();
       if (purchase.pendingCompletePurchase) {
         await _iap.completePurchase(purchase);
       }
@@ -225,6 +260,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
   @override
   void dispose() {
+    _clearPurchaseTimers();
     unawaited(_purchaseSubscription?.cancel());
     super.dispose();
   }
@@ -236,5 +272,23 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
     final next = (_prefs.getInt(_kSupportDeveloperCountKey) ?? 0) + 1;
     unawaited(_prefs.setInt(_kSupportDeveloperCountKey, next));
     return next;
+  }
+
+  void _startPurchaseLaunchTimeout(String productId) {
+    _purchaseLaunchTimeout?.cancel();
+    _purchaseLaunchTimeout = Timer(const Duration(minutes: 2), () {
+      if (state.activeProductId != productId || state.isStorePending) return;
+      state = state.copyWith(
+        clearActiveProductId: true,
+        error: SupportBillingError.purchaseCancelled,
+      );
+    });
+  }
+
+  void _clearPurchaseTimers() {
+    _billingSheetRecoveryTimer?.cancel();
+    _billingSheetRecoveryTimer = null;
+    _purchaseLaunchTimeout?.cancel();
+    _purchaseLaunchTimeout = null;
   }
 }

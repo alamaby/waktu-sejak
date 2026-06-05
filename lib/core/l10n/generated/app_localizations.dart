@@ -578,6 +578,12 @@ abstract class AppLocalizations {
   /// **'Support purchase could not be completed.'**
   String get supportDeveloperFailed;
 
+  /// No description provided for @supportDeveloperCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Support purchase was cancelled.'**
+  String get supportDeveloperCancelled;
+
   /// No description provided for @supporterRewardTitle.
   ///
   /// In en, this message translates to:

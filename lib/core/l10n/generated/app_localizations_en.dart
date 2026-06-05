@@ -255,6 +255,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Support purchase could not be completed.';
 
   @override
+  String get supportDeveloperCancelled => 'Support purchase was cancelled.';
+
+  @override
   String get supporterRewardTitle => 'Support for Waktu Sejak';
 
   @override

@@ -80,6 +80,7 @@
   "supportDeveloperPending": "Menunggu Google Play…",
   "supportDeveloperThanks": "Terima kasih sudah mendukung update berikutnya.",
   "supportDeveloperFailed": "Pembelian dukungan tidak dapat diselesaikan.",
+  "supportDeveloperCancelled": "Pembelian dukungan dibatalkan.",
   "supporterRewardTitle": "Dukungan untuk Waktu Sejak",
   "supporterRewardBadge": "{count, plural, =1{Supporter} other{Supporter x{count}}}",
   "@supporterRewardBadge": {

@@ -255,6 +255,9 @@ class AppLocalizationsId extends AppLocalizations {
       'Pembelian dukungan tidak dapat diselesaikan.';
 
   @override
+  String get supportDeveloperCancelled => 'Pembelian dukungan dibatalkan.';
+
+  @override
   String get supporterRewardTitle => 'Dukungan untuk Waktu Sejak';
 
   @override

@@ -9,11 +9,37 @@ import '../../data/services/support_billing_service.dart';
 import '../providers/events_provider.dart';
 import '../providers/settings_provider.dart';
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) return;
+    ref
+        .read(supportBillingControllerProvider.notifier)
+        .recoverFromClosedBillingSheet();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final locale = ref.watch(localeNotifierProvider);
     final themeMode = ref.watch(themeModeNotifierProvider);
@@ -394,6 +420,7 @@ class _SupportDeveloperSection extends ConsumerWidget {
       SupportBillingError.productsUnavailable =>
         l10n.supportDeveloperProductsUnavailable,
       SupportBillingError.purchaseFailed => l10n.supportDeveloperFailed,
+      SupportBillingError.purchaseCancelled => l10n.supportDeveloperCancelled,
     };
   }
 }
