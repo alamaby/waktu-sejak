@@ -187,7 +187,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get links => 'Links';
 
   @override
-  String get donate => 'Support the App';
+  String get donate => 'Support Developer';
 
   @override
   String get noEvents => 'No events yet. Tap Create to add one.';
@@ -230,6 +230,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get patreon => 'Patreon';
+
+  @override
+  String get supportDeveloperSubtitle =>
+      'Every support helps the developer add new features in the future.';
+
+  @override
+  String get supportDeveloperUnavailable =>
+      'Google Play Billing is not available right now.';
+
+  @override
+  String get supportDeveloperProductsUnavailable =>
+      'Support options are not available yet. Please check the Play Console product setup.';
+
+  @override
+  String get supportDeveloperPending => 'Waiting for Google Play…';
+
+  @override
+  String get supportDeveloperThanks =>
+      'Thank you for supporting future updates.';
+
+  @override
+  String get supportDeveloperFailed =>
+      'Support purchase could not be completed.';
 
   @override
   String get privacyPolicy => 'Privacy Policy';

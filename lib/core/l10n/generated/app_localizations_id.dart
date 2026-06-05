@@ -187,7 +187,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get links => 'Tautan';
 
   @override
-  String get donate => 'Dukung Aplikasi';
+  String get donate => 'Dukung Developer';
 
   @override
   String get noEvents => 'Belum ada acara. Ketuk Buat untuk menambahkan.';
@@ -230,6 +230,29 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get patreon => 'Patreon';
+
+  @override
+  String get supportDeveloperSubtitle =>
+      'Setiap dukungan membantu developer menambahkan fitur baru ke depan.';
+
+  @override
+  String get supportDeveloperUnavailable =>
+      'Google Play Billing belum tersedia saat ini.';
+
+  @override
+  String get supportDeveloperProductsUnavailable =>
+      'Pilihan dukungan belum tersedia. Periksa pengaturan produk di Play Console.';
+
+  @override
+  String get supportDeveloperPending => 'Menunggu Google Play…';
+
+  @override
+  String get supportDeveloperThanks =>
+      'Terima kasih sudah mendukung update berikutnya.';
+
+  @override
+  String get supportDeveloperFailed =>
+      'Pembelian dukungan tidak dapat diselesaikan.';
 
   @override
   String get privacyPolicy => 'Kebijakan Privasi';

@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// No description provided for @donate.
   ///
   /// In en, this message translates to:
-  /// **'Support the App'**
+  /// **'Support Developer'**
   String get donate;
 
   /// No description provided for @noEvents.
@@ -541,6 +541,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Patreon'**
   String get patreon;
+
+  /// No description provided for @supportDeveloperSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every support helps the developer add new features in the future.'**
+  String get supportDeveloperSubtitle;
+
+  /// No description provided for @supportDeveloperUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Play Billing is not available right now.'**
+  String get supportDeveloperUnavailable;
+
+  /// No description provided for @supportDeveloperProductsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Support options are not available yet. Please check the Play Console product setup.'**
+  String get supportDeveloperProductsUnavailable;
+
+  /// No description provided for @supportDeveloperPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for Google Play…'**
+  String get supportDeveloperPending;
+
+  /// No description provided for @supportDeveloperThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for supporting future updates.'**
+  String get supportDeveloperThanks;
+
+  /// No description provided for @supportDeveloperFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Support purchase could not be completed.'**
+  String get supportDeveloperFailed;
 
   /// No description provided for @privacyPolicy.
   ///

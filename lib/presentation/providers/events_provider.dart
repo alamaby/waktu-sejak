@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -195,10 +197,18 @@ class SelectedTab extends _$SelectedTab {
 }
 
 final dashboardClockProvider = StreamProvider.autoDispose<DateTime>((ref) {
-  return Stream.periodic(
+  final controller = StreamController<DateTime>();
+  final timer = Timer.periodic(
     const Duration(seconds: 1),
-    (_) => DateTime.now(),
+    (_) => controller.add(DateTime.now()),
   );
+
+  ref.onDispose(() {
+    timer.cancel();
+    controller.close();
+  });
+
+  return controller.stream;
 });
 
 @riverpod

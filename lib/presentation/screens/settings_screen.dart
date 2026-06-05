@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/social_links.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../../data/services/data_portability_service.dart';
+import '../../data/services/support_billing_service.dart';
 import '../providers/events_provider.dart';
 import '../providers/settings_provider.dart';
 
@@ -261,32 +262,11 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
 
-          // Donations Section
+          // Support Section
           _SectionCard(
             title: l10n.donate,
             icon: Icons.favorite_outline,
-            child: Column(
-              children: [
-                _LinkTile(
-                  icon: Icons.coffee_outlined,
-                  label: l10n.buyMeCoffee,
-                  url: SocialLinks.buyMeCoffee,
-                  context: context,
-                ),
-                _LinkTile(
-                  icon: Icons.volunteer_activism_outlined,
-                  label: l10n.saweria,
-                  url: SocialLinks.saweria,
-                  context: context,
-                ),
-                _LinkTile(
-                  icon: Icons.star_outline,
-                  label: l10n.patreon,
-                  url: SocialLinks.patreon,
-                  context: context,
-                ),
-              ],
-            ),
+            child: const _SupportDeveloperSection(),
           ),
           const SizedBox(height: 32),
 
@@ -347,6 +327,123 @@ class SettingsScreen extends ConsumerWidget {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
       );
+}
+
+class _SupportDeveloperSection extends ConsumerWidget {
+  const _SupportDeveloperSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final state = ref.watch(supportBillingControllerProvider);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.supportDeveloperSubtitle,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: 12),
+        if (state.isLoading)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          )
+        else ...[
+          for (final tier in supportProductTiers)
+            _SupportProductTile(
+              tier: tier,
+              state: state,
+              onTap: () => ref
+                  .read(supportBillingControllerProvider.notifier)
+                  .buy(tier.productId),
+            ),
+          if (state.isPurchasing) _SupportMessage(l10n.supportDeveloperPending),
+          if (state.completedProductId != null)
+            _SupportMessage(l10n.supportDeveloperThanks),
+          if (state.error != null)
+            _SupportMessage(_errorText(l10n, state.error!)),
+        ],
+      ],
+    );
+  }
+
+  String _errorText(AppLocalizations l10n, SupportBillingError error) {
+    return switch (error) {
+      SupportBillingError.storeUnavailable => l10n.supportDeveloperUnavailable,
+      SupportBillingError.productsUnavailable =>
+        l10n.supportDeveloperProductsUnavailable,
+      SupportBillingError.purchaseFailed => l10n.supportDeveloperFailed,
+    };
+  }
+}
+
+class _SupportProductTile extends StatelessWidget {
+  final SupportProductTier tier;
+  final SupportBillingState state;
+  final VoidCallback onTap;
+
+  const _SupportProductTile({
+    required this.tier,
+    required this.state,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final product = state.productFor(tier.productId);
+    final isActive = state.activeProductId == tier.productId;
+    final canBuy = product != null && !state.isPurchasing;
+
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      enabled: canBuy,
+      leading: Icon(
+        Icons.volunteer_activism_outlined,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: Text(product?.title ?? tier.fallbackPrice),
+      subtitle:
+          product?.description == null ? null : Text(product!.description),
+      trailing: isActive
+          ? const SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator.adaptive(strokeWidth: 2),
+            )
+          : Text(
+              product?.price ?? tier.fallbackPrice,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+      onTap: canBuy ? onTap : null,
+    );
+  }
+}
+
+class _SupportMessage extends StatelessWidget {
+  final String text;
+
+  const _SupportMessage(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+      ),
+    );
+  }
 }
 
 class _SectionCard extends StatelessWidget {

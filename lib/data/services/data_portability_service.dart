@@ -28,17 +28,66 @@ class DataPortabilityService {
   static const _appTag = 'waktu_sejak';
   static const _schemaVersion = 2;
 
+  static Map<String, dynamic> createBackupPayload(List<EventModel> events) {
+    return <String, dynamic>{
+      'app': _appTag,
+      'version': _schemaVersion,
+      'exportedAt': DateTime.now().toIso8601String(),
+      'events': events.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  static List<EventModel> parseBackupJson(String jsonStr) {
+    final dynamic decoded;
+    try {
+      decoded = jsonDecode(jsonStr);
+    } catch (_) {
+      throw const ImportInvalidFormat();
+    }
+
+    if (decoded is! Map<String, dynamic>) {
+      throw const ImportInvalidFormat();
+    }
+
+    final app = decoded['app'];
+    if (app is String && app != _appTag) {
+      throw const ImportInvalidFormat();
+    }
+    final version = decoded['version'];
+    if (version is int && version > _schemaVersion) {
+      throw const ImportInvalidFormat();
+    }
+
+    final eventsRaw = decoded['events'];
+    if (eventsRaw is! List) {
+      throw const ImportInvalidFormat();
+    }
+
+    try {
+      final events = <EventModel>[];
+      for (final item in eventsRaw) {
+        if (item is! Map<String, dynamic>) {
+          throw const ImportInvalidFormat();
+        }
+        if (!_isValidEventMap(item)) {
+          throw const ImportInvalidFormat();
+        }
+        events.add(EventModel.fromJson(item));
+      }
+      return events;
+    } on ImportInvalidFormat {
+      rethrow;
+    } catch (_) {
+      throw const ImportInvalidFormat();
+    }
+  }
+
   static Future<void> exportEvents(
     List<EventModel> events, {
     required String shareSubject,
   }) async {
     try {
-      final payload = <String, dynamic>{
-        'app': _appTag,
-        'version': _schemaVersion,
-        'exportedAt': DateTime.now().toIso8601String(),
-        'events': events.map((e) => e.toJson()).toList(),
-      };
+      final payload = createBackupPayload(events);
       final jsonStr = jsonEncode(payload);
       final ts = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
       final filename = 'waktu_sejak_backup_$ts.json';
@@ -82,43 +131,8 @@ class DataPortabilityService {
       }
     }
 
-    dynamic decoded;
     try {
-      decoded = jsonDecode(utf8.decode(bytes));
-    } catch (_) {
-      throw const ImportInvalidFormat();
-    }
-
-    if (decoded is! Map<String, dynamic>) {
-      throw const ImportInvalidFormat();
-    }
-
-    final app = decoded['app'];
-    if (app is String && app != _appTag) {
-      throw const ImportInvalidFormat();
-    }
-    final version = decoded['version'];
-    if (version is int && version > _schemaVersion) {
-      throw const ImportInvalidFormat();
-    }
-
-    final eventsRaw = decoded['events'];
-    if (eventsRaw is! List) {
-      throw const ImportInvalidFormat();
-    }
-
-    try {
-      final events = <EventModel>[];
-      for (final item in eventsRaw) {
-        if (item is! Map<String, dynamic>) {
-          throw const ImportInvalidFormat();
-        }
-        if (!_isValidEventMap(item)) {
-          throw const ImportInvalidFormat();
-        }
-        events.add(EventModel.fromJson(item));
-      }
-      return events;
+      return parseBackupJson(utf8.decode(bytes));
     } on ImportInvalidFormat {
       rethrow;
     } catch (_) {
