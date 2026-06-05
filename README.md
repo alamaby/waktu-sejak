@@ -197,7 +197,7 @@ The algorithm handles month-length variations, leap years, and time-component ca
 
 ## 🔒 Privacy
 
-See the [Privacy Policy](https://waktu-sejak.vercel.app/privacy-policy) for details on how data is handled. In short: all data stays on your device — no tracking, no analytics, no cloud sync.
+See the [Privacy Policy](PRIVACY_POLICY.md) for details on how data is handled. In short: event data stays on your device, Support Developer purchases are processed by Google Play Billing, and the app has no developer-operated tracking, analytics, or cloud sync.
 
 ---
 

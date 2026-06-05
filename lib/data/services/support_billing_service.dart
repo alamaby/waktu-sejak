@@ -20,7 +20,6 @@ final supportBillingControllerProvider =
     InAppPurchase.instance,
     ref.read(sharedPreferencesProvider),
   );
-  ref.onDispose(controller.dispose);
   unawaited(controller.initialize());
   return controller;
 });
@@ -111,15 +110,19 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
   Future<void> initialize() async {
     _purchaseSubscription = _iap.purchaseStream.listen(
       _handlePurchases,
-      onError: (_) => state = state.copyWith(
-        isLoading: false,
-        clearActiveProductId: true,
-        error: SupportBillingError.purchaseFailed,
-      ),
+      onError: (_) {
+        if (!mounted) return;
+        state = state.copyWith(
+          isLoading: false,
+          clearActiveProductId: true,
+          error: SupportBillingError.purchaseFailed,
+        );
+      },
     );
 
     try {
       final available = await _iap.isAvailable();
+      if (!mounted) return;
       if (!available) {
         state = state.copyWith(
           isLoading: false,
@@ -130,6 +133,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
       }
 
       final response = await _iap.queryProductDetails(_productIds);
+      if (!mounted) return;
       final productsById = {
         for (final product in response.productDetails) product.id: product,
       };
@@ -144,6 +148,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
         clearError: productsById.isNotEmpty,
       );
     } catch (_) {
+      if (!mounted) return;
       state = state.copyWith(
         isLoading: false,
         isStoreAvailable: false,
@@ -173,6 +178,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
       final started = await _iap.buyConsumable(
         purchaseParam: PurchaseParam(productDetails: product),
       );
+      if (!mounted) return;
       if (!started) {
         state = state.copyWith(
           clearActiveProductId: true,
@@ -181,6 +187,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
         _clearPurchaseTimers();
       }
     } catch (_) {
+      if (!mounted) return;
       state = state.copyWith(
         clearActiveProductId: true,
         error: SupportBillingError.purchaseFailed,
@@ -195,6 +202,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
     _billingSheetRecoveryTimer?.cancel();
     _billingSheetRecoveryTimer = Timer(const Duration(seconds: 2), () {
+      if (!mounted) return;
       if (state.activeProductId != activeProductId || state.isStorePending) {
         return;
       }
@@ -208,6 +216,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
 
   Future<void> _handlePurchases(List<PurchaseDetails> purchases) async {
     for (final purchase in purchases) {
+      if (!mounted) return;
       if (!_productIds.contains(purchase.productID)) continue;
 
       switch (purchase.status) {
@@ -243,6 +252,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
       if (purchase.pendingCompletePurchase) {
         await _iap.completePurchase(purchase);
       }
+      if (!mounted) return;
       final supportCount = _incrementSupportCount();
       state = state.copyWith(
         clearActiveProductId: true,
@@ -251,6 +261,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
         clearError: true,
       );
     } catch (_) {
+      if (!mounted) return;
       state = state.copyWith(
         clearActiveProductId: true,
         error: SupportBillingError.purchaseFailed,
@@ -277,6 +288,7 @@ class SupportBillingController extends StateNotifier<SupportBillingState> {
   void _startPurchaseLaunchTimeout(String productId) {
     _purchaseLaunchTimeout?.cancel();
     _purchaseLaunchTimeout = Timer(const Duration(minutes: 2), () {
+      if (!mounted) return;
       if (state.activeProductId != productId || state.isStorePending) return;
       state = state.copyWith(
         clearActiveProductId: true,
