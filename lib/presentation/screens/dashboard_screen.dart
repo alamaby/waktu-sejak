@@ -343,16 +343,22 @@ class _CardGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.85,
-      ),
-      itemCount: events.length,
-      itemBuilder: (_, index) => EventCard(event: events[index]),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth >= 600;
+
+        return GridView.builder(
+          padding: EdgeInsets.all(isTablet ? 24 : 16),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: isTablet ? 420 : 240,
+            crossAxisSpacing: isTablet ? 16 : 12,
+            mainAxisSpacing: isTablet ? 16 : 12,
+            childAspectRatio: isTablet ? 1.18 : 0.85,
+          ),
+          itemCount: events.length,
+          itemBuilder: (_, index) => EventCard(event: events[index]),
+        );
+      },
     );
   }
 }
@@ -364,10 +370,25 @@ class _EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: events.length,
-      itemBuilder: (_, index) => EventListTile(event: events[index]),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxListWidth =
+            constraints.maxWidth >= 600 ? 820.0 : double.infinity;
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxListWidth),
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(
+                horizontal: constraints.maxWidth >= 600 ? 8 : 0,
+                vertical: 8,
+              ),
+              itemCount: events.length,
+              itemBuilder: (_, index) => EventListTile(event: events[index]),
+            ),
+          ),
+        );
+      },
     );
   }
 }

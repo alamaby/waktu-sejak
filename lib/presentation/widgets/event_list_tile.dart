@@ -23,6 +23,7 @@ class EventListTile extends ConsumerWidget {
     final isPast = diff.isPast;
     final isSupporterReward = event.isSupporterReward;
     final shouldDim = isPast && !isSupporterReward;
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
 
     return Semantics(
       identifier: 'event_list_tile_${event.id}',
@@ -37,7 +38,10 @@ class EventListTile extends ConsumerWidget {
           ref.read(eventsNotifierProvider.notifier).deleteEvent(event.id);
         },
         child: Card(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          margin: EdgeInsets.symmetric(
+            horizontal: isTablet ? 8 : 16,
+            vertical: isTablet ? 5 : 4,
+          ),
           color: isSupporterReward
               ? const Color(0xFFFFC857).withValues(alpha: 0.18)
               : null,
@@ -54,14 +58,16 @@ class EventListTile extends ConsumerWidget {
             onTap: () => isSupporterReward
                 ? showSupporterRewardDialog(context, ref, event)
                 : showEventActionsSheet(context, ref, event),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 18 : 16,
+              vertical: isTablet ? 6 : 8,
+            ),
             leading: Stack(
               alignment: Alignment.bottomRight,
               children: [
                 Container(
-                  width: 48,
-                  height: 48,
+                  width: isTablet ? 52 : 48,
+                  height: isTablet ? 52 : 48,
                   decoration: BoxDecoration(
                     color: event.color,
                     borderRadius: BorderRadius.circular(12),
@@ -76,7 +82,7 @@ class EventListTile extends ConsumerWidget {
                   child: Center(
                     child: Text(
                       event.emoji,
-                      style: const TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: isTablet ? 25 : 24),
                     ),
                   ),
                 ),
@@ -86,6 +92,7 @@ class EventListTile extends ConsumerWidget {
               event.name,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
+                fontSize: isTablet ? 18 : null,
                 color: shouldDim
                     ? Theme.of(context)
                         .colorScheme
@@ -101,7 +108,7 @@ class EventListTile extends ConsumerWidget {
                 Text(
                   timeStr,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: isTablet ? 14 : 12,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -193,8 +200,13 @@ class _SupporterChip extends StatelessWidget {
 class _DismissBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: EdgeInsets.symmetric(
+        horizontal: isTablet ? 8 : 16,
+        vertical: isTablet ? 5 : 4,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(12),

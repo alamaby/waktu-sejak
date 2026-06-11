@@ -22,6 +22,7 @@ class EventCard extends ConsumerWidget {
     final textColor = AppColors.textColorOn(event.color);
     final isPast = diff.isPast;
     final isSupporterReward = event.isSupporterReward;
+    final isTablet = MediaQuery.sizeOf(context).width >= 600;
 
     return Semantics(
       identifier: 'event_card_${event.id}',
@@ -66,7 +67,7 @@ class EventCard extends ConsumerWidget {
                             color: Colors.black.withValues(alpha: 0.15),
                           )
                         : null,
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(isTablet ? 18 : 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -75,7 +76,7 @@ class EventCard extends ConsumerWidget {
                       children: [
                         Text(
                           event.emoji,
-                          style: const TextStyle(fontSize: 28),
+                          style: TextStyle(fontSize: isTablet ? 30 : 28),
                         ),
                         isSupporterReward
                             ? _SupporterBadge(
@@ -86,19 +87,23 @@ class EventCard extends ConsumerWidget {
                                 isPast: isPast, textColor: textColor),
                       ],
                     ),
-                    const Spacer(),
+                    Spacer(flex: isTablet ? 2 : 3),
                     Text(
                       event.name,
                       style: TextStyle(
                         color: textColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                        fontSize: isTablet ? 17 : 15,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    _DurationChip(text: timeStr, textColor: textColor),
+                    _DurationChip(
+                      text: timeStr,
+                      textColor: textColor,
+                      isTablet: isTablet,
+                    ),
                   ],
                 ),
               ),
@@ -114,8 +119,13 @@ class EventCard extends ConsumerWidget {
 class _DurationChip extends StatelessWidget {
   final String text;
   final Color textColor;
+  final bool isTablet;
 
-  const _DurationChip({required this.text, required this.textColor});
+  const _DurationChip({
+    required this.text,
+    required this.textColor,
+    required this.isTablet,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +153,7 @@ class _DurationChip extends StatelessWidget {
   TextSpan _buildSpans(String input, Color color) {
     final base = TextStyle(
       color: color,
-      fontSize: 13,
+      fontSize: isTablet ? 14 : 13,
       fontWeight: FontWeight.w500,
       height: 1.2,
       fontFeatures: const [FontFeature.tabularFigures()],
