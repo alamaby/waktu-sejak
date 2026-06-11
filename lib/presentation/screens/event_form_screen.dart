@@ -7,11 +7,13 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/event_emojis.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../../data/models/event_model.dart';
+import '../../data/services/calendar_service.dart';
 import '../providers/events_provider.dart';
 import '../widgets/color_picker_widget.dart';
 import '../widgets/emoji_picker_dialog.dart';
 
 const _uuid = Uuid();
+const _calendarService = CalendarService();
 
 class EventFormScreen extends ConsumerStatefulWidget {
   final EventModel? editingEvent;
@@ -117,6 +119,8 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
   void _save() {
     if (!_formKey.currentState!.validate()) return;
 
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     final notifier = ref.read(eventsNotifierProvider.notifier);
 
     if (_isEditing) {
@@ -129,6 +133,7 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
       );
       notifier.updateEvent(updated);
       Navigator.of(context).pop();
+      _showCalendarSnackBarIfUpcoming(messenger, l10n, updated);
       return;
     }
 
@@ -148,6 +153,35 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
     _resetForm();
     if (mounted) setState(() {});
     ref.read(selectedTabProvider.notifier).select(0);
+    _showCalendarSnackBarIfUpcoming(messenger, l10n, event);
+  }
+
+  void _showCalendarSnackBarIfUpcoming(
+    ScaffoldMessengerState messenger,
+    AppLocalizations l10n,
+    EventModel event,
+  ) {
+    if (!event.targetDate.isAfter(DateTime.now())) return;
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.eventSaved),
+        action: SnackBarAction(
+          label: l10n.addToCalendar,
+          onPressed: () async {
+            final opened = await _calendarService.addEvent(
+              event,
+              description: l10n.calendarEventDescription,
+            );
+            if (!opened) {
+              messenger.showSnackBar(
+                SnackBar(content: Text(l10n.couldNotOpenCalendar)),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 
   @override

@@ -338,6 +338,30 @@ abstract class AppLocalizations {
   /// **'Update'**
   String get update;
 
+  /// No description provided for @eventSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Event saved'**
+  String get eventSaved;
+
+  /// No description provided for @addToCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Calendar'**
+  String get addToCalendar;
+
+  /// No description provided for @calendarEventDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Created from Waktu Sejak'**
+  String get calendarEventDescription;
+
+  /// No description provided for @couldNotOpenCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open calendar'**
+  String get couldNotOpenCalendar;
+
   /// No description provided for @edit.
   ///
   /// In en, this message translates to:

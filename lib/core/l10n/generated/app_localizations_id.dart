@@ -130,6 +130,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get update => 'Perbarui';
 
   @override
+  String get eventSaved => 'Acara tersimpan';
+
+  @override
+  String get addToCalendar => 'Tambahkan ke Kalender';
+
+  @override
+  String get calendarEventDescription => 'Dibuat dari Waktu Sejak';
+
+  @override
+  String get couldNotOpenCalendar => 'Tidak dapat membuka kalender';
+
+  @override
   String get edit => 'Ubah';
 
   @override

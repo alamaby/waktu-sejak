@@ -130,6 +130,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get update => 'Update';
 
   @override
+  String get eventSaved => 'Event saved';
+
+  @override
+  String get addToCalendar => 'Add to Calendar';
+
+  @override
+  String get calendarEventDescription => 'Created from Waktu Sejak';
+
+  @override
+  String get couldNotOpenCalendar => 'Could not open calendar';
+
+  @override
   String get edit => 'Edit';
 
   @override
