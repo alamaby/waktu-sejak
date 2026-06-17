@@ -440,4 +440,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get sampleProjectDeadline => 'Tenggat Proyek';
+
+  @override
+  String get termsOfService => 'Ketentuan Layanan';
+
+  @override
+  String get legalDocumentLoadFailed =>
+      'Tidak dapat memuat dokumen ini. Silakan coba lagi nanti.';
 }

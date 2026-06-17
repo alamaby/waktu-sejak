@@ -1,7 +1,7 @@
 name: waktu_sejak
 description: "Waktu Sejak — a time-since/time-until tracker app."
 publish_to: "none"
-version: 0.7.0+12
+version: 0.8.0+13
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -26,6 +26,8 @@ dependencies:
   path_provider: ^2.1.5
   package_info_plus: ^8.1.2
 
+  flutter_markdown: ^0.7.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -42,6 +44,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/legal/
     - assets/adi-registration.properties
 
 flutter_launcher_icons:

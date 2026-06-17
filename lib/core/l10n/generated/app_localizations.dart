@@ -847,6 +847,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Project Deadline'**
   String get sampleProjectDeadline;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// No description provided for @legalDocumentLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this document. Please try again later.'**
+  String get legalDocumentLoadFailed;
 }
 
 class _AppLocalizationsDelegate

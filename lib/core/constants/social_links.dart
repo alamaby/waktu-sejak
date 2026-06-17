@@ -11,5 +11,6 @@ class SocialLinks {
   static const saweria = 'https://saweria.co/alamaby';
   static const patreon = 'https://www.patreon.com/alamaby';
 
-  static const privacyPolicy = 'https://waktu-sejak.vercel.app/privacy-policy';
+static const contactEmail = 'alam.aby.b@gmail.com';
+  static const contactEmailUri = 'mailto:$contactEmail';
 }

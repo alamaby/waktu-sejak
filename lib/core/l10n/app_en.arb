@@ -237,5 +237,8 @@
   "sampleStartedUniversity": "Started University",
   "sampleNextVacation": "Next Vacation",
   "sampleWeddingAnniversary": "Wedding Anniversary",
-  "sampleProjectDeadline": "Project Deadline"
+  "sampleProjectDeadline": "Project Deadline",
+  "termsOfService": "Terms of Service",
+  "legalDocumentLoadFailed": "Could not load this document. Please try again later."
+
 }

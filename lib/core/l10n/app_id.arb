@@ -237,5 +237,8 @@
   "sampleStartedUniversity": "Mulai Kuliah",
   "sampleNextVacation": "Liburan Berikutnya",
   "sampleWeddingAnniversary": "Ulang Tahun Pernikahan",
-  "sampleProjectDeadline": "Tenggat Proyek"
+  "sampleProjectDeadline": "Tenggat Proyek",
+  "termsOfService": "Ketentuan Layanan",
+  "legalDocumentLoadFailed": "Tidak dapat memuat dokumen ini. Silakan coba lagi nanti."
+
 }

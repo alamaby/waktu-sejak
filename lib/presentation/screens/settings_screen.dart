@@ -6,6 +6,7 @@ import '../../core/constants/social_links.dart';
 import '../../core/l10n/generated/app_localizations.dart';
 import '../../data/services/data_portability_service.dart';
 import '../../data/services/support_billing_service.dart';
+import 'legal_document_screen.dart';
 import '../providers/events_provider.dart';
 import '../providers/settings_provider.dart';
 
@@ -213,10 +214,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                   },
                 ),
                 const SizedBox(height: 4),
-                _LinkTile(
+                _LegalDocumentTile(
                   icon: Icons.privacy_tip_outlined,
                   label: l10n.privacyPolicy,
-                  url: SocialLinks.privacyPolicy,
+                  type: LegalDocumentType.privacyPolicy,
+                  context: context,
+                ),
+                const SizedBox(height: 4),
+                _LegalDocumentTile(
+                  icon: Icons.description_outlined,
+                  label: l10n.termsOfService,
+                  type: LegalDocumentType.termsOfService,
                   context: context,
                 ),
               ],
@@ -312,7 +320,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
 
           Center(
             child: Text(
-              l10n.copyrightText,
+              '© ${DateTime.now().year} ${l10n.authorName}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -598,6 +606,35 @@ class _LinkTile extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class _LegalDocumentTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final LegalDocumentType type;
+  final BuildContext context;
+
+  const _LegalDocumentTile({
+    required this.icon,
+    required this.label,
+    required this.type,
+    required this.context,
+  });
+
+  @override
+  Widget build(BuildContext _) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(label),
+      trailing: const Icon(Icons.chevron_right, size: 20),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => LegalDocumentScreen(documentType: type),
+        ),
+      ),
     );
   }
 }

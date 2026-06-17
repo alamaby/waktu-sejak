@@ -567,4 +567,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sampleProjectDeadline => 'Project Deadline';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get legalDocumentLoadFailed =>
+      'Could not load this document. Please try again later.';
 }
