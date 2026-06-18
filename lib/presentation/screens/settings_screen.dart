@@ -255,6 +255,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
                   ),
                 ),
                 Semantics(
+                  identifier: 'settings_export_csv_button',
+                  button: true,
+                  child: ListTile(
+                    key: const Key('settings_export_csv_button'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(
+                      Icons.table_view_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(l10n.exportCsv),
+                    subtitle: Text(l10n.exportCsvSubtitle),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
+                    onTap: () => _handleExportCsv(context, ref),
+                  ),
+                ),
+                Semantics(
                   identifier: 'settings_import_data_button',
                   button: true,
                   child: ListTile(
@@ -347,6 +363,25 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen>
       messenger.showSnackBar(_buildSnack(l10n.exportSuccess));
     } catch (_) {
       messenger.showSnackBar(_buildSnack(l10n.exportFailed));
+    }
+  }
+
+  Future<void> _handleExportCsv(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final events = ref.read(eventsNotifierProvider);
+    if (events.isEmpty) {
+      messenger.showSnackBar(_buildSnack(l10n.exportEmpty));
+      return;
+    }
+    try {
+      await DataPortabilityService.exportEventsCsv(
+        events,
+        shareSubject: l10n.exportCsvShareSubject,
+      );
+      messenger.showSnackBar(_buildSnack(l10n.exportCsvSuccess));
+    } catch (_) {
+      messenger.showSnackBar(_buildSnack(l10n.exportCsvFailed));
     }
   }
 

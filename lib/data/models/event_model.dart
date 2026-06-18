@@ -37,6 +37,7 @@ class EventModel {
   final RecurrenceType recurrenceType;
   final EventKind kind;
   final int supportCount;
+  final bool isPinned;
 
   const EventModel({
     required this.id,
@@ -48,6 +49,7 @@ class EventModel {
     this.recurrenceType = RecurrenceType.none,
     this.kind = EventKind.normal,
     this.supportCount = 0,
+    this.isPinned = false,
   });
 
   bool get isSupporterReward => kind == EventKind.supporter;
@@ -66,6 +68,7 @@ class EventModel {
     RecurrenceType? recurrenceType,
     EventKind? kind,
     int? supportCount,
+    bool? isPinned,
   }) {
     return EventModel(
       id: id ?? this.id,
@@ -77,6 +80,7 @@ class EventModel {
       recurrenceType: recurrenceType ?? this.recurrenceType,
       kind: kind ?? this.kind,
       supportCount: supportCount ?? this.supportCount,
+      isPinned: isPinned ?? this.isPinned,
     );
   }
 
@@ -90,6 +94,7 @@ class EventModel {
         'recurrenceType': recurrenceType.name,
         'kind': kind.name,
         'supportCount': supportCount,
+        'isPinned': isPinned,
       };
 
   factory EventModel.fromJson(Map<String, dynamic> j) => EventModel(
@@ -102,12 +107,18 @@ class EventModel {
         recurrenceType: RecurrenceType.fromJson(j['recurrenceType']),
         kind: EventKind.fromJson(j['kind']),
         supportCount: _intFromJson(j['supportCount']),
+        isPinned: _boolFromJson(j['isPinned']),
       );
 
   static int _intFromJson(Object? value) {
     if (value is int) return value;
     if (value is num) return value.toInt();
     return 0;
+  }
+
+  static bool _boolFromJson(Object? value) {
+    if (value is bool) return value;
+    return false;
   }
 
   @override

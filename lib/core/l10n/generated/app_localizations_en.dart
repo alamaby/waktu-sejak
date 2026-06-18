@@ -145,6 +145,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get edit => 'Edit';
 
   @override
+  String get pin => 'Pin';
+
+  @override
+  String get unpin => 'Unpin';
+
+  @override
+  String get duplicate => 'Duplicate';
+
+  @override
+  String get eventDuplicated => 'Event duplicated';
+
+  @override
+  String get eventCopySuffix => ' (copy)';
+
+  @override
   String get editEvent => 'Edit Event';
 
   @override
@@ -504,6 +519,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportData => 'Export Data';
+
+  @override
+  String get exportCsv => 'Export as CSV';
+
+  @override
+  String get exportCsvSubtitle => 'Save all events as a spreadsheet';
+
+  @override
+  String get exportCsvShareSubject => 'Waktu Sejak CSV';
+
+  @override
+  String get exportCsvSuccess => 'CSV file ready to share';
+
+  @override
+  String get exportCsvFailed => 'Failed to export CSV';
 
   @override
   String get exportDataSubtitle => 'Save all events to a backup file';

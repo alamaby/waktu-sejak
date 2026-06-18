@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -101,6 +102,57 @@ class DataPortabilityService {
     } catch (_) {
       throw const ExportIoError();
     }
+  }
+
+  static Future<void> exportEventsCsv(
+    List<EventModel> events, {
+    required String shareSubject,
+  }) async {
+    try {
+      final csv = buildEventsCsv(events);
+      final ts = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      final filename = 'waktu_sejak_$ts.csv';
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/$filename');
+      await file.writeAsString(csv, flush: true);
+      await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'text/csv', name: filename)],
+        subject: shareSubject,
+      );
+    } catch (_) {
+      throw const ExportIoError();
+    }
+  }
+
+  // Pure builder kept separate from IO so it can be unit tested.
+  static String buildEventsCsv(List<EventModel> events) {
+    const converter = ListToCsvConverter();
+    final rows = <List<dynamic>>[
+      [
+        'Name',
+        'Target Date',
+        'Emoji',
+        'Color (ARGB)',
+        'Created At',
+        'Recurrence',
+        'Is Pinned',
+        'Kind',
+        'Support Count',
+      ],
+      for (final e in events)
+        [
+          e.name,
+          e.targetDate.toIso8601String(),
+          e.emoji,
+          e.color.toARGB32(),
+          e.createdAt.toIso8601String(),
+          e.recurrenceType.name,
+          e.isPinned,
+          e.kind.name,
+          e.supportCount,
+        ],
+    ];
+    return converter.convert(rows);
   }
 
   static Future<List<EventModel>> importEvents() async {

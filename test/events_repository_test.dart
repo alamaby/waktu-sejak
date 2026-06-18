@@ -54,6 +54,32 @@ void main() {
       expect(events, hasLength(1));
       expect(events.single.id, 'valid');
     });
+
+    test('preserves isPinned when present in JSON', () async {
+      final pinned = _event(id: 'pinned').copyWith(isPinned: true).toJson();
+      SharedPreferences.setMockInitialValues({
+        'events': jsonEncode([pinned]),
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final repo = EventsRepository(prefs);
+
+      final events = repo.load();
+
+      expect(events.single.isPinned, isTrue);
+    });
+
+    test('defaults isPinned to false when missing in JSON', () async {
+      final oldPayload = _event(id: 'old').toJson()..remove('isPinned');
+      SharedPreferences.setMockInitialValues({
+        'events': jsonEncode([oldPayload]),
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final repo = EventsRepository(prefs);
+
+      final events = repo.load();
+
+      expect(events.single.isPinned, isFalse);
+    });
   });
 }
 

@@ -368,6 +368,36 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get edit;
 
+  /// No description provided for @pin.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get pin;
+
+  /// No description provided for @unpin.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get unpin;
+
+  /// No description provided for @duplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicate;
+
+  /// No description provided for @eventDuplicated.
+  ///
+  /// In en, this message translates to:
+  /// **'Event duplicated'**
+  String get eventDuplicated;
+
+  /// No description provided for @eventCopySuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' (copy)'**
+  String get eventCopySuffix;
+
   /// No description provided for @editEvent.
   ///
   /// In en, this message translates to:
@@ -757,6 +787,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export Data'**
   String get exportData;
+
+  /// No description provided for @exportCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Export as CSV'**
+  String get exportCsv;
+
+  /// No description provided for @exportCsvSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save all events as a spreadsheet'**
+  String get exportCsvSubtitle;
+
+  /// No description provided for @exportCsvShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Waktu Sejak CSV'**
+  String get exportCsvShareSubject;
+
+  /// No description provided for @exportCsvSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV file ready to share'**
+  String get exportCsvSuccess;
+
+  /// No description provided for @exportCsvFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export CSV'**
+  String get exportCsvFailed;
 
   /// No description provided for @exportDataSubtitle.
   ///

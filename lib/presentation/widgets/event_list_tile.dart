@@ -23,6 +23,7 @@ class EventListTile extends ConsumerWidget {
     final isPast = diff.isPast;
     final isSupporterReward = event.isSupporterReward;
     final shouldDim = isPast && !isSupporterReward;
+    final isPinned = event.isPinned;
     final isTablet = MediaQuery.sizeOf(context).width >= 600;
 
     return Semantics(
@@ -119,16 +120,20 @@ class EventListTile extends ConsumerWidget {
               ],
             ),
             trailing: Icon(
-              isSupporterReward
-                  ? Icons.auto_awesome
-                  : isPast
-                      ? Icons.history
-                      : Icons.arrow_forward,
+              isPinned
+                  ? Icons.push_pin
+                  : isSupporterReward
+                      ? Icons.auto_awesome
+                      : isPast
+                          ? Icons.history
+                          : Icons.arrow_forward,
               color: isSupporterReward
                   ? const Color(0xFFF2A541)
-                  : isPast
-                      ? Theme.of(context).colorScheme.onSurfaceVariant
-                      : Theme.of(context).colorScheme.primary,
+                  : isPinned
+                      ? Theme.of(context).colorScheme.primary
+                      : isPast
+                          ? Theme.of(context).colorScheme.onSurfaceVariant
+                          : Theme.of(context).colorScheme.primary,
               size: 20,
             ),
             isThreeLine: true,

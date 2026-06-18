@@ -22,6 +22,7 @@ class EventCard extends ConsumerWidget {
     final textColor = AppColors.textColorOn(event.color);
     final isPast = diff.isPast;
     final isSupporterReward = event.isSupporterReward;
+    final isPinned = event.isPinned;
     final isTablet = MediaQuery.sizeOf(context).width >= 600;
 
     return Semantics(
@@ -37,7 +38,11 @@ class EventCard extends ConsumerWidget {
           children: [
             Card(
               color: event.color,
-              elevation: isSupporterReward ? 6 : (isPast ? 1 : 3),
+              elevation: isSupporterReward
+                  ? 6
+                  : isPinned
+                      ? 4
+                      : (isPast ? 1 : 3),
               shape: RoundedRectangleBorder(
                 side: isSupporterReward
                     ? BorderSide(
@@ -74,9 +79,22 @@ class EventCard extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          event.emoji,
-                          style: TextStyle(fontSize: isTablet ? 30 : 28),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              event.emoji,
+                              style: TextStyle(fontSize: isTablet ? 30 : 28),
+                            ),
+                            if (isPinned) ...[
+                              const SizedBox(width: 6),
+                              Icon(
+                                Icons.push_pin,
+                                size: isTablet ? 18 : 16,
+                                color: textColor,
+                              ),
+                            ],
+                          ],
                         ),
                         isSupporterReward
                             ? _SupporterBadge(

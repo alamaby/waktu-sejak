@@ -63,6 +63,31 @@ class EventsNotifier extends _$EventsNotifier {
     _persist();
   }
 
+  void togglePin(String id) {
+    state = [
+      for (final e in state)
+        if (e.id == id) e.copyWith(isPinned: !e.isPinned) else e,
+    ];
+    _persist();
+  }
+
+  String duplicateEvent(EventModel source, {required String newName}) {
+    final now = DateTime.now();
+    final copy = EventModel(
+      id: _uuid.v4(),
+      name: newName,
+      targetDate: source.targetDate,
+      emoji: source.emoji,
+      color: source.color,
+      createdAt: now,
+      recurrenceType: source.recurrenceType,
+      kind: EventKind.normal,
+      supportCount: 0,
+    );
+    addEvent(copy);
+    return copy.id;
+  }
+
   int importAppend(List<EventModel> incoming) {
     final existingIds = state.map((e) => e.id).toSet();
     final toAdd = incoming.where((e) => !existingIds.contains(e.id)).toList();
@@ -282,32 +307,46 @@ List<EventModel> visibleEvents(Ref ref) {
     return matchesQuery && matchesStatus && matchesEmoji;
   }).toList();
 
+  final comparator = _buildComparator(sortType, now);
+  final pinned = <EventModel>[];
+  final unpinned = <EventModel>[];
+  for (final event in visible) {
+    if (event.isPinned) {
+      pinned.add(event);
+    } else {
+      unpinned.add(event);
+    }
+  }
+  pinned.sort(comparator);
+  unpinned.sort(comparator);
+
+  return [...pinned, ...unpinned];
+}
+
+int Function(EventModel, EventModel) _buildComparator(
+  SortType sortType,
+  DateTime now,
+) {
   switch (sortType) {
     case SortType.byName:
-      visible.sort((a, b) => a.name.compareTo(b.name));
+      return (a, b) => a.name.compareTo(b.name);
     case SortType.byTimeClosest:
-      visible.sort(
-        (a, b) => RecurrenceCalculator.effectiveTargetDate(a, now: now)
-            .difference(now)
-            .abs()
-            .compareTo(
-              RecurrenceCalculator.effectiveTargetDate(b, now: now)
-                  .difference(now)
-                  .abs(),
-            ),
-      );
+      return (a, b) => RecurrenceCalculator.effectiveTargetDate(a, now: now)
+          .difference(now)
+          .abs()
+          .compareTo(
+            RecurrenceCalculator.effectiveTargetDate(b, now: now)
+                .difference(now)
+                .abs(),
+          );
     case SortType.byTimeFarthest:
-      visible.sort(
-        (a, b) => RecurrenceCalculator.effectiveTargetDate(b, now: now)
-            .difference(now)
-            .abs()
-            .compareTo(
-              RecurrenceCalculator.effectiveTargetDate(a, now: now)
-                  .difference(now)
-                  .abs(),
-            ),
-      );
+      return (a, b) => RecurrenceCalculator.effectiveTargetDate(b, now: now)
+          .difference(now)
+          .abs()
+          .compareTo(
+            RecurrenceCalculator.effectiveTargetDate(a, now: now)
+                .difference(now)
+                .abs(),
+          );
   }
-
-  return visible;
 }

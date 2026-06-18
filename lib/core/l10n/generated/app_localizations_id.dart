@@ -145,6 +145,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get edit => 'Ubah';
 
   @override
+  String get pin => 'Sematkan';
+
+  @override
+  String get unpin => 'Lepas sematan';
+
+  @override
+  String get duplicate => 'Duplikat';
+
+  @override
+  String get eventDuplicated => 'Acara diduplikasi';
+
+  @override
+  String get eventCopySuffix => ' (salin)';
+
+  @override
   String get editEvent => 'Ubah Acara';
 
   @override
@@ -384,6 +399,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get exportData => 'Ekspor Data';
+
+  @override
+  String get exportCsv => 'Ekspor sebagai CSV';
+
+  @override
+  String get exportCsvSubtitle => 'Simpan semua acara sebagai spreadsheet';
+
+  @override
+  String get exportCsvShareSubject => 'CSV Waktu Sejak';
+
+  @override
+  String get exportCsvSuccess => 'Berkas CSV siap dibagikan';
+
+  @override
+  String get exportCsvFailed => 'Gagal mengekspor CSV';
 
   @override
   String get exportDataSubtitle => 'Simpan semua acara ke berkas cadangan';
