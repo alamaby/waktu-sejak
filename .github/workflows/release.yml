@@ -94,6 +94,33 @@ jobs:
           mv "${AAB_DIR}/app-release.aab" "dist/waktu-sejak-${TAG}.aab"
           ls -la dist
 
+      - name: Verify AAB signing (must NOT be debug key)
+        run: |
+          AAB="dist/waktu-sejak-${{ steps.version.outputs.tag }}.aab"
+          jarsigner -verify -verbose -certs "$AAB" | tee /tmp/jarsigner-aab.log
+          if grep -qi "Android Debug" /tmp/jarsigner-aab.log; then
+            echo "::error::AAB is signed with debug key — check KEYSTORE_BASE64 / keystore wiring."
+            exit 1
+          fi
+
+      - name: Validate Play upload credentials
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::Missing secret GOOGLE_PLAY_SERVICE_ACCOUNT_JSON. Add the Google Play service account JSON in GitHub Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Upload AAB to Play internal testing
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.alamaby.waktu_sejak
+          releaseFiles: dist/waktu-sejak-${{ steps.version.outputs.tag }}.aab
+          track: internal
+          status: completed
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
